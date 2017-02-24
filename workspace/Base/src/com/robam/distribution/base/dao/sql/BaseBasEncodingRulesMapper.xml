@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseBasEncodingRulesMapper">
+	<sql id="columnScope">
+		<if test="rule_number != null">RULE_NUMBER, </if>
+		<if test="total_numbering_length != null">TOTAL_NUMBERING_LENGTH, </if>
+		<if test="numbering_field_no != null">NUMBERING_FIELD_NO, </if>
+		<if test="rule_number_description != null">RULE_NUMBER_DESCRIPTION, </if>
+		<if test="numbering_result != null">NUMBERING_RESULT, </if>
+		<if test="note != null">NOTE, </if>
+		<if test="program_no != null">PROGRAM_NO, </if>
+		<if test="table_no != null">TABLE_NO, </if>
+		<if test="numbered_item != null">NUMBERED_ITEM, </if>
+		<if test="field_no != null">FIELD_NO, </if>
+		<if test="date_format != null">DATE_FORMAT, </if>
+		<if test="display_format != null">DISPLAY_FORMAT, </if>
+		<if test="length != null">LENGTH, </if>
+		<if test="serial_no != null">SERIAL_NO, </if>
+		<if test="status_code != null">STATUS_CODE, </if>
+		<if test="data_created_date != null">DATA_CREATED_DATE, </if>
+		<if test="language != null">LANGUAGE, </if>
+	</sql>
+
+	<!-- INSERT -->
+	<insert id="addEncodingRules" parameterType="java.util.Map">
+		INSERT INTO BAS_ENCODING_RULES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="rule_number != null">#{rule_number}, </if>
+			<if test="total_numbering_length != null">#{total_numbering_length}, </if>
+			<if test="numbering_field_no != null">#{numbering_field_no}, </if>
+			<if test="rule_number_description != null">#{rule_number_description}, </if>
+			<if test="numbering_result != null">#{numbering_result}, </if>
+			<if test="note != null">#{note}, </if>
+			<if test="program_no != null">#{program_no}, </if>
+			<if test="table_no != null">#{table_no}, </if>
+			<if test="numbered_item != null">#{numbered_item}, </if>
+			<if test="field_no != null">#{field_no}, </if>
+			<if test="date_format != null">#{date_format}, </if>
+			<if test="display_format != null">#{display_format}, </if>
+			<if test="length != null">#{length}, </if>
+			<if test="serial_no != null">#{serial_no}, </if>
+			<if test="status_code != null">'Y', </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="language != null">'zh_CN', </if>
+		</trim>
+	</insert>
+	
+	<!-- UPDATE -->
+	<update id="modifyEncodingRules" parameterType="java.util.Map">
+		UPDATE BAS_ENCODING_RULES SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="total_numbering_length != null">TOTAL_NUMBERING_LENGTH=#{total_numbering_length}, </if>
+			<if test="numbering_field_no != null">NUMBERING_FIELD_NO=#{numbering_field_no}, </if>
+			<if test="rule_number_description != null">RULE_NUMBER_DESCRIPTION=#{rule_number_description}, </if>
+			<if test="numbering_result != null">NUMBERING_RESULT=#{numbering_result}, </if>
+			<if test="note != null">NOTE=#{rule_number}=#{note}, </if>
+			<if test="program_no != null">PROGRAM_NO=#{program_no}, </if>
+			<if test="table_no != null">TABLE_NO=#{table_no}, </if>
+			<if test="numbered_item != null">NUMBERED_ITEM=#{numbered_item}, </if>
+			<if test="field_no != null">FIELD_NO=#{field_no}, </if>
+			<if test="date_format != null">DATE_FORMAT=#{date_format}, </if>
+			<if test="display_format != null">DISPLAY_FORMAT=#{display_format}, </if>
+			<if test="length != null">LENGTH=#{length}, </if>
+			<if test="status_code != null">STATUS_CODE=#{status_code}, </if>
+		</trim>
+		WHERE RULE_NUMBER=#{rule_number} AND SERIAL_NO=#{serial_no} AND LANGUAGE=#{language}
+	</update>
+	
+	<!-- DELETE -->
+	<delete id="deleteEncodingRules" parameterType="java.util.Map">
+		DELETE FROM	BAS_ENCODING_RULES WHERE RULE_NUMBER=#{rule_number} AND SERIAL_NO=#{serial_no} AND LANGUAGE=#{language}
+	</delete>
+
+	<!-- SEARCH -->
+	<select id="getEncodingRulesList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, total_numbering_length, numbering_field_no,rule_number_description,numbering_result,note,program_no,table_no, numbered_item,field_no,date_format,display_format,length,rule_number,serial_no,language  
+		FROM BAS_ENCODING_RULES 
+		<where>
+			<if test="total_numbering_length != null">AND TOTAL_NUMBERING_LENGTH=#{total_numbering_length} </if>
+			<if test="numbering_field_no != null">AND NUMBERING_FIELD_NO=#{numbering_field_no} </if>
+			<if test="rule_number_description != null">AND RULE_NUMBER_DESCRIPTION=#{rule_number_description} </if>
+			<if test="numbering_result != null">AND NUMBERING_RESULT=#{numbering_result} </if>
+			<if test="note != null">AND NOTE=#{rule_number}=#{note} </if>
+			<if test="program_no != null">AND PROGRAM_NO=#{program_no} </if>
+			<if test="table_no != null">AND TABLE_NO=#{table_no} </if>
+			<if test="numbered_item != null">AND NUMBERED_ITEM=#{numbered_item} </if>
+			<if test="field_no != null">AND FIELD_NO=#{field_no} </if>
+			<if test="date_format != null">AND DATE_FORMAT=#{date_format} </if>
+			<if test="display_format != null">AND DISPLAY_FORMAT=#{display_format} </if>
+			<if test="length != null">AND LENGTH=#{length} </if>
+			<if test="status_code != null">AND STATUS_CODE=#{status_code} </if>
+			<if test="rule_number != null">AND RULE_NUMBER=#{rule_number} </if>
+			<if test="serial_no != null">AND SERIAL_NO=#{serial_no} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+		LIMIT #{start}, #{pageRows}
+	</select>
+
+	<select id="getEncodingRulesListDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, total_numbering_length, numbering_field_no,rule_number_description,numbering_result,note,program_no,table_no, numbered_item,field_no,date_format,display_format,length,rule_number,serial_no,language  
+		FROM BAS_ENCODING_RULES WHERE RULE_NUMBER=#{rule_number}  AND LANGUAGE=#{language}
+	</select>
+	
+	<select id="getEncodingRulesTotalRows" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT COUNT(*) AS totalRows FROM BAS_ENCODING_RULES 
+		<where>
+			<if test="total_numbering_length != null">AND TOTAL_NUMBERING_LENGTH=#{total_numbering_length} </if>
+			<if test="numbering_field_no != null">AND NUMBERING_FIELD_NO=#{numbering_field_no} </if>
+			<if test="rule_number_description != null">AND RULE_NUMBER_DESCRIPTION=#{rule_number_description} </if>
+			<if test="numbering_result != null">AND NUMBERING_RESULT=#{numbering_result} </if>
+			<if test="note != null">AND NOTE=#{rule_number}=#{note} </if>
+			<if test="program_no != null">AND PROGRAM_NO=#{program_no} </if>
+			<if test="table_no != null">AND TABLE_NO=#{table_no} </if>
+			<if test="numbered_item != null">AND NUMBERED_ITEM=#{numbered_item} </if>
+			<if test="field_no != null">AND FIELD_NO=#{field_no} </if>
+			<if test="date_format != null">AND DATE_FORMAT=#{date_format} </if>
+			<if test="display_format != null">AND DISPLAY_FORMAT=#{display_format} </if>
+			<if test="length != null">AND LENGTH=#{length} </if>
+			<if test="status_code != null">AND STATUS_CODE=#{status_code} </if>
+			<if test="rule_number != null">AND RULE_NUMBER=#{rule_number} </if>
+			<if test="serial_no != null">AND SERIAL_NO=#{serial_no} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+	</select>
+	
+	<select id="getMaxEnocodingRulesSerialNo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT MAX(SERIAL_NO) AS maxSerialNo FROM BAS_ENCODING_RULES 
+		<where>
+			<if test="rule_number != null">AND RULE_NUMBER=#{rule_number} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+	</select>
+</mapper>

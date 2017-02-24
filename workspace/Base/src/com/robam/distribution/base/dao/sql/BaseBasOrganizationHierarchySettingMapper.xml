@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_m13 组织层级建立作业、drp_bas_m14 组织结构查询作业 -->
+<mapper namespace="dao.BaseBasOrganizationHierarchySettingMapper">
+	<!-- drp_bas_m13 组织层级建立作业 author:yangjian -->
+	
+	<!-- 根据组织类型获取基础组织列表 -->
+	<select id="getOrganizationBase" parameterType="com.robam.distribution.base.model.BasOrganization" resultType="hashmap">
+		SELECT 
+			organization,organization_full_name,legal_person,legal_person_name,organization_function 
+		FROM 
+			BAS_ORGANIZATION 
+		WHERE 
+			1=1 
+		<if test="requisition_no!=null and requisition_no!=''">
+			AND 
+				organization NOT IN(
+				SELECT 
+					organization 
+				FROM 
+					BAS_ORGHIERARCHY_DETAIL 
+				WHERE 1=1
+					AND requisition_no=#{requisition_no}
+			)
+		</if>	
+		<if test="organization_function=null or organization_function=''">
+			AND ORGANIZATION_FUNCTION&gt;=1 AND ORGANIZATION_FUNCTION&lt;=4
+		</if>
+		<if test="organization_function!=null and organization_function!=''">
+			AND ORGANIZATION_FUNCTION=#{organization_function}
+		</if>
+	</select>
+	
+	<!-- 获取最上层组织 -->
+	<select id="getTopOrganization" parameterType="com.robam.distribution.base.model.BasOrganization" resultType="hashmap">
+		SELECT 
+			organization,organization_full_name 
+		FROM 
+			BAS_ORGANIZATION
+		WHERE 1=1 
+		<if test="requisition_no!=null and requisition_no!=''">
+			AND requisition_no=#{requisition_no}
+		</if>
+		<if test="organization_function=null or organization_function=''">
+			AND ORGANIZATION_FUNCTION&gt;=1 AND ORGANIZATION_FUNCTION&lt;=4
+		</if>
+		<if test="organization_function!=null and organization_function!=''">
+			AND ORGANIZATION_FUNCTION=#{organization_function}
+		</if>
+	</select>
+	
+	<!-- 修改组织层级 -->
+	<update id="modifyOrganizationHierarchy" parameterType="hashmap">
+		UPDATE 
+			BAS_ORGHIERARCHY_REQUISITION 
+		SET 
+			organization_type=#{organization_type},top_organization=#{top_organization},
+			top_organization_name=#{top_organization_name},VERSION=#{version},
+			VALID_DATE=#{valid_date},INVALID_DATE=#{invalid_date} 
+		WHERE 1=1 
+		<if test="requisition_no!=null and requisition_no!=''">
+			AND requisition_no=#{requisition_no}
+		</if>
+	</update>
+	
+	<!-- 删除组织层级（层级关系表中删除）-->
+	<delete id="deleteOrganizationHierarchy2" parameterType="hashmap">
+		DELETE FROM 
+			BAS_ORGHIERARCHY_DETAIL
+		WHERE 
+			1=1 
+		<if test="orgMap!=null and orgMap.size>0">
+			AND(
+			<foreach collection="orgMap" item="o" separator="or">
+				(requisition_no = #{o.requisition_no})
+			</foreach>
+			)
+		</if>	
+	</delete>
+	
+	<!-- 删除组织层级（最上层表中删除）-->
+	<delete id="deleteOrganizationHierarchy" parameterType="hashmap">
+		DELETE FROM 
+			BAS_ORGHIERARCHY_REQUISITION
+		WHERE 
+			1=1 
+		<if test="orgMap!=null and orgMap.size>0">	
+			AND(
+			<foreach collection="orgMap" item="o" separator="or">
+				(requisition_no = #{o.requisition_no})
+			</foreach>
+			)
+		</if>	
+	</delete>
+	
+	<!-- 审核组织层级 -->
+	<update id="auditOrganizationHierarchy" parameterType="hashmap">
+		UPDATE 
+			BAS_ORGHIERARCHY_REQUISITION
+		SET 
+			status_code =#{status_code} 
+		WHERE 
+			1=1 
+		<if test="orgMap!=null and orgMap.size>0">
+			AND(
+			<foreach collection="orgMap" item="o" separator="or">
+				(requisition_no = #{o.requisition_no})
+			</foreach>
+			)
+		</if>	
+	</update>
+	
+	<!-- 查詢最大组织編號 -->
+	<select id="queryMaxId" parameterType="com.robam.distribution.base.model.BasOrganization"  resultType="java.lang.String">
+		SELECT 
+			MAX(requisition_no+1)  
+		FROM 
+			BAS_ORGHIERARCHY_REQUISITION 
+		WHERE 1=1 
+	</select>
+	
+	<!-- 新增组织层级（层级关系表中新增）-->
+	<insert id="addOrganizationHierarchy2" parameterType="hashmap">
+		INSERT INTO 
+			BAS_ORGHIERARCHY_DETAIL(
+				requisition_no,organization_type,top_organization,top_organization_name,
+				version,valid_date,invalid_date,organization,
+				organization_name,higher_organization,higher_organization_name,language)  
+		VALUES 
+		<foreach collection="org_hierarchy" item="o" separator=",">
+			(
+				#{requisition_no},#{organization_type},#{top_organization},#{top_organization_name},#{version},
+				#{valid_date},#{invalid_date},
+				#{o.organization},#{o.organization_name},#{o.higher_organization},
+				#{o.higher_organization_name},#{language}
+			)
+		</foreach>
+	</insert>
+	
+	<!-- 新增组织层级（最上层表中新增）-->
+	<insert id="addOrganizationHierarchy">
+		INSERT INTO 
+			BAS_ORGHIERARCHY_REQUISITION(
+			status_code,requisition_no,organization_type,top_organization,top_organization_name,
+			version,valid_date,invalid_date,operation_organization,operation_organization_name,language)  
+		VALUES 
+		(#{status_code},#{requisition_no},#{organization_type},#{top_organization},#{top_organization_name},#{version},
+		 #{valid_date},#{invalid_date},#{operation_organization},#{operation_organization_name},#{language})
+	</insert>
+	
+	<!-- drp_bas_m14 组织层级结构查询作业 by:gejc -->
+	<!-- 获取数据量 -->
+	<select id="getOrganizationHierarchyListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			COUNT(*) 
+		FROM 
+			BAS_ORGHIERARCHY_REQUISITION 
+		WHERE 1=1 
+		 <if test="status_code!=null and status_code!=''">
+		 	AND status_code=#{status_code}	
+		</if>
+		<if test="requisition_no!=null and requisition_no!=''">
+		 	AND requisition_no=#{requisition_no}	
+		</if>
+		<if test="organization_type!=null and organization_type!=''">
+		 	AND organization_type=#{organization_type}	
+		</if>
+		<if test="query_date!=null and query_date!=''">
+		 	AND valid_date &lt;=#{query_date} AND invalid_date &gt;=#{query_date}
+		</if>
+	</select>
+	
+	<!-- 分页查询最上层组织列表 -->
+	<select id="getOrganizationHierarchyList" parameterType="hashmap" resultType="com.robam.distribution.base.model.BasOrganizationHierarchy">
+		SELECT 
+			status_code,requisition_no,organization_type,top_organization,top_organization_name,
+			DATE_FORMAT(valid_date,'%Y/%m/%d') as valid_date,
+			DATE_FORMAT(invalid_date,'%Y/%m/%d') as invalid_date,
+			operation_organization,operation_organization_name,
+			DATE_FORMAT(requisition_date,'%Y/%m/%d') as requisition_date,version
+		FROM 
+			BAS_ORGHIERARCHY_REQUISITION 
+		WHERE 1=1 
+		 <if test="status_code!=null and status_code!=''">
+		 	AND status_code=#{status_code}	
+		</if>
+		<if test="requisition_no!=null and requisition_no!=''">
+		 	AND requisition_no=#{requisition_no}	
+		</if>
+		<if test="organization_type!=null and organization_type!=''">
+		 	AND organization_type=#{organization_type}	
+		</if>
+		<if test="query_date!=null and query_date!=''">
+		 	AND valid_date &lt;=#{query_date} AND invalid_date &gt;=#{query_date}
+		</if>
+		ORDER BY 
+			requisition_no ASC  
+		LIMIT
+			#{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 查询指定最上层组织层级信息 -->
+	<select id="getOrganizationHierarchyDetail" parameterType="hashmap" resultType="com.robam.distribution.base.model.BasOrganizationHierarchy">
+		SELECT 
+			status_code,requisition_no,organization_type,top_organization,top_organization_name,
+			DATE_FORMAT(valid_date,'%Y/%m/%d') as valid_date,
+			DATE_FORMAT(invalid_date,'%Y/%m/%d') as invalid_date,
+			operation_organization,operation_organization_name,
+			DATE_FORMAT(requisition_date,'%Y/%m/%d') as requisition_date,version 
+		FROM 
+			BAS_ORGHIERARCHY_REQUISITION 
+		WHERE 1=1 
+		 <if test="status_code!=null and status_code!=''">
+		 	AND status_code=#{status_code}	
+		</if>
+		<if test="requisition_no!=null and requisition_no!=''">
+		 	AND requisition_no=#{requisition_no}	
+		</if>
+		<if test="organization_type!=null and organization_type!=''">
+		 	AND organization_type=#{organization_type}	
+		</if>
+		<if test="query_date!=null and query_date!=''">
+		 	AND valid_date &lt;=#{query_date} AND invalid_date &gt;=#{query_date}
+		</if>
+	</select>
+	
+	<!-- 根据最上层组织编号获取该组织下所有层级记录 -->
+	<select id="getAllOrgnizations" parameterType="hashmap" resultType="com.robam.distribution.base.model.OrganizationHierarchy">
+		SELECT 
+			organization,higher_organization,organization_name
+		FROM 
+			BAS_ORGHIERARCHY_DETAIL
+		 <where>
+		 	<if test="top_organization != null and top_organization != ''">
+		 		top_organization = #{top_organization}
+		 	</if>
+		 	<if test="query_date!=null and query_date!=''">
+		 		AND valid_date &lt;=#{query_date} AND invalid_date &gt;=#{query_date}
+			</if>
+		 </where>
+	</select>
+</mapper>

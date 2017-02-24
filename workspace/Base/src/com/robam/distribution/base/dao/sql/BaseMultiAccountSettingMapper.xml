@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseMultiAccountSettingMapper">
+	<sql id="columnScope">
+		<if test="multiple_account_period != null">MULTIPLE_ACCOUNT_PERIOD, </if>
+		<if test="periods != null">PERIODS, </if>
+		<if test="intervals_quarter != null">INTERVALS_QUARTER, </if>
+		<if test="intervals_month != null">INTERVALS_MONTH, </if>
+		<if test="intervals_day != null">INTERVALS_DAY, </if>
+		<if test="payment_type_property != null">PAYMENT_TYPE_PROPERTY, </if>
+		<if test="installment_rate != null">INSTALLMENT_RATE, </if>
+		<if test="money_setting != null">MONEY_SETTING, </if>
+		<if test="multiple_acctperiod_discription != null">MULTIPLE_ACCTPERIOD_DISCRIPTION, </if>
+		<if test="status_code != null">STATUS_CODE, </if>
+		<if test="data_created_date != null">DATA_CREATED_DATE, </if>
+		<if test="language != null">LANGUAGE, </if>
+	</sql>
+
+	<!-- INSERT -->
+	<insert id="addMultiAccount" parameterType="java.util.Map">
+		INSERT INTO BAS_MLTIPAYMENT_PERIOD
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="multiple_account_period != null">#{multiple_account_period}, </if>
+			<if test="periods != null">#{periods}, </if>
+			<if test="intervals_quarter != null">#{intervals_quarter}, </if>
+			<if test="intervals_month != null">#{intervals_month}, </if>
+			<if test="intervals_day != null">#{intervals_day}, </if>
+			<if test="payment_type_property != null">#{payment_type_property}, </if>
+			<if test="installment_rate != null">#{installment_rate}, </if>
+			<if test="money_setting != null">#{money_setting}, </if>
+			<if test="multiple_acctperiod_discription != null">#{multiple_acctperiod_discription}, </if>
+			<if test="status_code != null">'Y', </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="language != null">'zh_CN', </if>
+		</trim>
+	</insert>
+	
+	<!-- UPDATE -->
+	<update id="modifyMultiAccount" parameterType="java.util.Map">
+		UPDATE BAS_MLTIPAYMENT_PERIOD SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="intervals_quarter != null">INTERVALS_QUARTER=#{intervals_quarter}, </if>
+			<if test="intervals_month != null">INTERVALS_MONTH=#{intervals_month}, </if>
+			<if test="intervals_day != null">INTERVALS_DAY=#{intervals_day}, </if>
+			<if test="payment_type_property != null">PAYMENT_TYPE_PROPERTY=#{payment_type_property}, </if>
+			<if test="installment_rate != null">INSTALLMENT_RATE=#{installment_rate}, </if>
+			<if test="money_setting != null">MONEY_SETTING=#{money_setting}, </if>
+			<if test="multiple_acctperiod_discription != null">MULTIPLE_ACCTPERIOD_DISCRIPTION=#{multiple_acctperiod_discription}, </if>
+			<if test="status_code != null">STATUS_CODE=#{STATUS_CODE}, </if>
+		</trim>
+		WHERE MULTIPLE_ACCOUNT_PERIOD = #{multiple_account_period} AND PERIODS=#{periods} AND LANGUAGE=#{language}
+	</update>
+	
+	<!-- DELETE -->
+	<delete id="deleteMultiAccount" parameterType="java.util.Map">
+		DELETE FROM	BAS_MLTIPAYMENT_PERIOD WHERE MULTIPLE_ACCOUNT_PERIOD = #{multiple_account_period} AND PERIODS=#{periods} AND LANGUAGE=#{language}
+	</delete>
+
+	<!-- SEARCH -->
+	<select id="searchMultiAccountList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, multiple_account_period, periods, intervals_quarter, intervals_month, intervals_day,payment_type_property,installment_rate, money_setting,multiple_acctperiod_discription,language  
+		FROM BAS_MLTIPAYMENT_PERIOD 
+		<where>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="multiple_account_period != null">AND multiple_account_period=#{multiple_account_period} </if>
+			<if test="periods != null">AND periods=#{periods} </if>
+			<if test="intervals_quarter != null">AND intervals_quarter=#{intervals_quarter} </if>
+			<if test="intervals_month != null">AND intervals_month=#{intervals_month} </if>
+			<if test="intervals_day != null">AND intervals_day=#{intervals_day} </if>
+			<if test="payment_type_property != null">AND payment_type_property=#{payment_type_property} </if>
+			<if test="installment_rate != null">AND installment_rate=#{installment_rate} </if>
+			<if test="money_setting != null">AND money_setting=#{money_setting} </if>
+			<if test="multiple_acctperiod_discription != null">AND multiple_acctperiod_discription=#{multiple_acctperiod_discription} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+		LIMIT #{start}, #{pageRows}
+	</select>
+
+	<select id="searchMultiAccountDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, multiple_account_period, periods, intervals_quarter, intervals_month, intervals_day,payment_type_property,installment_rate, money_setting,multiple_acctperiod_discription,language  
+		FROM BAS_MLTIPAYMENT_PERIOD WHERE MULTIPLE_ACCOUNT_PERIOD=#{multiple_account_period} AND MONEY_SETTING=#{money_setting} AND language=#{language}
+	</select>
+	
+	<select id="getMultiAccountTotalRows" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT COUNT(*) AS totalRows FROM BAS_MLTIPAYMENT_PERIOD 
+		<where>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="multiple_account_period != null">AND multiple_account_period=#{multiple_account_period} </if>
+			<if test="periods != null">AND periods=#{periods} </if>
+			<if test="intervals_quarter != null">AND intervals_quarter=#{intervals_quarter} </if>
+			<if test="intervals_month != null">AND intervals_month=#{intervals_month} </if>
+			<if test="intervals_day != null">AND intervals_day=#{intervals_day} </if>
+			<if test="payment_type_property != null">AND payment_type_property=#{payment_type_property} </if>
+			<if test="installment_rate != null">AND installment_rate=#{installment_rate} </if>
+			<if test="money_setting != null">AND money_setting=#{money_setting} </if>
+			<if test="multiple_acctperiod_discription != null">AND multiple_acctperiod_discription=#{multiple_acctperiod_discription} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+	</select>
+</mapper>

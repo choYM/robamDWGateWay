@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseEnumerateMapper">
+	
+	
+	<!-- SEARCH -->
+	<select id="getEnumList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT enum_value, enum_order, enum_key,enum_name,status_code
+		FROM BAS_ENUMERATE 
+		<where>
+			
+			<if test="enum_name != null">AND ENUM_NAME=#{enum_name} </if>
+			<if test="language != null">AND LANGUAGE=#{language}</if>
+			
+		</where>
+	
+	</select>
+
+	
+</mapper>

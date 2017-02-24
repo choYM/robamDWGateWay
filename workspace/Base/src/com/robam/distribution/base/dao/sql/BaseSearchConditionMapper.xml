@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseSearchConditionMapper">
+	<sql id="columnScope">
+		<if test="user_code != null">USER_CODE, </if>
+		<if test="program_code != null">PROGRAM_CODE, </if>
+		<if test="search_name != null">SEARCH_NAME, </if>
+		<if test="search_cond != null">SEARCH_COND, </if>
+		<if test="search_default != null">SEARCH_DEFAULT, </if>
+		<if test="search_order != null">SEARCH_ORDER, </if>
+		<if test="remark != null">REMARK, </if>
+		<if test="status_code != null">STATUS_CODE, </if>
+		<if test="data_created_date != null">DATA_CREATED_DATE, </if>
+		<if test="language != null">LANGUAGE, </if>
+	</sql>
+
+	<!-- INSERT -->
+	<insert id="addSearchCondition" parameterType="java.util.Map">
+		INSERT INTO BAS_SEARCH_CONDITION
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="user_code != null">#{user_code}, </if>
+			<if test="program_code != null">#{program_code}, </if>
+			<if test="search_name != null">#{search_name}, </if>
+			<if test="search_cond != null">#{search_cond}, </if>
+			<if test="search_default != null">#{search_default}, </if>
+			<if test="search_order != null">#{search_order}, </if>
+			<if test="remark != null">#{remark}, </if>
+			<if test="status_code != null">'Y', </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="language != null">'zh_CN', </if>
+		</trim>
+	</insert>
+
+	
+
+	<!-- DELETE -->
+	<delete id="deleteSearchCondition" parameterType="java.util.Map">
+		DELETE FROM	BAS_SEARCH_CONDITION WHERE USER_CODE = #{user_code} AND PROGRAM_CODE=#{program_code} AND LANGUAGE = #{language}
+	</delete>
+	
+	<!-- SEARCH -->
+	<select id="getSearchCondition" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT user_code, program_code, search_name,search_cond,search_default, search_order,remark,status_code
+		FROM BAS_SEARCH_CONDITION 
+		<where>
+			
+			<if test="user_code != null">AND USER_CODE=#{user_code} </if>
+			<if test="program_code != null">AND PROGRAM_CODE=#{program_code} </if>
+			<if test="language != null">AND LANGUAGE=#{language}</if>
+			
+		</where>
+	
+	</select>
+
+	
+</mapper>

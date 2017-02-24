@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 缴款优惠折扣维护作业 -->
+<!-- @author liaogz -->
+<mapper namespace="dao.BaseBasPaymentPreconditionSettingMapper">
+    <!-- 查询总笔数 -->
+	<select id="selectPaymentPreconditionCount" resultType="hashmap" parameterType="hashmap">
+			SELECT COUNT(distinct FAVORABLE_TERM) 
+			FROM BAS_PAYMENT_FAVORABLETERM WHERE 1=1
+			<if test="favorable_term!=null and favorable_term!=''">
+				AND favorable_term=#{favorable_term}
+			</if>
+			<if test="favorable_term_discription!=null and favorable_term_discription!=''">
+				AND favorable_term_discription=#{favorable_term_discription}
+			</if>
+			<if test="applicable_type!=null and applicable_type!=''">
+				AND applicable_type=#{applicable_type}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+	</select>
+	<!-- 查询当页的数据 -->
+	<select id="selectPaymentPreconditionLimit" resultType="hashmap" parameterType="hashmap">
+			SELECT DISTINCT status_code,favorable_term,favorable_term_discription,applicable_type,
+			advance_days1,discount_rate1,note,advance_days2,discount_rate2,advance_days3,discount_rate3
+			FROM BAS_PAYMENT_FAVORABLETERM WHERE 1=1 
+			<if test="favorable_term!=null and favorable_term!=''">
+				AND favorable_term=#{favorable_term}
+			</if>
+			<if test="favorable_term_discription!=null and favorable_term_discription!=''">
+				AND favorable_term_discription=#{favorable_term_discription}
+			</if>
+			<if test="applicable_type!=null and applicable_type!=''">
+				AND applicable_type=#{applicable_type}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+			ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	<!-- 修改缴款优惠条件 -->
+	<update id="modifyPaymentPrecondition" parameterType="java.util.Map">
+	  UPDATE BAS_PAYMENT_FAVORABLETERM SET
+	<trim prefix=" " suffix=" " suffixOverrides=", ">
+		<if test="data_owner!= null">DATA_OWNER=#{data_owner}, </if>
+		<if test="data_owner_dept!= null">DATA_OWNER_DEPT=#{data_owner_dept}, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY=#{data_created_by}, </if>
+		<if test="department!= null">DEPARTMENT=#{department}, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE=#{data_created_date}, </if>
+		<if test="modified_by!= null">MODIFIED_BY=#{modified_by}, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+		<if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		<if test="applicable_type!= null">APPLICABLE_TYPE=#{applicable_type}, </if>
+		<if test="note!= null">NOTE=#{note}, </if>
+		<if test="advance_days1!= null">ADVANCE_DAYS1=#{advance_days1}, </if>
+		<if test="discount_rate1!= null">DISCOUNT_RATE1=#{discount_rate1}, </if>
+		<if test="advance_days2!= null">ADVANCE_DAYS2=#{advance_days2}, </if>
+		<if test="discount_rate2!= null">DISCOUNT_RATE2=#{discount_rate2}, </if>
+		<if test="advance_days3!= null">ADVANCE_DAYS3=#{advance_days3}, </if>
+		<if test="discount_rate3!= null">DISCOUNT_RATE3=#{discount_rate3}, </if>
+		<if test="favorable_term_discription!= null">FAVORABLE_TERM_DISCRIPTION=#{favorable_term_discription}, </if>
+	 </trim>
+	        WHERE favorable_term=#{favorable_term} AND LANGUAGE=#{language}
+	</update>
+	<!-- 删除缴款优惠条件 -->
+	<delete id="deletePaymentPrecondition" parameterType="java.util.Map">
+	   DELETE FROM BAS_PAYMENT_FAVORABLETERM WHERE favorable_term=#{favorable_term} AND language =#{language}
+	</delete>
+	<!-- 审核缴款优惠条件 -->
+	<update id="auditPaymentPrecondition" parameterType="java.util.Map">
+	        UPDATE 
+	        	BAS_PAYMENT_FAVORABLETERM
+	        <trim prefix="SET" suffixOverrides=",">
+				<if test="status_code !=null">
+					status_code=#{status_code},
+				</if>
+				<if test="last_modified_date != null">
+					last_modified_date=#{last_modified_date}, 
+				</if>
+			</trim>
+	        WHERE language =#{language} AND favorable_term=#{favorable_term}
+	</update>
+	<!-- 查询是否存在相同主键的数据 -->
+	<select id="judgePaymentPrecondition" parameterType="hashmap" resultType="java.lang.Integer">
+			SELECT COUNT(1) 
+			FROM BAS_PAYMENT_FAVORABLETERM
+			<where>
+	   		<if test="favorable_term!=null and favorable_term!=''">
+				AND favorable_term=#{favorable_term}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	    </where>
+	</select>
+	
+	<!-- 查询主键的数据 -->
+	<select id="getPaymentPreconditionOne" parameterType="hashmap" resultType="java.lang.Integer">
+			SELECT
+				status_code,favorable_term,favorable_term_discription,applicable_type,
+				advance_days1,discount_rate1,note,advance_days2,discount_rate2,advance_days3,discount_rate3 
+			FROM 
+				BAS_PAYMENT_FAVORABLETERM
+			<where>
+	   		<if test="favorable_term!=null and favorable_term!=''">
+				AND favorable_term=#{favorable_term}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	    </where>
+	</select>
+	<!-- 新增缴款优惠条件 -->
+	<sql id="columnScope">
+	    <if test="data_owner!= null">DATA_OWNER, </if>
+		<if test="data_owner_dept!= null">DATA_OWNER_DEPT, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY, </if>
+		<if test="department!= null  and">DEPARTMENT, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE, </if>
+		<if test="modified_by!= null">MODIFIED_BY, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE, </if>
+		<if test="status_code!= null">STATUS_CODE, </if>
+		<if test="favorable_term!= null">favorable_term, </if>
+		<if test="applicable_type!= null">APPLICABLE_TYPE, </if>
+		<if test="note!= null">NOTE, </if>
+		<if test="advance_days1!= null">ADVANCE_DAYS1, </if>
+		<if test="discount_rate1!= null">DISCOUNT_RATE1, </if>
+		<if test="advance_days2!= null">ADVANCE_DAYS2, </if>
+		<if test="discount_rate2!= null">DISCOUNT_RATE2, </if>
+		<if test="advance_days3!= null">ADVANCE_DAYS3, </if>
+		<if test="discount_rate3!= null">DISCOUNT_RATE3, </if>
+		<if test="language!= null">LANGUAGE, </if>
+		<if test="favorable_term_discription!= null">FAVORABLE_TERM_DISCRIPTION, </if>
+	</sql>
+	<insert id="addPaymentPrecondition" parameterType="java.util.Map">
+	    INSERT INTO BAS_PAYMENT_FAVORABLETERM
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+	  <trim prefix=" (" suffix=") " suffixOverrides=", ">
+		<if test="data_owner!= null">#{data_owner}, </if>
+		<if test="data_owner_dept!= null">#{data_owner_dept}, </if>
+		<if test="data_created_by!= null">#{data_created_by}, </if>
+		<if test="department!= null">#{department}, </if>
+		<if test="data_created_date!= null">#{data_created_date}, </if>
+		<if test="modified_by!= null">#{modified_by}, </if>
+		<if test="last_modified_date!= null">#{last_modified_date}, </if>
+		<if test="status_code!= null">#{status_code}, </if>
+		<if test="favorable_term!= null">#{favorable_term}, </if>
+		<if test="applicable_type!= null">#{applicable_type}, </if>
+		<if test="note!= null">#{note}, </if>
+		<if test="advance_days1!= null">#{advance_days1}, </if>
+		<if test="discount_rate1!= null">#{discount_rate1}, </if>
+		<if test="advance_days2!= null">#{advance_days2}, </if>
+		<if test="discount_rate2!= null">#{discount_rate2}, </if>
+		<if test="ADVANCE_DAYS3!= null">#{advance_days3}, </if>
+		<if test="discount_rate3!= null">#{discount_rate3}, </if>
+		<if test="language!= null">#{language}, </if>
+		<if test="favorable_term_discription!= null">#{favorable_term_discription}, </if>
+	  </trim>
+	</insert>
+</mapper>

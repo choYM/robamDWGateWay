@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_m02 单据别维护作业 -->
+<!-- @author gejc -->
+<!-- @since 2017-02-17 -->
+<mapper namespace="dao.BaseBasDocumentSettingMapper">
+
+	<!-- 分页查询，查询数据量 -->
+	<select id="getDocumentListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			COUNT(*)  
+		FROM
+		 	SYS_DOCUMENT
+		<where>
+			<if test=" reference_table_no !=null and reference_table_no !=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test=" reference_table_description !=null and reference_table_description !=''">
+			 	AND reference_table_description LIKE '%' #{reference_table_description} '%'	
+			</if>
+			<if test=" document !=null and document !=''">
+			 	AND document=#{document}	
+			</if>
+			<if test=" document_name !=null and document_name !=''">
+			 	AND document_name LIKE '%' #{document_name}	'%'
+			</if>
+			<if test=" module !=null and module !=''">
+			 	AND module=#{module}	
+			</if>
+			<if test=" module_name !=null and module_name !=''">
+			 	AND module_name LIKE '%' #{module_namemodule_name} '%'	
+			</if>
+			<if test=" status_code !=null and status_code !=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test=" document_type !=null and document_type !=''">
+			 	AND document_type=#{document_type}	
+			</if>
+			<if test=" corresponding_program_no !=null and corresponding_program_no !=''">
+			 	AND corresponding_program_no=#{corresponding_program_no}	
+			</if>
+			<if test=" corresponding_program_name !=null and corresponding_program_name !=''">
+			 	AND corresponding_program_name LIKE '%' #{corresponding_program_name} '%'	
+			</if>
+			<if test=" default_document !=null and default_document !=''">
+			 	AND default_document=#{default_document}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</select>
+	
+	<!-- 分页查询单据别 -->
+	<select id="getDocumentList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			reference_table_no,reference_table_description,document,document_name,
+			module,module_name,status_code,document_type,'' as document_type_description, 
+			corresponding_program_no,corresponding_program_name,default_document,
+			is_auto_numbering,period_code,serial_number_length,numbering_result,note   
+		FROM
+		 	SYS_DOCUMENT
+		<where>
+			<if test=" reference_table_no !=null and reference_table_no !=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test=" reference_table_description !=null and reference_table_description !=''">
+			 	AND reference_table_description LIKE '%' #{reference_table_description} '%'	
+			</if>
+			<if test=" document !=null and document !=''">
+			 	AND document=#{document}	
+			</if>
+			<if test=" document_name !=null and document_name !=''">
+			 	AND document_name LIKE '%' #{document_name}	'%'
+			</if>
+			<if test=" module !=null and module !=''">
+			 	AND module=#{module}	
+			</if>
+			<if test=" module_name !=null and module_name !=''">
+			 	AND module_name LIKE '%' #{module_namemodule_name} '%'	
+			</if>
+			<if test=" status_code !=null and status_code !=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test=" document_type !=null and document_type !=''">
+			 	AND document_type=#{document_type}	
+			</if>
+			<if test=" corresponding_program_no !=null and corresponding_program_no !=''">
+			 	AND corresponding_program_no=#{corresponding_program_no}	
+			</if>
+			<if test=" corresponding_program_name !=null and corresponding_program_name !=''">
+			 	AND corresponding_program_name LIKE '%' #{corresponding_program_name} '%'	
+			</if>
+			<if test=" default_document !=null and default_document !=''">
+			 	AND default_document=#{default_document}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where> 
+		  ORDER BY LAST_MODIFIED_DATE DESC  
+		  LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 查询指定单据别 -->
+	<select  id="getDocument" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			reference_table_no,reference_table_description,document,document_name,
+			module,module_name,status_code,document_type,'' as document_type_description,
+			corresponding_program_no,corresponding_program_name,default_document,
+			is_auto_numbering,period_code,serial_number_length,numbering_result,note   
+		FROM
+		 	SYS_DOCUMENT
+		<where>	 
+			<if test=" reference_table_no !=null and reference_table_no !=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test=" document !=null and document !=''">
+			 	AND document=#{document}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 新增单据别 -->
+	<insert parameterType="hashmap" id="addDocument">
+		INSERT INTO 
+			SYS_DOCUMENT
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="last_modified_date != null">#{last_modified_date}, </if>
+			<if test=" reference_table_no !=null">#{reference_table_no},</if>
+			<if test=" reference_table_description !=null">#{reference_table_description},</if>
+			<if test=" document !=null">#{document},</if>
+			<if test=" document_name !=null">#{document_name},</if>
+			<if test=" module !=null">#{module},</if>
+			<if test=" module_name !=null">#{module_name},</if>
+			<if test=" status_code !=null">#{status_code},	</if>
+			<if test=" document_type !=null">#{document_type},</if>
+			<if test=" corresponding_program_no !=null">#{corresponding_program_no},</if>
+			<if test=" corresponding_program_name !=null">#{corresponding_program_name},</if>
+			<if test=" default_document !=null">#{default_document},</if>
+			<if test=" is_auto_numbering !=null">#{is_auto_numbering},</if>
+			<if test=" period_code !=null">#{period_code},</if>
+			<if test=" serial_number_length !=null">#{serial_number_length},</if>
+			<if test=" numbering_result !=null">#{numbering_result},</if>
+			<if test=" note !=null">#{note},</if>
+			<if test=" language !=null">#{language},</if>
+		</trim>		 
+	</insert>
+	
+	<sql id="columnScope">
+		<if test="data_created_date != null">data_created_date, </if>
+		<if test="last_modified_date != null">last_modified_date, </if>
+		<if test=" reference_table_no !=null">reference_table_no,</if>
+		<if test=" reference_table_description !=null">reference_table_description,</if>
+		<if test=" document !=null">document,</if>
+		<if test=" document_name !=null">document_name,</if>
+		<if test=" module !=null">module,</if>
+		<if test=" module_name !=null">module_name,</if>
+		<if test=" status_code !=null">status_code,	</if>
+		<if test=" document_type !=null">document_type,</if>
+		<if test=" corresponding_program_no !=null">corresponding_program_no,</if>
+		<if test=" corresponding_program_name !=null">corresponding_program_name,</if>
+		<if test=" default_document !=null">default_document,</if>
+		<if test=" is_auto_numbering !=null">is_auto_numbering,</if>
+		<if test=" period_code !=null">period_code,</if>
+		<if test=" serial_number_length !=null">serial_number_length,</if>
+		<if test=" numbering_result !=null">numbering_result,</if>
+		<if test=" note !=null">note,</if>
+		<if test=" language !=null">language,</if>
+	</sql>
+	
+	<!-- 修改单据别 -->
+	<update id="updateDocument" parameterType="hashmap">
+		UPDATE 
+			SYS_DOCUMENT
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			<if test=" reference_table_description !=null">reference_table_description=#{reference_table_description},</if>
+			<if test=" document_name !=null">document_name=#{document_name},</if>
+			<if test=" module !=null">module=#{module},</if>
+			<if test=" module_name !=null">module_name=#{module_name},</if>
+			<if test=" document_type !=null">document_type=#{document_type},</if>
+			<if test=" corresponding_program_no !=null">corresponding_program_no=#{corresponding_program_no},</if>
+			<if test=" corresponding_program_name !=null">corresponding_program_name=#{corresponding_program_name},</if>
+			<if test=" default_document !=null">default_document=#{default_document},</if>
+			<if test=" is_auto_numbering !=null">is_auto_numbering=#{is_auto_numbering},</if>
+			<if test=" period_code !=null">period_code=#{period_code},</if>
+			<if test=" serial_number_length !=null">serial_number_length=#{serial_number_length},</if>
+			<if test=" numbering_result !=null">numbering_result=#{numbering_result},</if>
+			<if test=" note !=null">note=#{note},</if>
+ 		</trim> 
+		<where>
+			<if test=" reference_table_no !=null and reference_table_no !=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test=" document !=null and document !=''">
+			 	AND document=#{document}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	
+	<!-- 审核单据别 -->
+	<update id="auditDocument" parameterType="hashmap">
+		UPDATE
+			SYS_DOCUMENT
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="status_code !=null">
+				status_code=#{status_code},
+			</if>
+			<if test="last_modified_date != null">
+				last_modified_date=#{last_modified_date}, 
+			</if>
+		</trim>	
+		<where>
+			<if test=" reference_table_no !=null and reference_table_no !=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test=" document !=null and document !=''">
+			 	AND document=#{document}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where> 
+	</update>
+	
+	<!-- 删除单据别 -->
+	<delete id="deleteDocument" parameterType="hashmap">
+	        DELETE FROM 
+	        	SYS_DOCUMENT
+	        <where>
+				<if test=" reference_table_no !=null and reference_table_no !=''">
+				 	AND reference_table_no=#{reference_table_no}	
+				</if>
+				<if test=" document !=null and document !=''">
+				 	AND document=#{document}	
+				</if>
+				<if test=" language !=null and language !=''">
+				 	AND language=#{language}	
+				</if>
+			</where>	 
+	</delete>
+	
+	<!-- 默认单别 为Y时，根据参照表编号、单据别、对应作业编号、语言别及默认单别Y查询是否有记录 -->
+	<select id="isExistDefaultDocument" parameterType="hashmap" resultType="java.lang.Integer">
+    	SELECT COUNT(1) 
+    	  FROM SYS_DOCUMENT
+	   	<where>
+	   		<if test="reference_table_no != null and reference_table_no != ''">
+				AND reference_table_no = #{reference_table_no}
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+			<if test="document != null and document != ''">
+				AND document = #{document}
+			</if>
+			<if test="corresponding_program_no != null and corresponding_program_no != ''">
+				AND corresponding_program_no = #{corresponding_program_no}
+			</if>
+			<if test="default_document != null and default_document != ''">
+				AND default_document = #{default_document}
+			</if>
+	    </where>
+    </select>
+</mapper>

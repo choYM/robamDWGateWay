@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseBasUnitConversionrateSettingMapper">
+	<sql id="columnScope">
+		<if test="source_unit != null">SOURCE_UNIT, </if>
+		<if test="destination_unit != null">DESTINATION_UNIT, </if>
+		<if test="source_quantity != null">SOURCE_QUANTITY, </if>
+		<if test="destination_quantity != null">DESTINATION_QUANTITY, </if>
+		<if test="status_code != null">STATUS_CODE, </if>
+		<if test="data_created_date != null">DATA_CREATED_DATE, </if>
+		<if test="language != null">LANGUAGE, </if>
+	</sql>
+
+	<!-- INSERT -->
+	<insert id="addBasUnitConversionRate" parameterType="java.util.Map">
+		INSERT INTO BAS_UNIT_CONVERSIONRATE
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="source_unit != null">#{source_unit},</if>
+			<if test="destination_unit != null">#{destination_unit}, </if>
+			<if test="source_quantity != null">#{source_quantity}, </if>
+			<if test="destination_quantity != null">#{destination_quantity}, </if>
+			<if test="status_code != null">'Y', </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="language != null">'zh_CN', </if>
+		</trim>
+	</insert>
+
+	<!-- UPDATE -->
+	<update id="modifyBasUnitConversionRate" parameterType="java.util.Map">
+		UPDATE BAS_UNIT_CONVERSIONRATE SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="source_quantity != null">SOURCE_QUANTITY=#{source_quantity}, </if>
+			<if test="destination_quantity != null">DESTINATION_QUANTITY=#{destination_quantity}, </if>
+			<if test="status_code != null">STATUS_CODE=#{STATUS_CODE}, </if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+		</trim>
+		WHERE SOURCE_UNIT = #{source_unit} AND DESTINATION_UNIT= #{destination_unit} AND LANGUAGE=#{language}
+	</update>
+	
+	<!-- DELETE -->
+	<delete id="deleteBasUnitConversionRate" parameterType="java.util.Map">
+		DELETE FROM	BAS_UNIT_CONVERSIONRATE WHERE SOURCE_UNIT = #{source_unit} AND DESTINATION_UNIT= #{destination_unit} AND LANGUAGE=#{language}
+	</delete>
+	
+	<!-- SEARCH -->
+	<select id="searchBasUnitConversionRateList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, source_unit, source_unit_description, source_quantity, destination_unit, destination_unit_description, destination_quantity 
+		FROM BAS_UNIT_CONVERSIONRATE 
+		<where>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="destination_unit != null and destination_unit != ''">AND destination_unit = #{destination_unit} </if>
+			<if test="source_unit != null and source_unit != ''">AND source_unit = #{source_unit} </if>
+		</where>
+		LIMIT #{start}, #{pageRows}
+	</select>
+
+	<select id="searchBasUnitConversionRateDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, source_unit, source_unit_description, source_quantity, destination_unit, destination_unit_description, destination_quantity 
+		FROM BAS_UNIT_CONVERSIONRATE WHERE source_unit = #{source_unit} AND destination_unit = #{destination_unit}
+	</select>
+	
+	<select id="getBasUnitConversionrateTotalRows" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT COUNT(*) AS totalRows FROM BAS_UNIT_CONVERSIONRATE
+		<where>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="destination_unit != null and destination_unit != ''">AND destination_unit = #{destination_unit} </if>
+			<if test="source_unit != null and source_unit != ''">AND source_unit = #{source_unit} </if>
+		</where>
+	</select>
+</mapper>

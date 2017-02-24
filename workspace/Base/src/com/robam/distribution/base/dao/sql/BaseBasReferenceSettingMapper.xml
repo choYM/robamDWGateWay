@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseBasReferenceSettingMapper">
+	<sql id="columnScope">
+		<if test="reference_table_no != null">REFERENCE_TABLE_NO, </if>
+		<if test="reference_table_description != null">REFERENCE_TABLE_DESCRIPTION, </if>
+		<if test="data_created_date != null">DATA_CREATED_DATE, </if>
+		<if test="status_code != null">STATUS_CODE, </if>
+		<if test="language != null">LANGUAGE, </if>
+	</sql>
+
+	<!-- INSERT -->
+	<insert id="addBasReferenceTables" parameterType="java.util.Map">
+		INSERT INTO BAS_REFERENCE_TABLES 
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="reference_table_no != null">#{reference_table_no}, </if>
+			<if test="reference_table_description != null">#{reference_table_description}, </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="status_code != null">#{status_code}, </if>
+			<if test="language != null">#{language}, </if>
+		</trim>
+		
+	</insert>
+
+	<!-- UPDATE -->
+	<update id="updateBasReferenceTables" parameterType="java.util.Map">
+		UPDATE BAS_REFERENCE_TABLES SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="reference_table_description != null">REFERENCE_TABLE_DESCRIPTION = #{reference_table_description}, </if>
+			<if test="status_code != null">STATUS_CODE = #{status_code}, </if>
+			<if test="last_modified_date != null">LAST_MODIFIED_DATE = #{last_modified_date}, </if>
+		</trim>
+		WHERE REFERENCE_TABLE_NO = #{reference_table_no} AND LANGUAGE=#{language}
+	</update>
+
+	<!-- DELETE -->
+	<delete id="deleteBasReferenceTables" parameterType="java.util.Map">
+		DELETE FROM	BAS_REFERENCE_TABLES WHERE REFERENCE_TABLE_NO = #{reference_table_no} AND LANGUAGE =#{language}
+	</delete>
+	
+	<!-- SEARCH -->
+	<select id="searchBasReferenceTablesList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT reference_table_no, reference_table_description, status_code, language  
+		FROM BAS_REFERENCE_TABLES 
+		<where>
+			<if test="reference_table_no != null and reference_table_no != ''">AND REFERENCE_TABLE_NO = #{reference_table_no} </if>
+			<if test="reference_table_description != null and reference_table_description != ''">AND REFERENCE_TABLE_DESCRIPTION = #{reference_table_description} </if>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+		LIMIT #{start}, #{pageRows}
+	</select>
+
+	<select id="searchBasReferenceTablesDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, reference_table_no, reference_table_description 
+		FROM BAS_REFERENCE_TABLES WHERE REFERENCE_TABLE_NO = #{reference_table_no} AND LANGUAGE =#{language}
+	</select>
+	
+	<select id="getTotalRows" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT COUNT(*) AS totalRows  
+		FROM BAS_REFERENCE_TABLES
+		<where>
+			<if test="reference_table_no != null and reference_table_no != ''">AND REFERENCE_TABLE_NO = #{reference_table_no} </if>
+			<if test="reference_table_description != null and reference_table_description != ''">AND REFERENCE_TABLE_DESCRIPTION = #{reference_table_description} </if>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+	</select>
+	
+	
+</mapper>

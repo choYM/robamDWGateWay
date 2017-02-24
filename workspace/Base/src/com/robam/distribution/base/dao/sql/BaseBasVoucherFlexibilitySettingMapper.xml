@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 传票摘要弹性预设服务 -->
+<!-- @author gejc -->
+<mapper namespace="dao.BaseBasVoucherFlexibilitySettingMapper">
+	<select id="getVoucherFlexibilityListCount" parameterType="hashmap" resultType="hashmap">
+		select count(*) from
+		 BAS_VOUCHER_FLEXIBILITY where 1=1 
+		 <if test="status_code!=null and status_code!=''">
+		 	and STATUS_CODE=#{status_code}	
+		</if>
+		 <if test="book_set_code!=null and book_set_code!=''">
+		 	and BOOK_SET_CODE=#{book_set_code}	
+		</if>
+		<if test="book_set_name!=null and book_set_name!=''">
+		 	and BOOK_SET_NAME like '%' #{book_set_name} '%'	
+		</if>
+		<if test="account_code!=null and account_code!=''">
+		 	and ACCOUNT_CODE=#{account_code}	
+		</if>
+		<if test="account_name!=null and account_name!=''">
+		 	and ACCOUNT_NAME like '%' #{account_name} '%'
+		</if>
+		<if test="transaction_operation_no!=null and transaction_operation_no!=''">
+		 	and TRANSACTION_OPERATION_NO=#{transaction_operation_no}	
+		</if>
+		<if test="transaction_operation_name!=null and transaction_operation_name!=''">
+		 	and TRANSACTION_OPERATION_NAME like '%' #{transaction_operation_name} '%'	
+		</if>
+		<if test="destination_field!=null and destination_field!=''">
+		 	and DESTINATION_FIELD=#{destination_field}	
+		</if>
+		<if test="language!=null and language!=''">
+		 	and LANGUAGE=#{language}	
+		</if>
+	</select>
+	<select id="getVoucherFlexibilityList" parameterType="hashmap" resultType="hashmap">
+		select 
+		 status_code,book_set_code,book_set_name,account_code,account_name,
+		 transaction_operation_no,transaction_operation_name,memo,destination_field 
+		from
+		 BAS_VOUCHER_FLEXIBILITY where 1=1 
+		 <if test="status_code!=null and status_code!=''">
+		 	and STATUS_CODE=#{status_code}	
+		</if>
+		 <if test="book_set_code!=null and book_set_code!=''">
+		 	and BOOK_SET_CODE=#{book_set_code}	
+		</if>
+		<if test="book_set_name!=null and book_set_name!=''">
+		 	and BOOK_SET_NAME like '%' #{book_set_name} '%'	
+		</if>
+		<if test="account_code!=null and account_code!=''">
+		 	and ACCOUNT_CODE=#{account_code}	
+		</if>
+		<if test="account_name!=null and account_name!=''">
+		 	and ACCOUNT_NAME like '%' #{account_name}	'%'
+		</if>
+		<if test="transaction_operation_no!=null and transaction_operation_no!=''">
+		 	and TRANSACTION_OPERATION_NO=#{transaction_operation_no}	
+		</if>
+		<if test="transaction_operation_name!=null and transaction_operation_name!=''">
+		 	and TRANSACTION_OPERATION_NAME like '%' #{transaction_operation_name} '%'	
+		</if>
+		<if test="destination_field!=null and destination_field!=''">
+		 	and DESTINATION_FIELD=#{destination_field}	
+		</if>
+		<if test="language!=null and language!=''">
+		 	and LANGUAGE=#{language}	
+		</if>
+		  order by TRANSACTION_OPERATION_NO asc  LIMIT #{startIndex}, #{pageSize}
+	</select>
+	<select  id="getVoucherFlexibility" parameterType="hashmap" resultType="hashmap">
+		select 
+			status_code,book_set_code,book_set_name,account_code,account_name,
+		 	transaction_operation_no,transaction_operation_name,memo,destination_field 
+		from
+		 	BAS_VOUCHER_FLEXIBILITY where 1=1 
+		<if test="book_set_code!=null and book_set_code!=''">
+		 	and BOOK_SET_CODE=#{book_set_code}	
+		</if>
+		<if test="account_code!=null and account_code!=''">
+		 	and ACCOUNT_CODE=#{account_code}	
+		</if>
+		<if test="transaction_operation_no!=null and transaction_operation_no!=''">
+		 	and TRANSACTION_OPERATION_NO=#{transaction_operation_no}	
+		</if>
+		<if test="destination_field!=null and destination_field!=''">
+		 	and DESTINATION_FIELD=#{destination_field}	
+		</if>
+		<if test="language!=null and language!=''">
+		 	and LANGUAGE=#{language}	
+		</if>
+	</select>
+	
+	<insert id="addVoucherFlexibility" parameterType="hashmap">
+		<![CDATA[
+			insert into 
+				BAS_VOUCHER_FLEXIBILITY(STATUS_CODE,BOOK_SET_CODE,BOOK_SET_NAME,ACCOUNT_CODE,ACCOUNT_NAME,
+		 	TRANSACTION_OPERATION_NO,TRANSACTION_OPERATION_NAME,MEMO,DESTINATION_FIELD,LANGUAGE,DATA_CREATED_DATE) 
+			values(
+				#{status_code},#{book_set_code},#{book_set_name},#{account_code},#{account_name},
+				#{transaction_operation_no},#{transaction_operation_name},#{memo},#{destination_field},#{language},NOW()
+			)
+		]]>
+	</insert>
+	
+	<update id="updateVoucherFlexibility" parameterType="hashmap">
+		<![CDATA[
+		update BAS_VOUCHER_FLEXIBILITY set 
+		  	BOOK_SET_NAME=#{BOOK_SET_NAME},ACCOUNT_NAME=#{account_name},
+		  	TRANSACTION_OPERATION_NAME=#{transaction_operation_name},
+		  	MEMO=#{memo},LAST_MODIFIED_DATE=NOW()
+		 where 1=1
+		 ]]> 
+		<if test="book_set_code!=null and book_set_code!=''">
+		 	and BOOK_SET_CODE=#{book_set_code}	
+		</if>
+		<if test="account_code!=null and account_code!=''">
+		 	and ACCOUNT_CODE=#{account_code}	
+		</if>
+		<if test="transaction_operation_no!=null and transaction_operation_no!=''">
+		 	and TRANSACTION_OPERATION_NO=#{transaction_operation_no}	
+		</if>
+		<if test="destination_field!=null and destination_field!=''">
+		 	and DESTINATION_FIELD=#{destination_field}	
+		</if>
+		<if test="language!=null and language!=''">
+		 	and LANGUAGE=#{language}	
+		</if>
+	</update>
+	
+	<update id="auditVoucherFlexibility" parameterType="hashmap">
+	        update BAS_VOUCHER_FLEXIBILITY
+	        set 
+		  	 <if test="status!=null">
+		 	  STATUS_CODE=#{status},	
+			 </if>
+		  	LAST_MODIFIED_DATE=NOW()
+	        where 1=1 
+	        <if test="list != null">
+	        	and (
+	        	<foreach item="item" index="index" collection="list"  separator="or">
+	        		(BOOK_SET_CODE=#{item.book_set_code} and ACCOUNT_CODE=#{item.account_code} and
+	        		TRANSACTION_OPERATION_NO=#{item.transaction_operation_no} and 
+	        		 DESTINATION_FIELD=#{item.destination_field} and LANGUAGE=#{language})
+	        	</foreach>
+	        	)
+	        </if>
+	</update>
+	
+	<delete id="deleteVoucherFlexibility" parameterType="hashmap">
+	        delete from BAS_VOUCHER_FLEXIBILITY where 1=1 
+	        <if test="list != null">
+	        	and (
+	        	<foreach item="item" index="index" collection="list"  separator="or">
+	        		(BOOK_SET_CODE=#{item.book_set_code} and ACCOUNT_CODE=#{item.account_code} and
+	        		TRANSACTION_OPERATION_NO=#{item.transaction_operation_no} and 
+	        		 DESTINATION_FIELD=#{item.destination_field} and LANGUAGE=#{language})
+	        	</foreach>
+	        	)
+	        </if>
+	</delete>
+	
+</mapper>

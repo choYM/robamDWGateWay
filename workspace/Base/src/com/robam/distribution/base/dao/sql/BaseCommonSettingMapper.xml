@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 页面公共服务 -->
+<!-- @author gelf -->
+<mapper namespace="dao.CommonSettingMapper">
+	<!-- 获取州别信息 -->
+	<select id="getContinent" parameterType="hashmap" resultType="hashmap">
+		<!-- 州别编号、州别名称 -->
+		SELECT continent,continent_name
+		  FROM BAS_CONTINENT
+		  <where>
+		  	<!-- 州别地区编号 -->
+			<if test="continent != null and continent != ''">
+			    continent = #{continent}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 判断州别信息是否存在 -->
+	<select id="judgeContinent" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		  FROM BAS_CONTINENT
+		  <where>
+		  	<!-- 州别地区编号 -->
+			<if test="continent != null">
+			    continent = #{continent}	
+			</if>
+			<!-- 州别地区名称 -->
+			<if test="continent_name != null">
+			    AND continent_name = #{continent_name}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 根据州别获取国家信息 -->
+	<select id="getCountry" parameterType="hashmap" resultType="hashmap">
+		<!-- 国家地区编号、国家地区名称、代表城市 -->
+		SELECT country_region,country_region_name,representational_city 
+		  FROM BAS_COUNTRY
+		  <where>
+		    <!-- 州别编号 -->
+			<if test="continent != null and continent != ''">
+			    continent = #{continent}	
+			</if>
+			<!-- 国家编号  根据国家编号，获取国家名称-->
+			<if test="country_region != null and country_region != ''">
+			    country_region = #{country_region}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 判断国家信息是否存在 -->
+	<select id="judgeCountry" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		  FROM BAS_COUNTRY
+		  <where>
+		  	<!-- 国家地区编号 -->
+			<if test="country_region != null">
+			    country_region = #{country_region}	
+			</if>
+			<!-- 国家地区名称 -->
+			<if test="country_region_name != null">
+			    AND country_region_name = #{country_region_name}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 根据国家地区编号获取省份信息 -->
+	<select id="getProvince" parameterType="hashmap" resultType="hashmap">
+		<!-- 省别编号、省别名称 -->
+		SELECT province,province_name 
+		  FROM BAS_PROVINCE
+		  <where>
+			<if test="country_region != null and country_region != ''">
+			    country_region = #{country_region}	
+			</if>
+			<!-- 省别编号 -->
+			<if test="province != null and province != ''">
+			    AND province = #{province}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 判断省别信息是否存在 -->
+	<select id="judgeProvince" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		  FROM BAS_PROVINCE
+		  <where>
+		  	<!-- 国家地区编号 -->
+			<if test="country_region != null">
+			    country_region = #{country_region}	
+			</if>
+			<!-- 省别编号 -->
+			<if test="province != null">
+			    AND province = #{province}	
+			</if>
+			<!-- 省别名称 -->
+			<if test="province_name != null">
+			    AND province_name = #{province_name}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	
+	<!-- 根据国家地区编号、省别编号获取城市信息 -->
+	<select id="getCity" parameterType="hashmap" resultType="hashmap">
+		<!-- 城市编号、城市说明 -->
+		SELECT city,city_name 
+		  FROM BAS_CITY
+		  <where>
+			<if test="country_region != null and country_region != ''">
+			    country_region = #{country_region}	
+			</if>
+			<if test="province != null and province != ''">
+			    AND province = #{province}	
+			</if>
+			<!-- 城市编号 -->
+			<if test="city != null and city != ''">
+			    AND city = #{city}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	<!-- 判断城市信息是否存在 -->
+	<select id="judgeCity" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		  FROM BAS_CITY
+		  <where>
+		  	<!-- 国家地区编号 -->
+			<if test="country_region != null">
+			    country_region = #{country_region}	
+			</if>
+			<!-- 省别编号 -->
+			<if test="province != null">
+			    AND province = #{province}	
+			</if>
+			<!-- 城市编号 -->
+			<if test="city != null">
+			    AND city = #{city}	
+			</if>
+			<!-- 城市说明 -->
+			<if test="city_name != null">
+			    AND city_name = #{city_name}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	
+	<!-- 根据国家地区编号、省别编号、城市编号获取县区信息 -->
+	<select id="getCounty" parameterType="hashmap" resultType="hashmap">
+		<!-- 县区编号、县区说明 -->
+		SELECT county_district,county_district_name 
+		  FROM BAS_COUNTY_DISTRICT
+		  <where>
+			<if test="country_region != null and country_region != ''">
+			    country_region = #{country_region}	
+			</if>
+			<if test="province != null and province != ''">
+			    AND province = #{province}	
+			</if>
+			<if test="city != null and city != ''">
+			    AND city = #{city}	
+			</if>
+			<!-- 县区编号 -->
+			<if test="county_district != null">
+			    AND county_district = #{county_district}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 判断县区信息是否存在 -->
+	<select id="judgeCounty" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		  FROM BAS_COUNTY_DISTRICT
+		  <where>
+		  	<!-- 国家地区编号 -->
+			<if test="country_region != null">
+			    country_region = #{country_region}	
+			</if>
+			<!-- 省别编号 -->
+			<if test="province != null">
+			    AND province = #{province}	
+			</if>
+			<!-- 城市编号 -->
+			<if test="city != null">
+			    AND city = #{city}	
+			</if>
+			<!-- 城市说明 -->
+			<if test="city_name != null">
+			    AND city_name = #{city_name}	
+			</if>
+			<!-- 县区编号 -->
+			<if test="county_district != null">
+			    AND county_district = #{county_district}	
+			</if>
+			<!-- 县区说明 -->
+			<if test="county_district_name != null">
+			    AND county_district_name = #{county_district_name}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	
+	<!-- 根据国家地区编号、省别编号、城市编号、县区编号获取街道信息 -->
+	<select id="getStreet" parameterType="hashmap" resultType="hashmap">
+		<!-- 街道编号、街道说明 -->
+		SELECT street,street_name 
+		  FROM BAS_STREET
+		  <where>
+			<if test="country_region != null and country_region != ''">
+			    country_region = #{country_region}	
+			</if>
+			<if test="province != null and province != ''">
+			    AND province = #{province}	
+			</if>
+			<if test="city != null and city != ''">
+			    AND city = #{city}	
+			</if>
+			<if test="county_district != null and county_district != ''">
+			    AND county_district = #{county_district}	
+			</if>
+			<!-- 街道编号 根据街道编号，获取街道名称 -->
+			<if test="street != null and street != ''">
+			    AND street = #{street}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 根据国家地区编号、省别编号、城市编号、县区编号获取邮政信息 -->
+	<select id="getPostcode" parameterType="hashmap" resultType="hashmap">
+		<!-- 邮政编号、序号、邮政编号说明 -->
+		SELECT postcode,line_no,postcode_name 
+		  FROM BAS_POSTCODE
+		  <where>
+			<if test="country_region != null and country_region != ''">
+			    country_region = #{country_region}	
+			</if>
+			<if test="province != null and province != ''">
+			    AND province = #{province}	
+			</if>
+			<if test="city != null and city != ''">
+			    AND city = #{city}	
+			</if>
+			<if test="county_district != null and county_district != ''">
+			    AND county_district = #{county_district}	
+			</if>
+			<!-- 邮政编号 -->
+			<if test="postcode != null and postcode != ''">
+			    AND postcode = #{postcode}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 根据国家地区编号、省别编号、城市编号、县区编号、邮政编号判断邮政信息是否合法 -->
+	<select id="judgePostcode" parameterType="hashmap" resultType="hashmap">
+		<!-- 邮政编号、序号、邮政编号说明 -->
+		SELECT COUNT(1) 
+		  FROM BAS_POSTCODE
+		  <where>
+			<if test="country_region != null and country_region != ''">
+			    country_region = #{country_region}	
+			</if>
+			<if test="province != null and province != ''">
+			    AND province = #{province}	
+			</if>
+			<if test="city != null and city != ''">
+			    AND city = #{city}	
+			</if>
+			<if test="county_district != null and county_district != ''">
+			    AND county_district = #{county_district}	
+			</if>
+			<!-- 邮政编号 -->
+			<if test="postcode != null and postcode != ''">
+			    AND postcode = #{postcode}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 获取时区信息 -->
+	<select id="getTimeZone" parameterType="hashmap" resultType="hashmap">
+		<!-- 时区编号、时区简码 -->
+		SELECT time_zone_no,time_zone_simpleno
+		  FROM BAS_TIME_ZONE
+		  <where>
+		  	<!-- 时区编号 -->
+		  	<if test="time_zone_no != null and time_zone_no != ''">
+			 	time_zone_no = #{time_zone_no}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 判断时区信息是否存在 -->
+	<select id="judgeTimeZone" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		  FROM BAS_TIME_ZONE
+		  <where>
+		  	<!-- 时区编号 -->
+			<if test="time_zone_no != null">
+			    time_zone_no = #{time_zone_no}	
+			</if>
+			<!-- 时区简码 -->
+			<if test="time_zone_simpleno != null">
+			    AND time_zone_simpleno = #{time_zone_simpleno}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 获取门店或商品其他属性列表 -->
+	<select id="getAttributeList" parameterType="hashmap" resultType="hashmap">
+		<!-- 应用分类码、应用分类码说明 -->
+		SELECT acc_code,acc_description
+		  FROM BAS_APPLICATION_CATEGORY
+		  <where>
+		  	<!-- 应用分类 -->
+			<if test="acc != null">
+			    acc = #{acc}	
+			</if>
+			<!-- 应用分类码  -->
+			<if test="acc_code != null">
+			    AND acc_code = #{acc_code}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 判断门店或商品其他属性是否合法 -->
+	<select id="judgeAttribute" parameterType="hashmap" resultType="hashmap">
+		SELECT COUNT(1)
+		  FROM BAS_APPLICATION_CATEGORY
+		  <where>
+		  	<!-- 应用分类 -->
+			<if test="acc != null">
+			    acc = #{acc}	
+			</if>
+			<!-- 应用分类码 -->
+			<if test="acc_code != null">
+			    AND acc_code = #{acc_code}	
+			</if>
+			<!-- 应用分类码描述 -->
+			<if test="acc_description != null">
+			    AND acc_description = #{acc_description}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	
+	<!-- 获取币种列表 -->
+	<select id="getCurrencyList" parameterType="hashmap" resultType="hashmap">
+		<!-- 币种编号、币种说明 -->
+		SELECT currency,currency_description
+		  FROM BAS_CURRENCY
+		  <where>
+		  	<!-- 币种编号 根据币种编号获取币种说明-->
+			<if test="currency != null and currency != ''">
+			    currency = #{currency}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 判断币种是否合法 -->
+	<select id="judgeCurrency" parameterType="hashmap" resultType="hashmap">
+		SELECT COUNT(1)
+		  FROM BAS_CURRENCY
+		  <where>
+		  	<!-- 币种编号 -->
+			<if test="currency != null and currency != ''">
+			    currency = #{currency}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 获取参照表列表 -->
+	<select id="getReferenceTableList" parameterType="hashmap" resultType="hashmap">
+		<!-- 参照表编号、参照表说明 -->
+		SELECT reference_table_no,reference_table_description
+		  FROM BAS_REFERENCE_TABLE
+		  <where>
+		  	<!-- 参照表编号 根据参照表编号获取参照表说明-->
+			<if test="reference_table_no != null and reference_table_no != ''">
+			    reference_table_no = #{reference_table_no}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 判断参照表是否合法 -->
+	<select id="judgeReferenceTable" parameterType="hashmap" resultType="hashmap">
+		SELECT COUNT(1)
+		  FROM BAS_REFERENCE_TABLE
+		  <where>
+		  	<!-- 参照表编号 -->
+			<if test="reference_table_no != null and reference_table_no != ''">
+			    reference_table_no = #{reference_table_no}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code = #{status_code}	
+			</if>
+			<if test="language != null and language != ''">
+			 	AND language = #{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 获取账套列表 author by YangJian-->
+	<select id="getBookSetList" parameterType="hashmap" resultType="hashmap">
+		select book_set_code,book_set_name 
+		from BAS_ACCOUNT_TYPE 
+		where 1=1 
+		<if test="book_set_code!=null and book_set_code!=''">
+			and BOOK_SET_CODE=#{book_set_code}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+	
+	<!-- 获取缴款优惠条件列表  author by YangJian-->
+	<select id="getPaymentPreconditionList" parameterType="hashmap" resultType="hashmap">
+		select discount_condition_code,discount_condition_name 
+		from BAS_PAYMENT_PRECONDITION 
+		where 1=1 
+		<if test="discount_condition_code!=null and discount_condition_code!=''">
+			and DISCOUNT_CONDITION_CODE=#{discount_condition_code}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+	
+	<!-- 获取惯用多账期类型列表 author by YangJian -->
+	<select id="getMltiAccountSetList" parameterType="hashmap" resultType="hashmap">
+		select distinct(multi_period_code) multi_period_code,multi_period_name
+		from MLTI_ACCOUNT_SET
+		where 1=1 
+		<if test="multi_period_code!=null and multi_period_code!=''">
+			and MULTI_PERIOD_CODE=#{multi_period_code}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+	
+	<!-- 获取归属法人列表 author by liaogz -->
+	<select id="getLegalPerson" parameterType="hashmap" resultType="hashmap">
+		select distinct organization,organization_name
+		from BAS_ORGANIZATION
+		where IS_LEGAL_PERSON='Y' and STATUS_CODE='Y'
+	</select>
+	
+	<!-- 获取所属责任中心  author by liaogz-->
+	<select id="getResponsibilityCenter" parameterType="hashmap" resultType="hashmap">
+	  <![CDATA[
+	    select distinct department,department_name
+		from BAS_DEPARTMENT
+		where STATUS_CODE='Y' and VALID_DATE <=now() and (INVALID_DATE='' or INVALID_DATE >=now())
+		and RESPONSIBILITY_CENTER_TYPE in (2,3,4,5)
+	  ]]>
+	</select>
+	
+	<!-- 获取部门主管  author by liaogz-->
+	<select id="getEmployee" parameterType="hashmap" resultType="hashmap">
+		select distinct employee_no,employee_name
+		from BAS_EMPLOYEE
+		where STATUS_CODE='Y'
+		<if test="role_type!=null and role_type!=''">
+		  and role_type=#{role_type}
+		</if>
+	</select>
+	
+	<!-- 获取归属部门  author by liaogz-->
+	<select id="getDepartment" parameterType="hashmap" resultType="hashmap">
+		select distinct department_no,department_name
+		from BAS_DEPARTMENT
+		where STATUS_CODE='Y'
+	</select>
+	
+	<!-- 获取归属组织  author by liaogz-->
+	<select id="getBelongedOrganization" parameterType="hashmap" resultType="hashmap">
+		select distinct organization,organization_name
+		from BAS_ORGANIZATION
+		where STATUS_CODE='Y'
+		<if test="is_organization='Y'">
+		   and ORGANIZATION_FUNCTION in (1,2,3,4)
+		</if>
+		<if test="is_organization='N'">
+		   and ORGANIZATION_FUNCTION='5'
+		</if>
+	</select>
+	
+	<!-- 银行  author by liaogz-->
+	<select id="getBank" parameterType="hashmap" resultType="hashmap">
+		select distinct bank_branch,bank_branch_shotname
+		from BAS_BANK
+		where STATUS_CODE='Y' and COUNTRY_REGION='CN'
+	</select>
+	
+	<!-- 获取单据别  author by liaogz-->
+	<select id="getDocumentSet" parameterType="hashmap" resultType="hashmap">
+		select distinct document,document_name
+		from BAS_DOCUMENT_SETTING
+		where STATUS_CODE='Y'
+	</select>
+	
+	<!-- 获取税别编号  author by liaogz-->
+	<select id="getTaxCode" parameterType="hashmap" resultType="hashmap">
+		select distinct tax_code,tax_description
+		from BAS_SINGLE_TAX
+		where STATUS_CODE='Y'
+	</select>
+</mapper>

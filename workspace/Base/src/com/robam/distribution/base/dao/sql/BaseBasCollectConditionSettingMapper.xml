@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseBasCollectConditionSettingMapper">
+	<sql id="columnScope">
+		<if test="payment_term_no != null">PAYMENT_TERM_NO, </if>
+		<if test="payment_term_name != null">PAYMENT_TERM_NAME, </if>
+		<if test="down_payment_type != null">DOWN_PAYMENT_TYPE, </if>
+		<if test="multi_account_type != null">MULTI_ACCOUNT_TYPE, </if>
+		<if test="multi_account_name != null">MULTI_ACCOUNT_NAME, </if>
+		<if test="payable_type != null">PAYABLE_TYPE, </if>
+		<if test="payment_discount_name != null">PAYMENT_DISCOUNT_NAME, </if>
+		<if test="is_deposit_received != null">IS_DEPOSIT_RECEIVED, </if>
+		<if test="is_transaction_paid != null">IS_TRANSACTION_PAID, </if>
+		<if test="payable_starting_standard != null">PAYABLE_STARTING_STANDARD, </if>
+		<if test="receivable_payment_season != null">RECEIVABLE_PAYMENT_SEASON, </if>
+		<if test="receivable_payment_month != null">RECEIVABLE_PAYMENT_MONTH, </if>
+		<if test="receivable_payment_day != null">RECEIVABLE_PAYMENT_DAY, </if>
+		<if test="accounts_starting_standard != null">ACCOUNTS_STARTING_STANDARD, </if>
+		<if test="accounts_redeem_season != null">ACCOUNTS_REDEEM_SEASON, </if>
+		<if test="accounts_redeem_month != null">ACCOUNTS_REDEEM_MONTH, </if>
+		<if test="accounts_redeem_date != null">ACCOUNTS_REDEEM_DATE, </if>
+		<if test="status_code != null">STATUS_CODE, </if>
+		<if test="language != null">LANGUAGE, </if>
+		<if test="data_created_date != null">DATA_CREATE_DATE, </if>
+	</sql>
+	
+	<!-- INSERT -->
+	<insert id="addBasCollectCondition" parameterType="java.util.Map">
+		INSERT INTO BAS_COLLECT_CONDITION
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="accounts_redeem_date != null">#{accounts_redeem_date}, </if>
+			<if test="accounts_redeem_month != null">#{accounts_redeem_month}, </if>
+			<if test="accounts_redeem_season != null">#{accounts_redeem_season}, </if>
+			<if test="accounts_starting_standard != null">#{accounts_starting_standard}, </if>
+			<if test="down_payment_type != null">#{down_payment_type}, </if>
+			<if test="is_deposit_received != null">#{is_deposit_received}, </if>
+			<if test="is_transaction_paid != null">#{is_transaction_paid}, </if>
+			<if test="language != null">#{language}, </if>
+			<if test="multi_account_name != null">#{multi_account_name}, </if>
+			<if test="multi_account_type != null">#{multi_account_type}, </if>
+			<if test="payable_starting_standard != null">#{payable_starting_standard}, </if>
+			<if test="payable_type != null">#{payable_type}, </if>
+			<if test="payment_discount_conditions != null">#{payment_discount_conditions}, </if>
+			<if test="payment_discount_name != null">#{payment_discount_name}, </if>
+			<if test="payment_term_name != null">#{payment_term_name}, </if>
+			<if test="payment_term_no != null">#{payment_term_no}, </if>
+			<if test="receivable_payment_day != null">#{receivable_payment_day}, </if>
+			<if test="receivable_payment_month != null">#{receivable_payment_month}, </if>
+			<if test="receivable_payment_season != null">#{receivable_payment_season}, </if>
+			<if test="status_code != null">#{status_code}, </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+		</trim>
+	</insert>
+	
+	<!-- UPDATE -->
+	<update id="updateBasCollectCondition" parameterType="java.util.Map">
+		UPDATE BAS_COLLECT_CONDITION SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="accounts_redeem_date != null">ACCOUNTS_REDEEM_DATE=#{accounts_redeem_date}, </if>
+			<if test="accounts_redeem_month != null">ACCOUNTS_REDEEM_MONTH=#{accounts_redeem_month}, </if>
+			<if test="accounts_redeem_season != null">ACCOUNTS_REDEEM_SEASON=#{accounts_redeem_season}, </if>
+			<if test="accounts_starting_standard != null">ACCOUNTS_STARTING_STANDARD=#{accounts_starting_standard}, </if>
+			<if test="down_payment_type != null">DOWN_PAYMENT_TYPE=#{down_payment_type}, </if>
+			<if test="is_deposit_received != null">IS_DEPOSIT_RECEIVED=#{is_deposit_received}, </if>
+			<if test="is_transaction_paid != null">IS_TRANSACTION_PAID=#{is_transaction_paid}, </if>
+			<if test="multi_account_type != null">MULTI_ACCOUNT_TYPE=#{multi_account_type}, </if>
+			<if test="multi_account_name != null">MULTI_ACCOUNT_NAME=#{multi_account_name}, </if>
+			<if test="payable_starting_standard != null">PAYABLE_STARTING_STANDARD=#{payable_starting_standard}, </if>
+			<if test="payable_type != null">PAYABLE_TYPE=#{payable_type}, </if>
+			<if test="payment_discount_conditions != null">PAYMENT_DISCOUNT_CONDITIONS=#{payment_discount_conditions}, </if>
+			<if test="payment_discount_name != null">PAYMENT_DISCOUNT_NAME=#{payment_discount_name}, </if>
+			<if test="payment_term_name != null">PAYMENT_TERM_NAME=#{payment_term_name}, </if>
+			<if test="receivable_payment_day != null">RECEIVABLE_PAYMENT_DAY=#{receivable_payment_day}, </if>
+			<if test="receivable_payment_month != null">RECEIVABLE_PAYMENT_MONTH=#{receivable_payment_month}, </if>
+			<if test="receivable_payment_season != null">RECEIVABLE_PAYMENT_SEASON=#{receivable_payment_season}, </if>
+			<if test="status_code != null">STATUS_CODE = #{status_code}, </if>
+			<if test="last_modified_date != null">RECENTLY_MODIFY_DATE = #{last_modified_date}, </if>
+		</trim>
+		WHERE PAYMENT_TERM_NO = #{payment_term_no} AND LANGUAGE = #{language}
+	</update>
+	
+	<!-- DELETE -->
+	<delete id="deleteBasCollectCondition" parameterType="java.util.Map">
+		DELETE FROM BAS_COLLECT_CONDITION WHERE PAYMENT_TERM_NO = #{payment_term_no} AND LANGUAGE = #{language}
+	</delete>
+	
+	<!-- SEARCH -->
+	<select id="searchBasCollectConditionList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT payment_term_no, payment_term_name, payable_type, multi_account_type, multi_account_name, down_payment_type, 
+			payment_discount_conditions, payment_discount_name, is_deposit_received, is_transaction_paid, payable_starting_standard, 
+			receivable_payment_season, receivable_payment_month, receivable_payment_day, accounts_starting_standard, accounts_redeem_season, 
+			accounts_redeem_month, accounts_redeem_date, status_code, language 
+		FROM BAS_COLLECT_CONDITION  
+		<where>
+			<if test="payment_term_no != null and payment_term_no != ''">AND payment_term_no = #{payment_term_no} </if>
+			<if test="payment_term_name != null and payment_term_name != ''">AND payment_term_name = #{payment_term_name} </if>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{start}, #{pageRows}
+	</select>
+	
+	<select id="searchBasCollectConditionDetail" parameterType="java.util.Map"	resultType="java.util.Map">
+		SELECT payment_term_no, payment_term_name, payable_type, multi_account_type, multi_account_name, down_payment_type, 
+			payment_discount_conditions, payment_discount_name, is_deposit_received, is_transaction_paid, payable_starting_standard, 
+			receivable_payment_season, receivable_payment_month, receivable_payment_day, accounts_starting_standard, accounts_redeem_season, 
+			accounts_redeem_month, accounts_redeem_date, status_code, language 
+		FROM BAS_COLLECT_CONDITION  
+		WHERE payment_term_no = #{payment_term_no} AND language = #{language}
+	</select>
+	
+	<select id="getBasCollectConditionTotalRows" parameterType="java.util.Map"	resultType="java.util.Map">
+		SELECT COUNT(*) AS totalRows FROM BAS_COLLECT_CONDITION 
+		<where>
+			<if test="payment_term_no != null and payment_term_no != ''">AND payment_term_no = #{payment_term_no} </if>
+			<if test="payment_term_name != null and payment_term_name != ''">AND payment_term_name = #{payment_term_name} </if>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.digiwin.app.dao.StoresDataAccessDao">
+	<select id="qureyDetail" resultType="java.util.HashMap">
+		<![CDATA[
+			select 
+				OPERATING_ORG,APPLICATION_ORG,REQUEST_NO,REQUESTED_DATE,REQUEST_TYPE,
+			     STORE_NO,VAT_CODE,LEGAL_ENTITY,ORG_SIMPLE_CODE,COUNTRY_REGION,LISTED_COMPANY_NO,
+			     OFFICE_CALENDAR_CATEGORY,EXCLUSIVE_NATIONAL_FUNCTIONS,DATE_DISPLAY_FORMAT,
+			     MAIN_CURRENCY_NO,LEGAL_ENTITY_ATTRIBUTION,TIME_ZONE_NO,BUSINESS_REGISTRATION_NO,
+			     CORPORATION_REPRESENTATIVE,REGISTER_CAPITAL,NUMBER_AMOUNT_DISPLAY_FORMAT,
+			     CUSTOMER_VENDOR_NO,STORES_STATE,INDUSTRY_TYPE,OPENING_DATE,CLOSED_SHOP_DATE,STORE_AREA,
+			     SALES_AREA,OTHER_ATTR1,OTHER_ATTR2,OTHER_ATTR3,OTHER_ATTR4,OTHER_ATTR5,OTHER_ATTR6,OTHER_ATTR7,OTHER_ATTR8,
+			     OTHER_ATTR9,OTHER_ATTR10,STATUS_CODE,DATA_OWNER,DATA_OWNER_DEPT,DATA_CREATED_BY,DEPARTMENT,
+			     DATA_CREATED_DATE,MODIFIED_BY,LAST_MODIFIED_DATE,DATA_CONFIRMED_BY,DATA_CONFIRMED_DATE,
+			     VALID,STORE_TYPE,HOME_ORGANIZATION,CHANNEL,REFERENCE_TABLE_NO,PROVINCE,CITY,COUNTY,STREET,
+			     DETAILED_ADDRESS,POSTCODE,THE_CONTACT,CONTACT_NO,MOBILE_NO,Email,APPLICANT,REQUESTED_DEPARTMENT,COUNTER_QTY,
+			     LANGUAGE,STORE_NANME,STORE_FULL_NAME,APPLICANT_ORG_NAME,APPLICANT_NAME,REQUESTED_DEPARTMENT_NAME,
+			     HOME_ORGANIZATION_NAME,CHANNEL_NAME,SALES_AREA_NAME,COUNTRY_REGION_NAME,PROVINCE_NAME,CITY_NAME,
+			     COUNTY_NAME,STREET_NAME,LEGAL_NAME,TIME_ZONE_NAME,REFERENCE_TABLE_NAME,MAIN_CURRENCY_NAME,
+			     CUSTOMER_VENDOR_NAME,OTHER_ATTR1_NAME,OTHER_ATTR2_NAME,OTHER_ATTR3_NAME,OTHER_ATTR4_NAME,
+			     OTHER_ATTR5_NAME,OTHER_ATTR6_NAME,OTHER_ATTR7_NAME,OTHER_ATTR8_NAME,OTHER_ATTR9_NAME,
+			     OTHER_ATTR10_NAME,INFORMATION_ID,MAIN_INFORMATION,COMMUNICATION_TYPE,BRIEF_DESCRIPTION,COMMUNICATION_CONTENT
+			from STORES_DATA_ACCESS 
+			where REQUEST_NO=#{list[0]} and LANGUAGE=#{list[1]}
+		]]>
+	</select>
+	
+	<select id="updateBaseSiteInfo" parameterType="stores2" resultType="java.util.HashMap">
+	     update STORES_DATA_ACCESS 
+	     set 
+	     	<if test="storeNo!=null and storeNo!=''">
+	     		STORE_NO=#{storeNo}
+	     	</if>
+	     	<if test="legalEntity!=null and legalEntity!=''">
+	     		,LEGAL_ENTITY=#{legalEntity}
+	     	</if>
+	     	<if test="storesState!=null and storesState!=''">
+	     		,STORES_STATE=#{storesState}
+	     	</if>
+	     	<if test="industryType!=null and industryType!=''">
+	     		,INDUSTRY_TYPE=#{industryType}
+	     	</if>
+	     	<if test="openingDate!=null and openingDate!=''">
+	     		,OPENING_DATE=#{openingDate}
+	     	</if>
+	     	<if test="closedShopDate!=null and closedShopDate!=''">
+	     		,CLOSED_SHOP_DATE=#{closedShopDate}
+	     	</if>
+	     	<if test="storeArea!=null and storeArea!=''">
+	     		,STORE_AREA=#{storeArea}
+	     	</if>
+	     	<if test="storeType!=null and storeType!=''">
+	     		,STORE_TYPE=#{storeType}
+	     	</if>
+	     	<if test="homeOrganization!=null and homeOrganization!=''">
+	     		,HOME_ORGANIZATION=#{homeOrganization}
+	     	</if>
+	     	<if test="channel!=null and channel!=''">
+	     		,CHANNEL=#{channel}
+	     	</if>
+	     	<if test="detailedAddress!=null and detailedAddress!=''">
+	     		,DETAILED_ADDRESS=#{detailedAddress}
+	     	</if>
+	     	<if test="postcode!=null and postcode!=''">
+	     		,POSTCODE=#{postcode}
+	     	</if>
+	     	<if test="theContact!=null and theContact!=''">
+	     		,THE_CONTACT=#{theContact}
+	     	</if>
+	     	<if test="contactNo!=null and contactNo!=''">
+	     		,CONTACT_NO=#{contactNo}
+	     	</if>
+	     	<if test="mobileNo!=null and mobileNo!=''">
+	     		,MOBILE_NO=#{mobileNo}
+	     	</if>
+	     	<if test="email!=null and email!=''">
+	     		,Email=#{email}
+	     	</if>
+	     	<if test="counterQty!=null and counterQty!=''">
+	     		,COUNTER_QTY=#{counterQty}
+	     	</if>
+	     	<if test="storeNanme!=null and storeNanme!=''">
+	     		,STORE_NANME=#{storeNanme}
+	     	</if>
+	     	<if test="storeFullName!=null and storeFullName!=''">
+	     		,STORE_FULL_NAME=#{storeFullName}
+	     	</if>
+	     	<if test="countryRegionName!=null and countryRegionName!=''">
+	     		,COUNTRY_REGION_NAME=#{countryRegionName}
+	     	</if>
+	     	<if test="provinceName!=null and provinceName!=''">
+	     		,PROVINCE_NAME=#{provinceName}
+	     	</if>
+	     	<if test="cityName!=null and cityName!=''">
+	     		,CITY_NAME=#{cityName}
+	     	</if>
+	     	<if test="countyName!=null and countyName!=''">
+	     		,COUNTY_NAME=#{countyName}
+	     	</if>
+	     	<if test="streetName!=null and streetName!=''">
+	     		,STREET_NAME=#{streetName}
+	     	</if>
+	     	<if test="legalName!=null and legalName!=''">
+	     		,LEGAL_NAME=#{legalName}
+	     	</if>
+	     where REQUEST_NO=#{requestNo} and LANGUAGE=#{language}
+	</select>
+	<select id="updateOtherInformation" parameterType="stores2" resultType="java.util.HashMap">
+	   update STORES_DATA_ACCESS 
+	     set 
+	     <if test="vatCode!=null and vatCode!=''">
+	     	VAT_CODE=#{vatCode}
+	     </if>
+	     <if test="orgSimpleCode!=null and orgSimpleCode!=''">
+	     	,ORG_SIMPLE_CODE=#{orgSimpleCode}
+	     </if>
+	     <if test="listedCompanyNo!=null and listedCompanyNo!=''">
+	     	,LISTED_COMPANY_NO=#{listedCompanyNo}
+	     </if>
+	     <if test="officeCalendarCategory!=null and officeCalendarCategory!=''">
+	     	,OFFICE_CALENDAR_CATEGORY=#{officeCalendarCategory}
+	     </if>
+	     <if test="exclusiveNationalFunctions!=null and exclusiveNationalFunctions!=''">
+	     	,EXCLUSIVE_NATIONAL_FUNCTIONS=#{exclusiveNationalFunctions}
+	     </if>
+	     <if test="dateDisplayFormat!=null and dateDisplayFormat!=''">
+	     	,DATE_DISPLAY_FORMAT=#{dateDisplayFormat}
+	     </if>
+	     <if test="mainCurrencyNo!=null and mainCurrencyNo!=''">
+	     	,MAIN_CURRENCY_NO=#{mainCurrencyNo}
+	     </if>
+	     <if test="timeZoneNo!=null and timeZoneNo!=''">
+	     	,TIME_ZONE_NO=#{timeZoneNo}
+	     </if>
+	     <if test="businessRegistrationNo!=null and businessRegistrationNo!=''">
+	     	,BUSINESS_REGISTRATION_NO=#{businessRegistrationNo}
+	     </if>
+	     <if test="corporationRepresentative!=null and corporationRepresentative!=''">
+	     	,CORPORATION_REPRESENTATIVE=#{corporationRepresentative}
+	     </if>
+	     <if test="registerCapital!=null and registerCapital!=''">
+	     	,REGISTER_CAPITAL=#{registerCapital}
+	     </if>
+	     <if test="numberAmountDisplayFormat!=null and numberAmountDisplayFormat!=''">
+	     	,NUMBER_AMOUNT_DISPLAY_FORMAT=#{numberAmountDisplayFormat}
+	     </if>
+	     <if test="referenceTableNo!=null and referenceTableNo!=''">
+	     	,REFERENCE_TABLE_NO=#{referenceTableNo}
+	     </if>
+	     <if test="mainCurrencyName!=null and mainCurrencyName!=''">
+	     	,MAIN_CURRENCY_NAME=#{mainCurrencyName}
+	     </if>
+	     <if test="customerVendorName!=null and customerVendorName!=''">
+	     	,CUSTOMER_VENDOR_NAME=#{customerVendorName} 
+	     </if>
+	     where REQUEST_NO=#{requestNo} and LANGUAGE=#{language}
+	</select>
+	<select id="updateOtherAttribute" parameterType="stores2" resultType="java.util.HashMap">
+	     update STORES_DATA_ACCESS 
+	     set 
+	     <if test="otherAttr1!=null and otherAttr1!=''">
+	     	OTHER_ATTR1=#{otherAttr1}
+	     </if>
+	     <if test="otherAttr2!=null and otherAttr2!=''">
+	     	,OTHER_ATTR2=#{otherAttr2}
+	     </if>
+	     <if test="otherAttr3!=null and otherAttr3!=''">
+	     	,OTHER_ATTR3=#{otherAttr3}
+	     </if>
+	     <if test="otherAttr4!=null and otherAttr4!=''">
+	     	,OTHER_ATTR4=#{otherAttr4}
+	     </if>
+	     <if test="otherAttr5!=null and otherAttr5!=''">
+	     	,OTHER_ATTR5=#{otherAttr5}
+	     </if>
+	     <if test="otherAttr6!=null and otherAttr6!=''">
+	     	,OTHER_ATTR6=#{otherAttr6}
+	     </if>
+	     <if test="otherAttr7!=null and otherAttr7!=''">
+	     	,OTHER_ATTR7=#{otherAttr7}
+	     </if>
+	     <if test="otherAttr8!=null and otherAttr8!=''">
+	     	,OTHER_ATTR8=#{otherAttr8}
+	     </if>
+	     <if test="otherAttr9!=null and otherAttr9!=''">
+	     	,OTHER_ATTR9=#{otherAttr9}
+	     </if>
+	     <if test="otherAttr10!=null and otherAttr10!=''">
+	     	,OTHER_ATTR10=#{otherAttr10}
+	     </if>
+	     where REQUEST_NO=#{requestNo} and LANGUAGE=#{language}
+	</select>
+	<select id="updateContact" parameterType="stores2" resultType="java.util.HashMap">
+	     update STORES_DATA_ACCESS 
+	     set 
+	     	<if test="communicationContent!=null and communicationContent!=''">
+		    	 COMMUNICATION_CONTENT=#{communicationContent} 
+	     	</if>
+	     where 
+	     	REQUEST_NO=#{requestNo} and 
+	     	LANGUAGE=#{language} and 
+	     	INFORMATION_ID=#{informationId} and 
+	     	COMMUNICATION_TYPE=#{communicationType}
+	</select>
+	<select id="addContact" parameterType="stores2" resultType="java.util.HashMap">
+	   <![CDATA[
+	     insert into STORES_DATA_ACCESS 
+	     (OPERATING_ORG,APPLICATION_ORG,REQUEST_NO,REQUESTED_DATE,REQUEST_TYPE,
+	     STORE_NO,VAT_CODE,LEGAL_ENTITY,ORG_SIMPLE_CODE,COUNTRY_REGION,LISTED_COMPANY_NO,
+	     OFFICE_CALENDAR_CATEGORY,EXCLUSIVE_NATIONAL_FUNCTIONS,DATE_DISPLAY_FORMAT,
+	     MAIN_CURRENCY_NO,LEGAL_ENTITY_ATTRIBUTION,TIME_ZONE_NO,BUSINESS_REGISTRATION_NO,
+	     CORPORATION_REPRESENTATIVE,REGISTER_CAPITAL,NUMBER_AMOUNT_DISPLAY_FORMAT,
+	     CUSTOMER_VENDOR_NO,STORES_STATE,INDUSTRY_TYPE,OPENING_DATE,CLOSED_SHOP_DATE,STORE_AREA,
+	     SALES_AREA,OTHER_ATTR1,OTHER_ATTR2,OTHER_ATTR3,OTHER_ATTR4,OTHER_ATTR5,OTHER_ATTR6,OTHER_ATTR7,OTHER_ATTR8,
+	     OTHER_ATTR9,OTHER_ATTR10,STATUS_CODE,DATA_OWNER,DATA_OWNER_DEPT,DATA_CREATED_BY,DEPARTMENT,
+	     DATA_CREATED_DATE,MODIFIED_BY,LAST_MODIFIED_DATE,DATA_CONFIRMED_BY,DATA_CONFIRMED_DATE,
+	     VALID,STORE_TYPE,HOME_ORGANIZATION,CHANNEL,REFERENCE_TABLE_NO,PROVINCE,CITY,COUNTY,STREET,
+	     DETAILED_ADDRESS,POSTCODE,THE_CONTACT,CONTACT_NO,MOBILE_NO,Email,APPLICANT,REQUESTED_DEPARTMENT,COUNTER_QTY,
+	     LANGUAGE,STORE_NANME,STORE_FULL_NAME,APPLICANT_ORG_NAME,APPLICANT_NAME,REQUESTED_DEPARTMENT_NAME,
+	     HOME_ORGANIZATION_NAME,CHANNEL_NAME,SALES_AREA_NAME,COUNTRY_REGION_NAME,PROVINCE_NAME,CITY_NAME,
+	     COUNTY_NAME,STREET_NAME,LEGAL_NAME,TIME_ZONE_NAME,REFERENCE_TABLE_NAME,MAIN_CURRENCY_NAME,
+	     CUSTOMER_VENDOR_NAME,OTHER_ATTR1_NAME,OTHER_ATTR2_NAME,OTHER_ATTR3_NAME,OTHER_ATTR4_NAME,
+	     OTHER_ATTR5_NAME,OTHER_ATTR6_NAME,OTHER_ATTR7_NAME,OTHER_ATTR8_NAME,OTHER_ATTR9_NAME,
+	     OTHER_ATTR10_NAME,INFORMATION_ID,MAIN_INFORMATION,COMMUNICATION_TYPE,BRIEF_DESCRIPTION,COMMUNICATION_CONTENT) 
+	     values
+	     (#{operatingOrg},#{applicationOrg},#{requestNo},#{requestedDate},#{requestType},
+	     #{storeNo},#{vatCode},#{legalEntity},#{orgSimpleCode},#{countryRegion},#{listedCompanyNo},
+	     #{officeCalendarCategory},#{exclusiveNationalFunctions},#{dateDisplayFormat},
+	     #{mainCurrencyNo},#{legalEntityAttribution},#{timeZoneNo},#{businessRegistrationNo},
+	     #{corporationRepresentative},#{registerCapital},#{numberAmountDisplayFormat},
+	     #{customerVendorNo},#{storesState},#{industryType},#{openingDate},#{closedShopDate},#{storeArea},
+	     #{salesArea},#{otherAttr1},#{otherAttr2},#{otherAttr3},#{otherAttr4},#{otherAttr5},#{otherAttr6},#{otherAttr7},
+	     #{otherAttr8},#{otherAttr9},#{otherAttr10},#{statusCode},#{dataOwner},#{dataOwnerDept},
+	     #{dataCreatedBy},#{department},#{dataCreatedDate},#{modifiedBy},#{lastModifiedDate},
+	     #{dataConfirmedBy},#{dataConfirmedDate},#{valid},
+	     #{storeType},#{homeOrganization},#{channel},#{referenceTableNo},#{province},#{city},
+	     #{county},#{street},#{detailedAddress},#{postcode},#{theContact},#{contactNo},#{mobileNo},
+	     #{email},#{applicant},#{requestedDepartment},#{counterQty},#{language},#{storeNanme},
+	     #{storeFullName},#{applicantOrgName},#{applicantName},#{requestedDepartmentName},
+	     #{homeOrganizationName},#{channelName},#{salesAreaName},#{countryRegionName},#{provinceName},
+	     #{cityName},#{countyName},#{streetName},#{legalName},#{timeZoneName},#{referenceTableName},
+	     #{mainCurrencyName},#{customerVendorName},#{otherAttr1Name},#{otherAttr2Name},#{otherAttr3Name},
+	     #{otherAttr4Name},#{otherAttr5Name},#{otherAttr6Name},#{otherAttr7Name},#{otherAttr8Name},
+	     #{otherAttr9Name},#{otherAttr10Name},#{informationId},#{mainInformation},#{communicationType},#{briefDescription},
+	     #{communicationContent})
+	   ]]>
+	</select>
+	<select id="queryMaxId" parameterType="stores2"  resultType="java.lang.String">
+		<![CDATA[
+			select max(INFORMATION_ID+1) from STORES_DATA_ACCESS where REQUEST_NO=#{requestNo} and LANGUAGE=#{language}
+		]]>
+	</select>
+	<select id="queryAll" parameterType="stores2" resultType="stores2">
+	  <![CDATA[
+	     select 
+			OPERATING_ORG as operatingOrg,APPLICATION_ORG as applicationOrg,REQUEST_NO as requestNo,REQUESTED_DATE as requestedDate,REQUEST_TYPE as requestType,
+		     STORE_NO as storeNo,VAT_CODE as vatCode,LEGAL_ENTITY as legalEntity,ORG_SIMPLE_CODE as orgSimpleCode,COUNTRY_REGION as countryRegion,LISTED_COMPANY_NO as listedCompanyNo,
+		     OFFICE_CALENDAR_CATEGORY as officeCalendarCategory,EXCLUSIVE_NATIONAL_FUNCTIONS as exclusiveNationalFunctions,DATE_DISPLAY_FORMAT as dateDisplayFormat,
+		     MAIN_CURRENCY_NO as mainCurrencyNo,LEGAL_ENTITY_ATTRIBUTION as legalEntityAttribution,TIME_ZONE_NO as timeZoneNo,BUSINESS_REGISTRATION_NO as businessRegistrationNo,
+		     CORPORATION_REPRESENTATIVE as corporationRepresentative,REGISTER_CAPITAL as registerCapital,NUMBER_AMOUNT_DISPLAY_FORMAT as numberAmountDisplayFormat,
+		     CUSTOMER_VENDOR_NO as customerVendorNo,STORES_STATE as storesState,INDUSTRY_TYPE as industryType,OPENING_DATE as openingDate,CLOSED_SHOP_DATE as closedShopDate,STORE_AREA as storeArea,
+		     SALES_AREA as salesArea,OTHER_ATTR1 as otherAttr1,OTHER_ATTR2 as otherAttr2,OTHER_ATTR3 as otherAttr3,OTHER_ATTR4 as otherAttr4,OTHER_ATTR5 as otherAttr5,OTHER_ATTR6 as otherAttr6,OTHER_ATTR7 as otherAttr7,OTHER_ATTR8 as otherAttr8,
+		     OTHER_ATTR9 as otherAttr9,OTHER_ATTR10 as otherAttr10,STATUS_CODE as statusCode,DATA_OWNER as dataOwner,DATA_OWNER_DEPT as dataOwnerDept,DATA_CREATED_BY as dataCreatedBy,DEPARTMENT as department,
+		     DATA_CREATED_DATE as dataCreatedDate,MODIFIED_BY as modifiedBy,LAST_MODIFIED_DATE as lastModifiedDate,DATA_CONFIRMED_BY as dataConfirmedBy,DATA_CONFIRMED_DATE as dataConfirmedDate,
+		     VALID as valid,STORE_TYPE as storeType,HOME_ORGANIZATION as homeOrganization,CHANNEL as channel,REFERENCE_TABLE_NO as referenceTableNo,PROVINCE as province,CITY as city,COUNTY as county,STREET as street,
+		     DETAILED_ADDRESS as detailedAddress,POSTCODE as postcode,THE_CONTACT as theContact,CONTACT_NO as contactNo,MOBILE_NO as mobileNo,Email as email,APPLICANT as applicant,REQUESTED_DEPARTMENT as requestedDepartment,COUNTER_QTY as counterQty,
+		     LANGUAGE as language,STORE_NANME as storeNanme,STORE_FULL_NAME as storeFullName,APPLICANT_ORG_NAME as applicantOrgName,APPLICANT_NAME as applicantName,REQUESTED_DEPARTMENT_NAME as requestedDepartmentName,
+		     HOME_ORGANIZATION_NAME as homeOrganizationName,CHANNEL_NAME as channelName,SALES_AREA_NAME as salesAreaName,COUNTRY_REGION_NAME as countryRegionName,PROVINCE_NAME as provinceName,CITY_NAME as cityName,
+		     COUNTY_NAME as countyName,STREET_NAME as streetName,LEGAL_NAME as legalName,TIME_ZONE_NAME as timeZoneName,REFERENCE_TABLE_NAME as referenceTableName,MAIN_CURRENCY_NAME as mainCurrencyName,
+		     CUSTOMER_VENDOR_NAME as customerVendorName,OTHER_ATTR1_NAME as otherAttr1Name,OTHER_ATTR2_NAME as otherAttr2Name,OTHER_ATTR3_NAME as otherAttr3Name,OTHER_ATTR4_NAME as otherAttr4Name,
+		     OTHER_ATTR5_NAME as otherAttr5Name,OTHER_ATTR6_NAME as otherAttr6Name,OTHER_ATTR7_NAME as otherAttr7Name,OTHER_ATTR8_NAME as otherAttr8Name,OTHER_ATTR9_NAME as otherAttr9Name,
+		     OTHER_ATTR10_NAME as otherAttr10Name,INFORMATION_ID as informationId,MAIN_INFORMATION as mainInformation,COMMUNICATION_TYPE as communicationType,BRIEF_DESCRIPTION as briefDescription,COMMUNICATION_CONTENT as communicationContent 
+		 from STORES_DATA_ACCESS 
+	     where REQUEST_NO=#{requestNo} and LANGUAGE=#{language}
+	   ]]>
+	</select>
+</mapper>

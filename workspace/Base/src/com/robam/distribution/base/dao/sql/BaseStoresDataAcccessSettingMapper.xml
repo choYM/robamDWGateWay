@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 门店维护作业 -->
+<!-- @author liaogz&yangjian -->
+<mapper namespace="dao.BaseStoresDataAcccessSettingMapper">
+	<select id="selectCount" resultType="hashmap" parameterType="hashmap">
+			select count(distinct requisition_no)
+			from BAS_ORGANIZATION_REQUISITION where 1=1
+			<if test="requisition_type!=null and requisition_type!=''">
+				and requisition_type=#{requisition_type}
+			</if>
+			<if test="operation_organization!=null and operation_organization!=''">
+				and operation_organization=#{operation_organization}
+			</if>
+			<if test="requisition_no!=null and requisition_no!=''">
+				and requisition_no=#{requisition_no}
+			</if>
+			<if test="organization!=null and organization!=''">
+				and organization=#{organization}
+			</if>
+			<if test="organization_name!=null and organization_name!=''">
+				and organization_name=#{organization_name}
+			</if>
+			<if test="belonged_organization!=null and belonged_organization!=''">
+				and belonged_organization=#{belonged_organization}
+			</if>
+			<if test="belonged_organization_name!=null and belonged_organization_name!=''">
+				and belonged_organization_name=#{belonged_organization_name}
+			</if>
+			<if test="sales_area!=null and sales_area!=''">
+				and sales_area=#{sales_area}
+			</if>
+			<if test="sales_area_name!=null and sales_area_name!=''">
+				and sales_area_name=#{sales_area_name}
+			</if>
+			<if test="belonged_channel!=null and belonged_channel!=''">
+				and belonged_channel=#{belonged_channel}
+			</if>
+			<if test="belonged_channel_name!=null and belonged_channel_name!=''">
+				and belonged_channel_name=#{belonged_channel_name}
+			</if>
+			<if test="contact_no!=null and contact_no!=''">
+				and contact_no=#{contact_no}
+			</if>
+			<if test="language!=null and language!=''">
+				and language=#{language}
+			</if>
+	</select>
+	<select id="selectLimit" resultType="hashmap" parameterType="hashmap">
+			select distinct requisition_no,operation_organization,operation_organization_name,requisition_type,organization_name,
+			belonged_organization,belonged_organization_name,organization,belonged_channel,belonged_channel_name,sales_area,organization_simple_code,status_code,
+			sales_area_name,contact,contact_no,mobile_no,store_state,industry_type,counter_quantity,tax_code,
+			store_area,DATE_FORMAT(opening_date,'%Y/%m/%d') as opening_date,country_region_name,province_name,city_name,
+			county_district_name,street_name,detailed_address
+			from BAS_ORGANIZATION_REQUISITION where 1=1
+			<if test="requisition_type!=null and requisition_type!=''">
+				and requisition_type=#{requisition_type}
+			</if>
+			<if test="operation_organization!=null and operation_organization!=''">
+				and operation_organization=#{operation_organization}
+			</if>
+			<if test="requisition_no!=null and requisition_no!=''">
+				and requisition_no=#{requisition_no}
+			</if>
+			<if test="organization!=null and organization!=''">
+				and organization=#{organization}
+			</if>
+			<if test="organization_name!=null and organization_name!=''">
+				and organization_name=#{organization_name}
+			</if>
+			<if test="belonged_organization!=null and belonged_organization!=''">
+				and belonged_organization=#{belonged_organization}
+			</if>
+			<if test="belonged_organization_name!=null and belonged_organization_name!=''">
+				and belonged_organization_name=#{belonged_organization_name}
+			</if>
+			<if test="sales_area!=null and sales_area!=''">
+				and sales_area=#{sales_area}
+			</if>
+			<if test="sales_area_name!=null and sales_area_name!=''">
+				and sales_area_name=#{sales_area_name}
+			</if>
+			<if test="belonged_channel!=null and belonged_channel!=''">
+				and belonged_channel=#{belonged_channel}
+			</if>
+			<if test="belonged_channel_name!=null and belonged_channel_name!=''">
+				and belonged_channel_name=#{belonged_channel_name}
+			</if>
+			<if test="contact_no!=null and contact_no!=''">
+				and contact_no=#{contact_no}
+			</if>
+			<if test="language!=null and language!=''">
+				and language=#{language}
+			</if>
+			order by requisition_no asc  LIMIT#{startIndex},#{pageSize}
+
+	</select>
+	<select id="addSite"  parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO BAS_ORGANIZATION_REQUISITION
+			(tax_code,operation_organization,application_organization,requisition_no,requisition_date,requisition_type,organization,
+			is_legal_person,organization_simple_code,country_region,listed_company_no,
+			exclusive_national_functions,date_display_format,main_currency_no,legal_person_name,
+			time_zone_no,business_registration_no,legal_representative,register_capital,
+			number_amount_format,customer_vendor_no,store_state,industry_type,opening_date,
+			closing_date,store_area,sales_area,other_attribute1,other_attribute2,other_attribute3,other_attribute4,
+			other_attribute5,other_attribute6,other_attribute7,other_attribute8,other_attribute9,other_attribute10,status_code,
+			data_owner,data_owned_department,data_created_by,data_created_department,data_created_date,data_modified_by,
+			last_modified_date,data_confirmed_by,data_confirmed_date,valid,belonged_organization,belonged_channel,
+			reference_table_no,province,city,county_district,street,detailed_address,postcode,contact,
+			contact_no,mobile_no,email,applicant,requested_department,counter_quantity,language,organization_name,
+			organization_full_name,operation_organization_name,applicant_name,requested_department_name,belonged_organization_name,
+			belonged_channel_name,sales_area_name,country_region_name,province_name,city_name,county_district_name,street_name,
+			legal_person,time_zone_description,reference_table_description,main_currency_description,customer_vendor_name,
+			other_attribute1_description,other_attribute2_description,other_attribute3_description,other_attribute4_description,other_attribute5_description,other_attribute6_description,
+			other_attribute7_description,other_attribute8_description,other_attribute9_description,other_attribute10_description,communication_no,is_main_communication,
+			communication_type,brief_description,communication_content)
+			VALUES(#{tax_code},#{operation_organization},#{application_organization},#{requisition_no},#{requisition_date},
+			#{requisition_type},#{organization},#{is_legal_person},#{organization_simple_code},
+			#{country_region},#{listed_company_no},
+			#{exclusive_national_functions},#{date_display_format},#{main_currency_no},
+			#{legal_person_name},#{time_zone_no},#{business_registration_no},
+			#{legal_representative},#{register_capital},
+			#{number_amount_format},#{customer_vendor_no},
+			#{store_state},#{industry_type},#{opening_date},#{closing_date},
+			#{store_area},#{sales_area},#{other_attribute1},
+			#{other_attribute2},#{other_attribute3},#{other_attribute4},#{other_attribute5},
+			#{other_attribute6},#{other_attribute7},#{other_attribute8},
+			#{other_attribute9},#{other_attribute10},#{status_code},#{data_owner},#{data_owned_department},
+			#{data_created_by},#{data_created_department},#{data_created_date},#{data_modified_by},#{last_modified_date},
+			#{data_confirmed_by},#{data_confirmed_date},
+			#{valid},#{belonged_organization},#{belonged_channel},
+			#{reference_table_no},#{province},#{city},#{county_district},#{street},
+			#{detailed_address},#{postcode},#{contact},#{contact_no},#{mobile_no},
+			#{email},#{applicant},#{requested_department},#{counter_quantity},#{language},
+			#{organization_name},#{organization_full_name},#{operation_organization_name},#{applicant_name},
+			#{requested_department_name},#{belonged_organization_name},#{belonged_channel_name},
+			#{sales_area_name},#{country_region_name},#{province_name},#{city_name},#{county_district_name},
+			#{street_name},#{legal_person},#{time_zone_description},#{reference_table_description},
+			#{main_currency_description},#{customer_vendor_name},#{other_attribute1_description},#{other_attribute2_description},
+			#{other_attribute3_description},#{other_attribute4_description},#{other_attribute5_description},#{other_attribute6_description},
+			#{other_attribute7_description},#{other_attribute8_description},#{other_attribute9_description},#{other_attribute10_description},
+			#{communication_no},#{is_main_communication},#{communication_type},#{brief_description},
+			#{communication_content})
+		]]>
+	</select>
+	<delete id="deleteSite" parameterType="hashmap">
+	   delete from BAS_ORGANIZATION_REQUISITION
+	   <where>
+	   <if test="list != null">
+	      requisition_no IN
+	      <foreach item="item" index="index" collection="list" open="(" separator=", " close=") ">
+	       #{item.requisition_no}
+	      </foreach>
+	   </if>
+	   <if test="language != null and language != ''">
+	   AND language =#{language}
+	   </if>
+	   </where>
+	</delete>
+	<update id="auditSite" parameterType="hashmap">
+	   <if test="site != null">
+	        update BAS_ORGANIZATION_REQUISITION
+	        set status_code='Y',data_confirmed_by=#{confirmedby},
+	        data_confirmed_date=#{confirmeddate}
+	        where requisition_no in
+	      <foreach item="item" index="index" collection="site" open="(" separator=", " close=") ">
+	       #{item.requisition_no}
+	      </foreach>
+	   </if>
+	</update>
+	<select id="selectall" resultType="com.robam.distribution.base.model.StoresDataAccess" parameterType="hashmap">
+			select distinct requisition_no,language
+			from BAS_ORGANIZATION_REQUISITION
+			where requisition_no=#{requisition_no} and language =#{language}
+	</select>
+	<select id="selectinformationid" resultType="java.lang.String" parameterType="hashmap">
+			select max(communication_no)
+			from BAS_ORGANIZATION_REQUISITION
+			where requisition_no=#{requisition_no} and language =#{language}
+	</select>
+	<!-- 杨建 -->
+	<!-- 查詢門店詳細資料 -->
+	<select id="getBaseSiteInfo" parameterType="com.robam.distribution.base.model.StoresDataAccess" resultType="com.robam.distribution.base.model.StoresDataAccess">
+		select
+			distinct(requisition_no),
+			tax_code,operation_organization,operation_organization_name,DATE_FORMAT(requisition_date,'%Y-%m-%d') as requisition_date,requisition_no,requisition_type,
+			applicant,applicant_name,requested_department,requested_department_name,organization,organization_name,organization_full_name,
+			belonged_organization,belonged_organization_name,sales_area,sales_area_name,belonged_channel,belonged_channel_name,
+			organization_simple_code,contact,contact_no,mobile_no,email,postcode,country_region,
+			country_region_name,province,province_name,city,city_name,county_district,county_district_name,
+			street,street_name,detailed_address,industry_type,store_state,
+			DATE_FORMAT(opening_date,'%Y-%m-%d') as opening_date,DATE_FORMAT(closing_date,'%Y-%m-%d') as closing_date,
+			store_area,counter_quantity,other_attribute1,other_attribute2,other_attribute3,other_attribute4,other_attribute5,other_attribute6,other_attribute7,other_attribute8,
+			other_attribute9,other_attribute10,other_attribute1_description,other_attribute2_description,other_attribute3_description,other_attribute4_description,
+			other_attribute5_description,other_attribute6_description,other_attribute7_description,other_attribute8_description,other_attribute9_description,
+			other_attribute10_description 
+		from BAS_ORGANIZATION_REQUISITION where 1=1
+		<if test="requisition_no!=null and requisition_no!=''">
+			and requisition_no=#{requisition_no}
+		</if>
+		<if test="language!=null and language!=''">
+			and language=#{language}
+		</if>
+	</select>
+	
+	<!-- 根据单号查询所有通讯方式 -->
+	<select id="getSiteAllContact" parameterType="com.robam.distribution.base.model.StoresDataAccess" resultType="com.robam.distribution.base.model.StoresDataAccess">
+		select communication_no,communication_type,
+			brief_description,communication_content,is_main_communication
+		from BAS_ORGANIZATION_REQUISITION where 1=1
+		<if test="requisition_no!=null and requisition_no!=''">
+			and requisition_no=#{requisition_no}
+		</if>
+		<if test="language!=null and language!=''">
+			and language=#{language}
+		</if>
+	</select>
+
+	<!-- 修改門店基礎資料 -->
+	<update id="updateBaseSiteInfo" parameterType="hashmap">
+	     update BAS_ORGANIZATION_REQUISITION
+	     	<trim prefix="set" suffixOverrides=",">
+		     	<if test="organization!=null">
+		     		ORGANIZATION=#{organization},
+		     	</if>
+		     	<if test="organization_simple_code!=null">
+		     		ORGANIZATION_SIMPLE_CODE=#{organization_simple_code},
+		     	</if>
+		     	<if test="is_legal_person!=null">
+		     		IS_LEGAL_PERSON=#{is_legal_person},
+		     	</if>
+		     	<if test="store_state!=null">
+		     		STORE_STATE=#{store_state},
+		     	</if>
+		     	<if test="industry_type!=null">
+		     		INDUSTRY_TYPE=#{industry_type},
+		     	</if>
+		     	<if test="opening_date!=null">
+		     		OPENING_DATE=#{opening_date},
+		     	</if>
+		     	<if test="closing_date!=null">
+		     		CLOSING_DATE=#{closing_date},
+		     	</if>
+		     	<if test="store_area!=null">
+		     		STORE_AREA=#{store_area},
+		     	</if>
+		     	<if test="belonged_organization!=null">
+		     		BELONGED_ORGANIZATION=#{belonged_organization},
+		     	</if>
+		     	<if test="belonged_organization_name!=null">
+		     		BELONGED_ORGANIZATION_NAME=#{belonged_organization_name},
+		     	</if>
+		     	<if test="belonged_channel!=null">
+		     		BELONGED_CHANNEL=#{belonged_channel},
+		     	</if>
+		     	<if test="belonged_channel_name!=null">
+		     		BELONGED_CHANNEL_NAME=#{belonged_channel_name},
+		     	</if>
+		     	<if test="sales_area!=null">
+		     		SALES_AREA=#{sales_area},
+		     	</if>
+		     	<if test="sales_area_name!=null">
+		     		SALES_AREA_NAME=#{sales_area_name},
+		     	</if>
+		     	<if test="country_region!=null">
+		     		COUNTRY_REGION=#{country_region},
+		     	</if>
+		     	<if test="country_region_name!=null">
+		     		COUNTRY_REGION_NAME=#{country_region_name},
+		     	</if>
+		     	<if test="province!=null">
+		     		PROVINCE=#{province},
+		     	</if>
+		     	<if test="province_name!=null">
+		     		PROVINCE_NAME=#{province_name},
+		     	</if>
+		     	<if test="city!=null">
+		     		CITY=#{city},
+		     	</if>
+		     	<if test="city_name!=null">
+		     		CITY_NAME=#{city_name},
+		     	</if>
+		     	<if test="county_district!=null">
+		     		COUNTY_DISTRICT=#{county_district},
+		     	</if>
+		     	<if test="county_district_name!=null">
+		     		COUNTY_DISTRICT_NAME=#{county_district_name},
+		     	</if>
+		     	<if test="street!=null">
+		     		STREET=#{street},
+		     	</if>
+		     	<if test="street_name!=null">
+		     		STREET_NAME=#{street_name},
+		     	</if>
+		     	<if test="detailed_address!=null">
+		     		DETAILED_ADDRESS=#{detailed_address},
+		     	</if>
+		     	<if test="postcode!=null">
+		     		POSTCODE=#{postcode},
+		     	</if>
+		     	<if test="contact!=null">
+		     		CONTACT=#{contact},
+		     	</if>
+		     	<if test="contact_no!=null">
+		     		CONTACT_NO=#{contact_no},
+		     	</if>
+		     	<if test="mobile_no!=null">
+		     		MOBILE_NO=#{mobile_no},
+		     	</if>
+		     	<if test="email!=null">
+		     		Email=#{email},
+		     	</if>
+		     	<if test="counter_quantity!=null">
+		     		COUNTER_QUANTITY=#{counter_quantity},
+		     	</if>
+		     	<if test="organization_name!=null">
+		     		ORGANIZATION_NAME=#{organization_name},
+		     	</if>
+		     	<if test="organization_full_name!=null">
+		     		ORGANIZATION_FULL_NAME=#{organization_full_name},
+		     	</if>
+	     	</trim>
+	     where 1=1
+	    <if test="requisition_no!=null and requisition_no!=''">
+			and REQUISITION_NO=#{requisition_no}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</update>
+
+	<!-- 修改門店其他資訊，暫時去除此服務 -->
+	<update id="updateOtherInformation" parameterType="hashmap">
+	   update BAS_ORGANIZATION_REQUISITION
+			<trim prefix="set" suffixOverrides=",">
+				<if test="organization_simple_code!=null">ORGANIZATION_SIMPLE_CODE=#{organization_simple_code},</if>
+				<if test="listed_company_no!=null">LISTED_COMPANY_NO=#{listed_company_no},</if>
+				<if test="exclusive_national_functions!=null">EXCLUSIVE_NATIONAL_FUNCTIONS=#{exclusive_national_functions},</if>
+				<if test="date_display_format!=null">DATE_DISPLAY_FORMAT=#{date_display_format},</if>
+				<if test="main_currency_no!=null">MAIN_CURRENCY_NO=#{main_currency_no},</if>
+				<if test="time_zone_no!=null">TIME_ZONE_NO=#{time_zone_no},</if>
+				<if test="business_registration_no!=null">BUSINESS_REGISTRATION_NO=#{business_registration_no},</if>
+				<if test="legal_representative!=null">LEGAL_REPRESENTATIVE=#{legal_representative},</if>
+				<if test="register_capital!=null">REGISTER_CAPITAL=#{register_capital},</if>
+				<if test="number_amount_format!=null">NUMBER_AMOUNT_FORMAT=#{number_amount_format},</if>
+				<if test="reference_table_no!=null">REFERENCE_TABLE_NO=#{reference_table_no},</if>
+				<if test="main_currency_description!=null">MAIN_CURRENCY_DESCRIPTION=#{main_currency_description},</if>
+				<if test="customer_vendor_name!=null">CUSTOMER_VENDOR_NAME=#{customer_vendor_name},</if>
+			</trim>
+	      where 1=1
+		<if test="requisition_no!=null and requisition_no!=''">
+			and REQUISITION_NO=#{requisition_no}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</update>
+
+	<!-- 修改門店其他屬性sql -->
+	<update id="updateOtherAttribute" parameterType="hashmap">
+	     update BAS_ORGANIZATION_REQUISITION
+	     <trim prefix="set" suffixOverrides=",">
+	     	<if test="other_attribute1!=null">OTHER_ATTRIBUTE1=#{other_attribute1},</if>
+	     	<if test="other_attribute1_description!=null">OTHER_ATTRIBUTE1_DESCRIPTION=#{other_attribute1_description},</if>
+	     	<if test="other_attribute2!=null">OTHER_ATTRIBUTE2=#{other_attribute2},</if>
+	     	<if test="other_attribute2_description!=null">OTHER_ATTRIBUTE2_DESCRIPTION=#{other_attribute2_description},</if>
+	     	<if test="other_attribute3!=null">OTHER_ATTRIBUTE3=#{other_attribute3},</if>
+	     	<if test="other_attribute3_description!=null">OTHER_ATTRIBUTE3_DESCRIPTION=#{other_attribute3_description},</if>
+	     	<if test="other_attribute4!=null">OTHER_ATTRIBUTE4=#{other_attribute4},</if>
+	     	<if test="other_attribute4_description!=null">OTHER_ATTRIBUTE4_DESCRIPTION=#{other_attribute4_description},</if>
+	     	<if test="other_attribute5!=null">OTHER_ATTRIBUTE5=#{other_attribute5},</if>
+	     	<if test="other_attribute5_description!=null">OTHER_ATTRIBUTE5_DESCRIPTION=#{other_attribute5_description},</if>
+	     	<if test="other_attribute6!=null">OTHER_ATTRIBUTE6=#{other_attribute6},</if>
+	     	<if test="other_attribute6_description!=null">OTHER_ATTRIBUTE6_DESCRIPTION=#{other_attribute6_description},</if>
+	     	<if test="other_attribute7!=null">OTHER_ATTRIBUTE7=#{other_attribute7},</if>
+	     	<if test="other_attribute7_description!=null">OTHER_ATTRIBUTE7_DESCRIPTION=#{other_attribute7_description},</if>
+	     	<if test="other_attribute8!=null">OTHER_ATTRIBUTE8=#{other_attribute8},</if>
+	     	<if test="other_attribute8_description!=null">OTHER_ATTRIBUTE8_DESCRIPTION=#{other_attribute8_description},</if>
+	     	<if test="other_attribute9!=null">OTHER_ATTRIBUTE9=#{other_attribute9},</if>
+	     	<if test="other_attribute8_description!=null">OTHER_ATTRIBUTE9_DESCRIPTION=#{other_attribute9_description},</if>
+	     	<if test="other_attribute10!=null">OTHER_ATTRIBUTE10=#{other_attribute10},</if>
+	     	<if test="other_attribute10_description!=null">OTHER_ATTRIBUTE10_DESCRIPTION=#{other_attribute10_description},</if>
+	     </trim>
+	     where 1=1
+		<if test="requisition_no!=null and requisition_no!=''">
+			and REQUISITION_NO=#{requisition_no}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</update>
+
+	<!-- 查詢最大通訊編號 -->
+	<select id="queryMaxId" parameterType="hashmap"  resultType="java.lang.String">
+		select max(COMMUNICATION_NO+1) from BAS_ORGANIZATION_REQUISITION
+		 where 1=1
+		<if test="requisition_no!=null and requisition_no!=''">
+			and REQUISITION_NO=#{requisition_no}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+
+	<!-- 查詢門店所有信息 -->
+	<select id="queryAll" parameterType="hashmap" resultType="com.robam.distribution.base.model.StoresDataAccess">
+	    select
+			 TAX_CODE as tax_code,OPERATION_ORGANIZATION as operation_organization,APPLICATION_ORGANIZATION as application_organization,REQUISITION_NO as requisition_no,DATE_FORMAT(REQUISITION_DATE,'%Y/%m/%d') as requisition_date,REQUISITION_TYPE as requisition_type,
+		     ORGANIZATION as organization,IS_LEGAL_PERSON as is_legal_person,ORGANIZATION_SIMPLE_CODE as organization_simple_code,COUNTRY_REGION as country_region,LISTED_COMPANY_NO as listed_company_no,
+		     EXCLUSIVE_NATIONAL_FUNCTIONS as exclusive_national_functions,DATE_DISPLAY_FORMAT as date_display_format,
+		     MAIN_CURRENCY_NO as main_currency_no,LEGAL_PERSON_NAME as legal_person_name,TIME_ZONE_NO as time_zone_no,BUSINESS_REGISTRATION_NO as business_registration_no,
+		     LEGAL_REPRESENTATIVE as legal_representative,REGISTER_CAPITAL as register_capital,NUMBER_AMOUNT_FORMAT as number_amount_format,
+		     CUSTOMER_VENDOR_NO as customer_vendor_no,STORE_STATE as store_state,INDUSTRY_TYPE as industry_type,DATE_FORMAT(opening_date,'%Y/%m/%d') as opening_date,DATE_FORMAT(CLOSING_DATE,'%Y/%m/%d') as closing_date,STORE_AREA as store_area,
+		     SALES_AREA as sales_area,OTHER_ATTRIBUTE1 as other_attribute1,OTHER_ATTRIBUTE2 as other_attribute2,OTHER_ATTRIBUTE3 as other_attribute3,OTHER_ATTRIBUTE4 as other_attribute4,OTHER_ATTRIBUTE5 as other_attribute5,OTHER_ATTRIBUTE6 as other_attribute6,OTHER_ATTRIBUTE7 as other_attribute7,OTHER_ATTRIBUTE8 as other_attribute8,
+		     OTHER_ATTRIBUTE9 as other_attribute9,OTHER_ATTRIBUTE10 as other_attribute10,STATUS_CODE as status_code,DATA_OWNER as data_owner,DATA_OWNED_DEPARTMENT as data_owned_department,DATA_CREATED_BY as data_created_by,DATA_CREATED_DEPARTMENT as data_created_department,
+		     DATA_CREATED_DATE as data_created_date,DATA_MODIFIED_BY as data_modified_by,LAST_MODIFIED_DATE as last_modified_date,DATA_CONFIRMED_BY as data_confirmed_by,DATA_CONFIRMED_DATE as data_confirmed_date,
+		     VALID as valid,BELONGED_ORGANIZATION as belonged_organization,BELONGED_CHANNEL as belonged_channel,REFERENCE_TABLE_NO as reference_table_no,PROVINCE as province,CITY as city,COUNTY_DISTRICT as county_district,STREET as street,
+		     DETAILED_ADDRESS as detailed_address,POSTCODE as postcode,CONTACT as contact,CONTACT_NO as contact_no,MOBILE_NO as mobile_no,Email as email,APPLICANT as applicant,REQUESTED_DEPARTMENT as requested_department,COUNTER_QUANTITY as counter_quantity,
+		     LANGUAGE as language,ORGANIZATION_NAME as organization_name,ORGANIZATION_FULL_NAME as organization_full_name,OPERATION_ORGANIZATION_NAME as operation_organization_name,APPLICANT_NAME as applicant_name,REQUESTED_DEPARTMENT_NAME as requested_department_name,
+		     BELONGED_ORGANIZATION_NAME as belonged_organization_name,BELONGED_CHANNEL_NAME as belonged_channel_name,SALES_AREA_NAME as sales_area_name,COUNTRY_REGION_NAME as country_region_name,PROVINCE_NAME as province_name,CITY_NAME as city_name,
+		     COUNTY_DISTRICT_NAME as county_district_name,STREET_NAME as street_name,LEGAL_PERSON as legal_person,TIME_ZONE_DESCRIPTION as time_zone_description,REFERENCE_TABLE_DESCRIPTION as reference_table_description,MAIN_CURRENCY_DESCRIPTION as main_currency_description,
+		     CUSTOMER_VENDOR_NAME as customer_vendor_name,OTHER_ATTRIBUTE1_DESCRIPTION as other_attribute1_description,OTHER_ATTRIBUTE2_DESCRIPTION as other_attribute2_description,OTHER_ATTRIBUTE3_DESCRIPTION as other_attribute3_description,OTHER_ATTRIBUTE4_DESCRIPTION as other_attribute4_description,
+		     OTHER_ATTRIBUTE5_DESCRIPTION as other_attribute5_description,OTHER_ATTRIBUTE6_DESCRIPTION as other_attribute6_description,OTHER_ATTRIBUTE7_DESCRIPTION as other_attribute7_description,OTHER_ATTRIBUTE8_DESCRIPTION as other_attribute8_description,OTHER_ATTRIBUTE9_DESCRIPTION as other_attribute9_description,
+		     OTHER_ATTRIBUTE10_DESCRIPTION as other_attribute10_description,COMMUNICATION_NO as communication_no,IS_MAIN_COMMUNICATION as is_main_communication,COMMUNICATION_TYPE as communication_type,BRIEF_DESCRIPTION as brief_description,COMMUNICATION_CONTENT as communication_content
+		 from BAS_ORGANIZATION_REQUISITION
+	     where 1=1
+		<if test="requisition_no!=null and requisition_no!=''">
+			and REQUISITION_NO=#{requisition_no}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+     </select>
+
+     <!-- 新增通訊方式 -->
+     <insert id="addContact" parameterType="hashmap">
+	     <![CDATA[
+	     insert into BAS_ORGANIZATION_REQUISITION
+	     (OPERATION_ORGANIZATION,APPLICATION_ORGANIZATION,REQUISITION_NO,REQUISITION_DATE,REQUISITION_TYPE,TAX_CODE,
+	     ORGANIZATION,IS_LEGAL_PERSON,ORGANIZATION_SIMPLE_CODE,COUNTRY_REGION,LISTED_COMPANY_NO,
+	     EXCLUSIVE_NATIONAL_FUNCTIONS,DATE_DISPLAY_FORMAT,
+	     MAIN_CURRENCY_NO,LEGAL_PERSON_NAME,TIME_ZONE_NO,BUSINESS_REGISTRATION_NO,
+	     LEGAL_REPRESENTATIVE,REGISTER_CAPITAL,NUMBER_AMOUNT_FORMAT,
+	     CUSTOMER_VENDOR_NO,STORE_STATE,INDUSTRY_TYPE,OPENING_DATE,CLOSING_DATE,STORE_AREA,
+	     SALES_AREA,OTHER_ATTRIBUTE1,OTHER_ATTRIBUTE2,OTHER_ATTRIBUTE3,OTHER_ATTRIBUTE4,OTHER_ATTRIBUTE5,OTHER_ATTRIBUTE6,OTHER_ATTRIBUTE7,OTHER_ATTRIBUTE8,
+	     OTHER_ATTRIBUTE9,OTHER_ATTRIBUTE10,STATUS_CODE,DATA_OWNER,DATA_OWNED_DEPARTMENT,DATA_CREATED_BY,DATA_CREATED_DEPARTMENT,
+	     DATA_CREATED_DATE,DATA_MODIFIED_BY,LAST_MODIFIED_DATE,DATA_CONFIRMED_BY,DATA_CONFIRMED_DATE,
+	     VALID,BELONGED_ORGANIZATION,BELONGED_CHANNEL,REFERENCE_TABLE_NO,PROVINCE,CITY,COUNTY_DISTRICT,STREET,
+	     DETAILED_ADDRESS,POSTCODE,CONTACT,CONTACT_NO,MOBILE_NO,Email,APPLICANT,REQUESTED_DEPARTMENT,COUNTER_QUANTITY,
+	     LANGUAGE,ORGANIZATION_NAME,ORGANIZATION_FULL_NAME,OPERATION_ORGANIZATION_NAME,APPLICANT_NAME,REQUESTED_DEPARTMENT_NAME,
+	     BELONGED_ORGANIZATION_NAME,BELONGED_CHANNEL_NAME,SALES_AREA_NAME,COUNTRY_REGION_NAME,PROVINCE_NAME,CITY_NAME,
+	     COUNTY_DISTRICT_NAME,STREET_NAME,LEGAL_PERSON,TIME_ZONE_DESCRIPTION,REFERENCE_TABLE_DESCRIPTION,MAIN_CURRENCY_DESCRIPTION,
+	     CUSTOMER_VENDOR_NAME,OTHER_ATTRIBUTE1_DESCRIPTION,OTHER_ATTRIBUTE2_DESCRIPTION,OTHER_ATTRIBUTE3_DESCRIPTION,OTHER_ATTRIBUTE4_DESCRIPTION,
+	     OTHER_ATTRIBUTE5_DESCRIPTION,OTHER_ATTRIBUTE6_DESCRIPTION,OTHER_ATTRIBUTE7_DESCRIPTION,OTHER_ATTRIBUTE8_DESCRIPTION,OTHER_ATTRIBUTE9_DESCRIPTION,
+	     OTHER_ATTRIBUTE10_DESCRIPTION,COMMUNICATION_NO,IS_MAIN_COMMUNICATION,COMMUNICATION_TYPE,BRIEF_DESCRIPTION,COMMUNICATION_CONTENT)
+	     values
+	     (#{operation_organization},#{application_organization},#{requisition_no},#{requisition_date},#{requisition_type},#{tax_code},
+		     #{organization},#{is_legal_person},#{organization_simple_code},#{country_region},#{listed_company_no},
+		     #{exclusive_national_functions},#{date_display_format},
+	    	 #{main_currency_no},#{legal_person_name},#{time_zone_no},#{business_registration_no},
+		     #{legal_representative},#{register_capital},#{number_amount_format},
+		     #{customer_vendor_no},#{store_state},#{industry_type},#{opening_date},#{closing_date},#{store_area},
+		     #{sales_area},#{other_attribute1},#{other_attribute2},#{other_attribute3},#{other_attribute4},#{other_attribute5},#{other_attribute6},#{other_attribute7},#{other_attribute8},
+		     #{other_attribute9},#{other_attribute10},#{status_code},#{data_owner},#{data_owned_department},#{data_created_by},#{data_created_department},
+		     #{data_created_date},#{data_modified_by},#{last_modified_date},#{data_confirmed_by},#{data_confirmed_date},
+		     #{valid},#{belonged_organization},#{belonged_channel},#{reference_table_no},#{province},#{city},#{county_district},#{street},
+		     #{detailed_address},#{postcode},#{contact},#{contact_no},#{mobile_no},#{email},#{applicant},#{requested_department},#{counter_quantity},
+		     #{language},#{organization_name},#{organization_full_name},#{operation_organization_name},#{applicant_name},#{requested_department_name},
+		     #{belonged_organization_name},#{belonged_channel_name},#{sales_area_name},#{country_region_name},#{province_name},#{city_name},
+		     #{county_district_name},#{street_name},#{legal_person},#{time_zone_description},#{reference_table_description},#{main_currency_description},
+		     #{customer_vendor_name},#{other_attribute1_description},#{other_attribute2_description},#{other_attribute3_description},#{other_attribute4_description},
+		     #{other_attribute5_description},#{other_attribute6_description},#{other_attribute7_description},#{other_attribute8_description},#{other_attribute9_description},
+		     #{other_attribute10_description},#{communication_no},#{is_main_communication},#{communication_type},#{brief_description},#{communication_content})
+	     ]]>
+	</insert>
+	<update id="updateContact" parameterType="hashmap">
+	    update BAS_ORGANIZATION_REQUISITION
+	     	<trim prefix="set" suffixOverrides=",">
+	     		<if test="communication_content!=null">COMMUNICATION_CONTENT=#{communication_content},</if>
+	     		<if test="brief_description!=null">BRIEF_DESCRIPTION=#{brief_description},</if>
+	     		<if test="communication_type!=null">COMMUNICATION_TYPE=#{communication_type},</if>
+	     		<if test="is_main_communication!=null">IS_MAIN_COMMUNICATION=#{is_main_communication},</if>
+	     	</trim>		
+	      where 1=1
+		<if test="requisition_no!=null and requisition_no!=''">
+			and REQUISITION_NO=#{requisition_no}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+		<if test="communication_no!=null and communication_no!=''">
+			and COMMUNICATION_NO=#{communication_no}
+		</if>
+	</update>
+	
+	<!-- 删除通讯方式 -->
+	<delete id="deleteContact" parameterType="hashmap">
+		delete from BAS_ORGANIZATION_REQUISITION 
+		where 1=1 
+		<if test="requisition_no!=null and requisition_no!=''">
+			and REQUISITION_NO=#{requisition_no}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+		<if test="communication_no!=null and communication_no!=''">
+			and COMMUNICATION_NO=#{communication_no}
+		</if>
+	</delete>
+</mapper>

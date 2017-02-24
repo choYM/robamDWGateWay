@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 国家资料维护作业 -->
+<!-- @author  liaogz -->
+<mapper namespace="dao.BaseBasCountrySettingMapper">
+	<select id="selectCount" resultType="hashmap" parameterType="hashmap">
+			SELECT COUNT(DISTINCT COUNTRY_REGION) 
+			FROM BAS_COUNTRY WHERE 1=1
+			<!-- 国家编号 -->
+			<if test="country_region!=null and country_region!=''">
+				AND COUNTRY_REGION LIKE '%' #{country_region} '%'
+			</if>
+			<!-- 国家说明 -->
+			<if test="country_region_name!=null and country_region_name!=''">
+				AND COUNTRY_REGION_NAME like '%' #{country_region_name} '%'
+			</if>
+			<if test="continent!=null and continent!=''">
+				AND CONTINENT=#{continent}
+			</if>
+			<if test="continent_name!=null and continent_name!=''">
+				AND CONTINENT_NAME=#{continent_name}
+			</if>
+			<if test="international_phone_code!=null and international_phone_code!=''">
+				AND INTERNATIONAL_PHONE_CODE like '%' #{international_phone_code} '%'
+			</if>
+			<if test="time_zone_no!=null and time_zone_no!=''">
+				AND TIME_ZONE_NO=#{time_zone_no}
+			</if>
+			<if test="time_zone_simpleno!=null and time_zone_simpleno!=''">
+				AND TIME_ZONE_SIMPLENO=#{time_zone_simpleno}
+			</if>
+			<if test="language!=null and language!=''">
+				AND LANGUAGE=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND STATUS_CODE = #{status_code}
+			</if>
+	</select>
+	<select id="selectLimit" resultType="hashmap" parameterType="hashmap">
+			SELECT DISTINCT status_code,country_region,country_region_name,continent,continent_name,
+			international_phone_code,time_zone_no,time_zone_simpleno,representational_city
+			FROM BAS_COUNTRY WHERE 1=1 
+			<!-- 国家编号 -->
+			<if test="country_region!=null and country_region!=''">
+				AND COUNTRY_REGION LIKE '%' #{country_region} '%'
+			</if>
+			<!-- 国家说明 -->
+			<if test="country_region_name!=null and country_region_name!=''">
+				AND COUNTRY_REGION_NAME like '%' #{country_region_name} '%'
+			</if>
+			<if test="continent!=null and continent!=''">
+				AND continent=#{continent}
+			</if>
+			<if test="continent_name!=null and continent_name!=''">
+				AND continent_name=#{continent_name}
+			</if>
+			<if test="international_phone_code!=null and international_phone_code!=''">
+				AND international_phone_code like '%' #{international_phone_code} '%'
+			</if>
+			<if test="time_zone_no!=null and time_zone_no!=''">
+				AND time_zone_no=#{time_zone_no}
+			</if>
+			<if test="time_zone_simpleno!=null and time_zone_simpleno!=''">
+				AND time_zone_simpleno=#{time_zone_simpleno}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+			ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	<update id="modifyCountry" parameterType="java.util.Map">
+	  UPDATE BAS_COUNTRY SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+		 <if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		 <if test="continent!= null">CONTINENT=#{continent}, </if>
+		 <if test="international_phone_code!= null">INTERNATIONAL_PHONE_CODE=#{international_phone_code}, </if>
+		 <if test="data_owner!= null">DATA_OWNER=#{data_owner}, </if>
+		 <if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT=#{data_owned_department}, </if>
+		 <if test="data_created_by!= null">DATA_CREATED_BY=#{data_created_by}, </if>
+		 <if test="data_created_department!= null">DATA_CREATED_DEPARTMENT=#{data_created_department}, </if>
+		 <if test="data_created_date!= null">DATA_CREATED_DATE=#{data_created_date}, </if>
+		 <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		 <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+		 <if test="time_zone_no!= null">TIME_ZONE_NO=#{time_zone_no}, </if>
+		 <if test="country_region_name!= null">COUNTRY_REGION_NAME=#{country_region_name}, </if>
+		 <if test="continent_name!= null">CONTINENT_NAME=#{continent_name}, </if>
+		 <if test="time_zone_simpleno!= null">TIME_ZONE_SIMPLENO=#{time_zone_simpleno}, </if>
+		 <if test="representational_city!= null">REPRESENTATIONAL_CITY=#{representational_city}, </if>
+	    </trim>
+	    WHERE COUNTRY_REGION=#{country_region} AND LANGUAGE=#{language}
+	</update>
+	
+	<delete id="deleteCountry" parameterType="java.util.Map">
+	   DELETE FROM BAS_COUNTRY WHERE COUNTRY_REGION=#{country_region} AND LANGUAGE =#{language} 
+	</delete>
+	
+	<delete id="deleteProvince" parameterType="java.util.Map">
+	   DELETE FROM BAS_PROVINCE WHERE COUNTRY_REGION=#{country_region} AND LANGUAGE =#{language} 
+	</delete>
+	<delete id="deleteCity" parameterType="java.util.Map">
+	   DELETE FROM BAS_CITY WHERE COUNTRY_REGION=#{country_region} AND LANGUAGE =#{language} 
+	</delete>
+	<delete id="deleteCounty" parameterType="java.util.Map">
+	   DELETE FROM BAS_COUNTY_DISTRICT WHERE COUNTRY_REGION=#{country_region} AND LANGUAGE =#{language} 
+	</delete>
+	<delete id="deleteStreet" parameterType="java.util.Map">
+	   DELETE FROM BAS_STREET WHERE COUNTRY_REGION=#{country_region} AND LANGUAGE =#{language} 
+	</delete>
+	
+	<update id="auditCountry" parameterType="java.util.Map">
+	   UPDATE BAS_COUNTRY SET 
+        <trim prefix=" " suffix=" " suffixOverrides=", ">
+		 <if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		 <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		 <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+	    </trim>
+	   WHERE COUNTRY_REGION=#{country_region} AND LANGUAGE =#{language}
+	</update>
+	
+	<sql id="columnScope">
+	    <if test="status_code!= null">STATUS_CODE, </if>
+		<if test="country_region!= null">COUNTRY_REGION, </if>
+		<if test="continent!= null">CONTINENT, </if>
+		<if test="international_phone_code!= null">INTERNATIONAL_PHONE_CODE, </if>
+		<if test="data_owner!= null">DATA_OWNER, </if>
+		<if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY, </if>
+		<if test="data_created_department!= null">DATA_CREATED_DEPARTMENT, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE, </if>
+		<if test="data_modified_by!= null">DATA_MODIFIED_BY, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE, </if>
+		<if test="time_zone_no!= null">TIME_ZONE_NO, </if>
+		<if test="language!= null">LANGUAGE, </if>
+		<if test="country_region_name!= null">COUNTRY_REGION_NAME, </if>
+		<if test="continent_name!= null">CONTINENT_NAME, </if>
+		<if test="time_zone_simpleno!= null">TIME_ZONE_SIMPLENO, </if>
+		<if test="representational_city!= null">REPRESENTATIONAL_CITY, </if>
+	</sql>
+	<insert id="addCountry" parameterType="java.util.Map">
+	    INSERT INTO BAS_COUNTRY
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+		 <if test="status_code!= null">#{status_code}, </if>
+		 <if test="country_region!= null">#{country_region}, </if>
+		 <if test="continent!= null">#{continent}, </if>
+		 <if test="international_phone_code!= null">#{international_phone_code}, </if>
+		 <if test="data_owner!= null">#{data_owner}, </if>
+		 <if test="data_owned_department!= null">#{data_owned_department}, </if>
+		 <if test="data_created_by!= null">#{data_created_by}, </if>
+		 <if test="data_created_department!= null">#{data_created_department}, </if>
+		 <if test="data_created_date!= null">#{data_created_date}, </if>
+		 <if test="data_modified_by!= null">#{data_modified_by}, </if>
+		 <if test="last_modified_date!= null">#{last_modified_date}, </if>
+		 <if test="time_zone_no!= null">#{time_zone_no}, </if>
+		 <if test="language!= null">#{language}, </if>
+		 <if test="country_region_name!= null">#{country_region_name}, </if>
+		 <if test="continent_name!= null">#{continent_name}, </if>
+		 <if test="time_zone_simpleno!= null">#{time_zone_simpleno}, </if>
+		 <if test="representational_city!= null">#{representational_city}, </if>
+		</trim>
+	</insert>
+	<select id="judgeCountry" parameterType="hashmap" resultType="java.lang.Integer">
+			SELECT COUNT(1) 
+			FROM BAS_COUNTRY
+			<where>
+	   		<if test="country_region!=null and country_region!=''">
+				AND country_region=#{country_region}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	    </where>
+	</select>
+	<select id="getCountry" parameterType="hashmap" resultType="hashmap">
+	   SELECT DISTINCT status_code,country_region,country_region_name,continent,
+	      continent_name,international_phone_code,time_zone_no,
+	      time_zone_simpleno,representational_city
+	   FROM BAS_COUNTRY
+	   <where>
+	   		<if test="country_region!=null and country_region!=''">
+				AND country_region=#{country_region}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	    </where>
+	</select>
+</mapper>

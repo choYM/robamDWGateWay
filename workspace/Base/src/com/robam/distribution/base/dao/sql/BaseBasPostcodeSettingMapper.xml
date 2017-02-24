@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseBasPostcodeSettingMapper">
+	<sql id="columnScope">
+		<if test="country_region != null">COUNTRY_REGION, </if>
+		<if test="country_region_name != null">COUNTRY_REGION_NAME, </if>
+		<if test="serial_no != null">SERIAL_NO, </if>
+		<if test="province != null">PROVINCE, </if>
+		<if test="province_name != null">PROVINCE_NAME, </if>
+		<if test="postcode != null">POSTCODE, </if>
+		<if test="city != null">CITY, </if>
+		<if test="city_name != null">CITY_NAME, </if>
+		<if test="postcode_description != null">POSTCODE_DESCRIPTION, </if>
+		<if test="county_district != null">COUNTY_DISTRICT, </if>
+		<if test="county_district_name != null">COUNTY_DISTRICT_NAME, </if>
+		<if test="other_address != null">OTHER_ADDRESS, </if>
+		<if test="status_code != null">STATUS_CODE, </if>
+		<if test="data_created_date != null">DATA_CREATED_DATE, </if>
+		<if test="language != null">LANGUAGE, </if>
+	</sql>
+
+	<!-- INSERT -->
+	<insert id="addBasPostcode" parameterType="java.util.Map">
+		INSERT INTO BAS_POSTCODE
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="country_region != null">#{country_region}, </if>
+			<if test="country_region_name != null">#{country_region_name}, </if>
+			<if test="serial_no != null">#{serial_no}, </if>
+			<if test="province != null">#{province}, </if>
+			<if test="province_name != null">#{province_name}, </if>
+			<if test="postcode != null">#{postcode}, </if>
+			<if test="city != null">#{city}, </if>
+			<if test="city_name != null">#{city_name}, </if>
+			<if test="postcode_description != null">#{postcode_description}, </if>
+			<if test="county_district != null">#{county_district}, </if>
+			<if test="county_district_name != null">#{county_district_name}, </if>
+			<if test="other_address != null">#{other_address}, </if>
+			<if test="status_code != null">'Y', </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="language != null">'zh_CN', </if>
+		</trim>
+	</insert>
+
+	<!-- UPDATE -->
+	<update id="updateBasPostcode" parameterType="java.util.Map">
+		UPDATE BAS_POSTCODE SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="country_region_name != null">COUNTRY_REGION_NAME=#{country_region_name}, </if>
+			<if test="province != null">PROVINCE=#{province}, </if>
+			<if test="province_name != null">PROVINCE_NAME=#{province_name}, </if>
+			<if test="postcode != null">POSTCODE=#{postcode}, </if>
+			<if test="city != null">CITY=#{city}, </if>
+			<if test="city_name != null">CITY_NAME=#{city_name}, </if>
+			<if test="postcode_description != null">POSTCODE_DESCRIPTION=#{postcode_description}, </if>
+			<if test="county_district != null">COUNTY_DISTRICT=#{county_district}, </if>
+			<if test="county_district_name != null">COUNTY_DISTRICT_NAME=#{county_district_name}, </if>
+			<if test="other_address != null">OTHER_ADDRESS=#{other_address}, </if>
+			<if test="status_code != null">STATUS_CODE=#{STATUS_CODE}, </if>
+		</trim>
+		WHERE COUNTRY_REGION = #{country_region} AND SERIAL_NO= #{serial_no} AND LANGUAGE=#{language}
+	</update>
+
+	<!-- DELETE -->
+	<delete id="deleteBasPostcode" parameterType="java.util.Map">
+		DELETE FROM	BAS_POSTCODE WHERE COUNTRY_REGION = #{country_region} AND SERIAL_NO =#{serial_no} AND LANGUAGE = #{language}
+	</delete>
+
+	<!-- SEARCH -->
+	<select id="searchBasPostcodeList" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT city, city_name, country_region, country_region_name, county_district, county_district_name, other_address, postcode, 
+			province, province_name, serial_no, status_code 
+		FROM
+		BAS_POSTCODE
+		<where>
+			<if test="city != null and city != ''">AND city = #{city} </if>
+			<if test="city_name != null and city_name != ''">AND city_name = #{city_name} </if>
+			<if test="country_region != null and country_region != ''">AND country_region = #{country_region} </if>
+			<if test="country_region_name != null and country_region_name != ''">AND country_region_name = #{country_region_name} </if>
+			<if test="county_district != null and county_district != ''">AND county_district = #{county_district} </if>
+			<if test="county_district_name != null and county_district_name != ''">AND county_district_name = #{county_district_name} </if>
+			<if test="other_address != null and other_address != ''">AND other_address = #{other_address} </if>
+			<if test="postcode != null and postcode != ''">AND postcode = #{postcode} </if>
+			<if test="postcode_description != null and postcode_description != ''">AND postcode_description = #{postcode_description} </if>
+			<if test="province != null and province != ''">AND province = #{province} </if>
+			<if test="province_name != null and province_name != ''">AND province_name = #{province_name} </if>
+			<if test="serial_no != null and serial_no != ''">AND serial_no = #{serial_no} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+		</where>
+		LIMIT #{start}, #{pageRows}
+	</select>
+
+	<select id="searchBasPostcodeDetail" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT city, city_name, country_region, country_region_name, county_district, county_district_name, other_address, postcode,postcode_description, 
+			province, province_name, serial_no, status_code 
+		FROM BAS_POSTCODE WHERE country_region = #{country_region} AND language = #{language} AND serial_no = #{serial_no}
+	</select>
+
+	<select id="getBasPostcodeTotalRows" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT COUNT(*) AS totalRows
+		FROM BAS_CONTINENT
+		<where>
+			<if test="city != null and city != ''">AND city = #{city} </if>
+			<if test="city_name != null and city_name != ''">AND city_name = #{city_name} </if>
+			<if test="country_region != null and country_region != ''">AND country_region = #{country_region} </if>
+			<if test="country_region_name != null and country_region_name != ''">AND country_region_name = #{country_region_name} </if>
+			<if test="county_district != null and county_district != ''">AND county_district = #{county_district} </if>
+			<if test="other_address != null and other_address != ''">AND other_address = #{other_address} </if>
+			<if test="postcode != null and postcode != ''">AND postcode = #{postcode} </if>
+			<if test="postcode_description != null and postcode_description != ''">AND postcode_description = #{postcode_description} </if>
+			<if test="province != null and province != ''">AND province = #{province} </if>
+			<if test="province_name != null and province_name != ''">AND province_name = #{province_name} </if>
+			<if test="serial_no != null and serial_no != ''">AND serial_no = #{serial_no} </if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseBasApplicationCategoryCodesSettingMapper">
+	<sql id="columnScope">
+		<if test="acc_code != null">ACC_CODE, </if>
+		<if test="acc_description != null">ACC_DESCRIPTION, </if>
+		<if test="status_code != null">STATUS_CODE, </if>
+		<if test="data_created_date != null">DATA_CREATED_DATE, </if>
+		<if test="language != null">LANGUAGE, </if>
+		<if test="acc != null">ACC, </if>
+	</sql>
+	
+	
+	<!-- INSERT -->
+	<insert id="addApplicationCategoryCodes" parameterType="java.util.Map">
+		INSERT INTO BAS_APPLICATION_CATEGORY
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="acc_code != null">#{acc_code}, </if>
+			<if test="acc_description != null">#{acc_description}, </if>
+			<if test="status_code != null">#{status_code}, </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="language != null">#{language}, </if>
+			<if test="acc != null">#{acc}, </if>
+		</trim>
+	</insert>
+	
+	<!-- UPDATE -->
+	<update id="updateApplicationCategoryCodes" parameterType="java.util.Map">
+		UPDATE BAS_APPLICATION_CATEGORY SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="acc_description != null">ACC_DESCRIPTION = #{acc_description}, </if>
+			<if test="status_code != null">STATUS_CODE = #{status_code}, </if>
+			<if test="last_modified_date != null">LAST_MODIFIED_DATE = #{last_modified_date}, </if>
+		</trim>
+		WHERE ACC_CODE = #{acc_code} AND LANGUAGE=#{language} AND ACC='basf05a'
+	</update>
+	
+	<!-- DELETE -->
+	<delete id="deleteApplicationCategoryCodes" parameterType="java.util.Map">
+		DELETE FROM	BAS_APPLICATION_CATEGORY WHERE ACC_CODE = #{acc_code} AND LANGUAGE=#{language} AND ACC='basf05a'
+	</delete>
+	
+	<!-- SEARCH -->
+	<select id="searchApplicationCategoryCodesList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, acc_code, acc_description, language FROM BAS_APPLICATION_CATEGORY 
+		<where>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="acc_code != null and acc_code != ''">AND acc_code = #{acc_code} </if>
+			<if test="acc_description != null and acc_description != ''">AND acc_description = #{acc_description} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+			<if test="acc != null and acc != ''">AND acc = #{acc} </if>
+		</where>
+		LIMIT #{start}, #{pageRows}
+	</select>
+
+	<select id="searchApplicationCategoryCodesDetail" parameterType="java.util.Map"	resultType="java.util.Map">
+		SELECT status_code, acc_code, acc_description, language FROM BAS_APPLICATION_CATEGORY 
+		WHERE acc_code = #{acc_code} AND language = #{language} AND ACC='basf05a'
+	</select>
+
+	<select id="getApplicationCategoryCodesTotalRows" parameterType="java.util.Map"	resultType="java.util.Map">
+		SELECT COUNT(*) AS totalRows FROM BAS_APPLICATION_CATEGORY 
+		<where>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="acc_code != null and acc_code != ''">AND acc_code = #{acc_code} </if>
+			<if test="acc_description != null and acc_description != ''">AND acc_description = #{acc_description} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+			<if test="acc != null and acc != ''">AND acc = #{acc} </if>
+		</where>
+	</select>
+</mapper>

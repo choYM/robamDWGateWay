@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 单一税别设置作业规格 -->
+<!-- Author YangJian -->
+<mapper namespace="dao.BaseBasSingleTaxSettingMapper">
+	<sql id="taxRows">
+		<if test="data_owner !=null">DATA_OWNER,</if>
+		<if test="data_owned_department !=null">DATA_OWNED_DEPARTMENT,</if>
+		<if test="data_created_by !=null">DATA_CREATED_BY,</if>
+		<if test="data_created_department !=null">DATA_CREATED_DEPARTMENT,</if>
+		<if test="data_created_date !=null">DATA_CREATED_DATE,</if>
+		<if test="data_modified_by !=null">DATA_MODIFIED_BY,</if>
+		<if test="last_modified_date !=null">LAST_MODIFIED_DATE,</if>
+		<if test="status_code !=null">STATUS_CODE,</if>
+		<if test="reference_table_no !=null">REFERENCE_TABLE_NO,</if>
+		<if test="tax_code !=null">TAX_CODE,</if>
+		<if test="tax_property !=null">TAX_PROPERTY,</if>
+		<if test="is_tax !=null">IS_TAX,</if>
+		<if test="tax_rate !=null">TAX_RATE,</if>
+		<if test="formula_no !=null">FORMULA_NO,</if>
+		<if test="tax_type !=null">TAX_TYPE,</if>
+		<if test="tax_application !=null">TAX_APPLICATION,</if>
+		<if test="print_invoice_vat !=null">PRINT_INVOICE_VAT,</if>
+		<if test="fixed_tax !=null">FIXED_TAX,</if>
+		<if test="language !=null">LANGUAGE,</if>
+		<if test="tax_description !=null">TAX_DESCRIPTION,</if>
+		<if test="reference_table_description !=null">REFERENCE_TABLE_DESCRIPTION,</if>
+	</sql>
+	<!-- 根据预设条件查询单一税别列表（分页） -->
+	<select id="BasSingleTaxSelectCount" parameterType="hashmap" resultType="hashmap">
+		select count(*) 
+		from BAS_SINGLE_TAX 
+		where 1=1 
+		<if test="reference_table_no!=null and reference_table_no!=''">
+			and REFERENCE_TABLE_NO=#{reference_table_no} 
+		</if>	
+		<if test="reference_table_description!=null and reference_table_description!=''">
+			and REFERENCE_TABLE_DESCRIPTION=#{reference_table_description} 
+		</if>
+		<if test="tax_code!=null and tax_code!=''">
+			and TAX_CODE=#{tax_code}
+		</if>
+		<if test="tax_description!=null and tax_description!=''">
+			and tax_description=#{tax_description}
+		</if>
+		<if test="tax_application!=null and tax_application!=''">
+			and TAX_APPLICATION=#{tax_application}
+		</if>
+		<if test="is_tax!=null and is_tax!=''">
+			and IS_TAX=#{is_tax}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+		<if test="status_code != null and status_code != ''">
+			and STATUS_CODE = #{status_code}
+		</if>
+	</select>
+	<select id="BasSingleTaxSelectLimit" parameterType="hashmap" resultType="hashmap">
+		select status_code,reference_table_no,reference_table_description,
+			tax_code,tax_description,tax_property,formula_no,tax_application,
+			is_tax,tax_type,print_invoice_vat,tax_rate,fixed_tax 
+		from BAS_SINGLE_TAX 
+		where 1=1 
+		<if test="reference_table_no!=null and reference_table_no!=''">
+			and REFERENCE_TABLE_NO=#{reference_table_no} 
+		</if>	
+		<if test="reference_table_description!=null and reference_table_description!=''">
+			and REFERENCE_TABLE_DESCRIPTION=#{reference_table_description} 
+		</if>
+		<if test="tax_code!=null and tax_code!=''">
+			and TAX_CODE=#{tax_code}
+		</if>
+		<if test="tax_description!=null and tax_description!=''">
+			and tax_description=#{tax_description}
+		</if>
+		<if test="tax_application!=null and tax_application!=''">
+			and TAX_APPLICATION=#{tax_application}
+		</if>
+		<if test="is_tax!=null and is_tax!=''">
+			and IS_TAX=#{is_tax}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+		<if test="status_code != null and status_code != ''">
+			and STATUS_CODE = #{status_code}
+		</if>
+		order by LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 修改单一税别 -->
+	<update id="modifySingleTax" parameterType="hashmap">
+		update BAS_SINGLE_TAX
+		set
+			<trim suffixOverrides=",">
+				<if test="reference_table_description!=null">REFERENCE_TABLE_DESCRIPTION=#{reference_table_description},</if>
+				<if test="tax_description!=null">tax_description=#{tax_description},</if>
+				<if test="tax_property!=null">TAX_PROPERTY=#{tax_property},</if>
+				<if test="formula_no!=null">FORMULA_NO=#{formula_no},</if>
+				<if test="tax_application!=null">TAX_APPLICATION=#{tax_application},</if>
+				<if test="tax_type!=null">tax_type=#{tax_type},</if>
+				<if test="is_tax!=null">IS_TAX=#{is_tax},</if>
+				<if test="print_invoice_vat!=null">PRINT_INVOICE_VAT=#{print_invoice_vat},</if>
+				<if test="tax_rate!=null">TAX_RATE=#{tax_rate},</if>
+				<if test="fixed_tax!=null">FIXED_TAX=#{fixed_tax},</if>
+			</trim>
+		where 1=1 
+		<if test="reference_table_no!=null and reference_table_no!=''">
+			and REFERENCE_TABLE_NO=#{reference_table_no} 
+		</if>	
+		<if test="tax_code!=null and tax_code!=''">
+			and TAX_CODE=#{tax_code}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</update>
+	
+	<!-- 删除单一税别 -->
+	<delete id="deleteSingleTax" parameterType="hashmap">
+		delete from BAS_SINGLE_TAX 
+		where 1=1 
+			and LANGUAGE=#{language} and TAX_CODE=#{tax_code} 
+			and REFERENCE_TABLE_NO=#{reference_table_no}
+	</delete>
+	
+	<!-- 审核单一税别 -->
+	<update id="auditSingleTax" parameterType="hashmap">
+		update BAS_SINGLE_TAX
+		set
+			<trim suffixOverrides=",">
+				<if test="status_code!=null">STATUS_CODE=#{status_code},</if>
+				<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+				<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			</trim>
+		where 1=1 
+			and LANGUAGE=#{language} and TAX_CODE=#{tax_code} 
+			and REFERENCE_TABLE_NO=#{reference_table_no}
+	</update>
+	
+	<!-- 查询是否存在单一税别编号 -->
+	<select id="selectTaxId" parameterType="hashmap" resultType="hashmap">
+		select count(distinct tax_code,reference_table_no)
+		from BAS_SINGLE_TAX
+		where 1=1 
+		<if test="reference_table_no!=null and reference_table_no!=''">
+			and REFERENCE_TABLE_NO=#{reference_table_no} 
+		</if>	
+		<if test="tax_code!=null and tax_code!=''">
+			and TAX_CODE=#{tax_code}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+	
+	<!-- 新增单一税别 -->
+	<insert id="addSingleTax" parameterType="hashmap">
+		insert into BAS_SINGLE_TAX
+		<trim prefix=" (" suffix=") " suffixOverrides=",">
+			<include refid="taxRows"/>
+		</trim>
+		values
+		<trim prefix=" (" suffix=") " suffixOverrides=",">
+			<if test="data_owner !=null">#{data_owner},</if>
+			<if test="data_owned_department !=null">#{data_owned_department},</if>
+			<if test="data_created_by !=null">#{data_created_by},</if>
+			<if test="data_created_department !=null">#{data_created_department},</if>
+			<if test="data_created_date !=null">#{data_created_date},</if>
+			<if test="data_modified_by !=null">#{data_modified_by},</if>
+			<if test="last_modified_date !=null">#{last_modified_date},</if>
+			<if test="status_code !=null">#{status_code},</if>
+			<if test="reference_table_no !=null">#{reference_table_no},</if>
+			<if test="tax_code !=null">#{tax_code},</if>
+			<if test="tax_property !=null">#{tax_property},</if>
+			<if test="is_tax !=null">#{is_tax},</if>
+			<if test="tax_rate !=null">#{tax_rate},</if>
+			<if test="formula_no !=null">#{formula_no},</if>
+			<if test="tax_type !=null">#{tax_type},</if>
+			<if test="tax_application !=null">#{tax_application},</if>
+			<if test="print_invoice_vat !=null">#{print_invoice_vat},</if>
+			<if test="fixed_tax !=null">#{fixed_tax},</if>
+			<if test="language !=null">#{language},</if>
+			<if test="tax_description !=null">#{tax_description},</if>
+			<if test="reference_table_description !=null">#{reference_table_description},</if>
+		</trim>
+	</insert>
+	
+	<!-- 根据主键查询单一税别 -->
+	<select id="getSingleTax" parameterType="hashmap" resultType="hashmap">
+		select status_code,reference_table_no,reference_table_description,tax_code,
+			tax_description,tax_property,formula_no,tax_application,is_tax,tax_type,
+			print_invoice_vat,tax_rate,fixed_tax
+		from BAS_SINGLE_TAX 
+		where 1=1 
+			and LANGUAGE=#{language} and TAX_CODE=#{tax_code} 
+			and REFERENCE_TABLE_NO=#{reference_table_no}
+	</select>
+</mapper>

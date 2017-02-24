@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 发票类型设定维护作业 -->
+<mapper namespace="dao.BaseBasInvoiceTypeSettingMapper">
+	<select id="selectInvoiceTypeCount" resultType="hashmap" parameterType="hashmap">
+		SELECT COUNT(*) 
+		FROM BAS_INVOICE_TYPE
+		WHERE 1=1 
+		<if test="transaction_tax_area!=null and transaction_tax_area!=''">
+			AND TRANSACTION_TAX_AREA=#{transaction_tax_area}
+		</if>
+		<if test="transaction_tax_discription!=null and transaction_tax_discription!=''">
+			AND TRANSACTION_TAX_DISCRIPTION=#{transaction_tax_discription}
+		</if>
+		<if test="invoice_type!=null and invoice_type!=''">
+			AND INVOICE_TYPE=#{invoice_type}
+		</if>
+		<!-- 发票类型 -->
+		<if test="invoice_type_discription!=null and invoice_type_discription!=''">
+			AND INVOICE_TYPE_DISCRIPTION like '%' #{invoice_type_discription} '%'
+		</if>
+		<if test="invoice_input_output!=null and invoice_input_output!=''">
+			AND INVOICE_INPUT_OUTPUT=#{invoice_input_output} 
+		</if>
+		<if test="invoice_copies!=null and invoice_copies!=''">
+			AND INVOICE_COPIES=#{invoice_copies} 
+		</if>
+		<if test="status_code != null and status_code != ''">
+			AND STATUS_CODE = #{status_code}
+		</if>
+	</select>
+	<select id="selectInvoiceTypeLimit" resultType="hashmap" parameterType="hashmap">
+		SELECT status_code,transaction_tax_area,transaction_tax_discription,invoice_copies,
+		invoice_type,invoice_type_discription,invoice_input_output,number_of_invoice,
+		media_declaration_format,tax_principle,invoice_detailed_amount,
+		tolerance_amount,discount_type,is_diftaxno_transferrable,is_mutiple_rate  
+		FROM BAS_INVOICE_TYPE
+		WHERE 1=1 
+		<if test="transaction_tax_area!=null and transaction_tax_area!=''">
+			AND TRANSACTION_TAX_AREA=#{transaction_tax_area}
+		</if>
+		<if test="transaction_tax_discription!=null and transaction_tax_discription!=''">
+			AND TRANSACTION_TAX_DISCRIPTION=#{transaction_tax_discription}
+		</if>
+		<if test="invoice_type!=null and invoice_type!=''">
+			AND INVOICE_TYPE=#{invoice_type}
+		</if>
+		<!-- 发票类型 -->
+		<if test="invoice_type_discription!=null and invoice_type_discription!=''">
+			AND INVOICE_TYPE_DISCRIPTION like '%' #{invoice_type_discription} '%'
+		</if>
+		<if test="invoice_input_output!=null and invoice_input_output!=''">
+			AND INVOICE_INPUT_OUTPUT=#{invoice_input_output} 
+		</if>
+		<if test="invoice_copies!=null and invoice_copies!=''">
+			AND INVOICE_COPIES=#{invoice_copies} 
+		</if>
+		<if test="status_code != null and status_code != ''">
+			AND STATUS_CODE = #{status_code}
+		</if>
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	
+	<update id="modifyInvoiceType" parameterType="java.util.Map">
+	  UPDATE BAS_INVOICE_TYPE SET
+	<trim prefix=" " suffix=" " suffixOverrides=", ">
+	    <if test="data_owner!= null">DATA_OWNER=#{data_owner}, </if>
+		<if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT=#{data_owned_department}, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY=#{data_created_by}, </if>
+		<if test="data_created_department!= null">DATA_CREATED_DEPARTMENT=#{data_created_department}, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE=#{data_created_date}, </if>
+		<if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+		<if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		<if test="invoice_input_output!= null">INVOICE_INPUT_OUTPUT=#{invoice_input_output}, </if>
+		<if test="media_declaration_format!= null">MEDIA_DECLARATION_FORMAT=#{media_declaration_format}, </if>
+		<if test="tax_principle!= null">TAX_PRINCIPLE=#{tax_principle}, </if>
+		<if test="invoice_detailed_amount!= null">INVOICE_DETAILED_AMOUNT=#{invoice_detailed_amount}, </if>
+		<if test="tolerance_amount!= null">TOLERANCE_AMOUNT=#{tolerance_amount}, </if>
+		<if test="invoice_copies!= null">INVOICE_COPIES=#{invoice_copies}, </if>
+		<if test="discount_type!= null">DISCOUNT_TYPE=#{discount_type}, </if>
+		<if test="is_mutiple_rate!= null">IS_MUTIPLE_RATE=#{is_mutiple_rate}, </if>
+		<if test="number_of_invoice!= null">NUMBER_OF_INVOICE=#{number_of_invoice}, </if>
+		<if test="is_diftaxno_transferrable!= null">IS_DIFTAXNO_TRANSFERRABLE=#{is_diftaxno_transferrable}, </if>
+		<if test="invoice_type_discription!= null">INVOICE_TYPE_DISCRIPTION=#{invoice_type_discription}, </if>
+		<if test="transaction_tax_discription!= null">TRANSACTION_TAX_DISCRIPTION=#{transaction_tax_discription}, </if>
+	  </trim>
+	  <where>
+	    <if test="transaction_tax_area!=null and transaction_tax_area!=''">
+			AND TRANSACTION_TAX_AREA=#{transaction_tax_area} 
+		</if>
+		<if test="invoice_type!=null and invoice_type!=''">
+			AND INVOICE_TYPE=#{invoice_type} 
+		</if>
+		<if test="language!=null and language!=''">
+			AND LANGUAGE=#{language}
+		</if>
+	  </where>
+	</update>
+	
+	<delete id="deleteInvoiceType" parameterType="java.util.Map">
+		DELETE FROM BAS_INVOICE_TYPE
+		WHERE LANGUAGE=#{language} AND TRANSACTION_TAX_AREA=#{transaction_tax_area} 
+		AND INVOICE_TYPE=#{invoice_type}
+	</delete>
+	
+	<update id="auditInvoiceType" parameterType="java.util.Map">
+		UPDATE 
+			BAS_INVOICE_TYPE 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="status_code !=null">
+				status_code=#{status_code},
+			</if>
+			<if test="last_modified_date != null">
+				last_modified_date=#{last_modified_date}, 
+			</if>
+		</trim>	 
+		WHERE 
+			LANGUAGE=#{language} AND TRANSACTION_TAX_AREA=#{transaction_tax_area} 
+			AND INVOICE_TYPE=#{invoice_type}
+	</update>
+	<select id="judgeInvoiceType" parameterType="hashmap" resultType="java.lang.Integer">
+			SELECT COUNT(1) 
+			FROM BAS_INVOICE_TYPE
+			<where>
+	   		<if test="transaction_tax_area!=null and transaction_tax_area!=''">
+			AND TRANSACTION_TAX_AREA=#{transaction_tax_area} 
+		</if>
+		<if test="invoice_type!=null and invoice_type!=''">
+			AND INVOICE_TYPE=#{invoice_type} 
+		</if>
+		<if test="language!=null and language!=''">
+			AND LANGUAGE=#{language}
+		</if>
+	    </where>
+	</select>
+	
+	<select id="getInvoiceTypeOne" parameterType="hashmap" resultType="hashmap">
+			SELECT
+				status_code,transaction_tax_area,transaction_tax_discription,invoice_copies,
+				invoice_type,invoice_type_discription,invoice_input_output,number_of_invoice,
+				media_declaration_format,tax_principle,invoice_detailed_amount,
+				tolerance_amount,discount_type,is_diftaxno_transferrable,is_mutiple_rate 
+			FROM BAS_INVOICE_TYPE
+			<where>
+	   		<if test="transaction_tax_area!=null and transaction_tax_area!=''">
+			AND TRANSACTION_TAX_AREA=#{transaction_tax_area} 
+		</if>
+		<if test="invoice_type!=null and invoice_type!=''">
+			AND INVOICE_TYPE=#{invoice_type} 
+		</if>
+		<if test="language!=null and language!=''">
+			AND LANGUAGE=#{language}
+		</if>
+	    </where>
+	</select>
+	
+	<sql id="columnScope">
+	    <if test="data_owner!= null">DATA_OWNER, </if>
+		<if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY, </if>
+		<if test="data_created_department!= null">DATA_CREATED_DEPARTMENT, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE, </if>
+		<if test="data_modified_by!= null">DATA_MODIFIED_BY, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE, </if>
+		<if test="status_code!= null">STATUS_CODE, </if>
+		<if test="transaction_tax_area!= null">TRANSACTION_TAX_AREA, </if>
+		<if test="invoice_type!= null">INVOICE_TYPE, </if>
+		<if test="invoice_input_output!= null">INVOICE_INPUT_OUTPUT, </if>
+		<if test="media_declaration_format!= null">MEDIA_DECLARATION_FORMAT, </if>
+		<if test="tax_principle!= null">TAX_PRINCIPLE, </if>
+		<if test="invoice_detailed_amount!= null">INVOICE_DETAILED_AMOUNT, </if>
+		<if test="tolerance_amount!= null">TOLERANCE_AMOUNT, </if>
+		<if test="invoice_copies!= null">INVOICE_COPIES, </if>
+		<if test="discount_type!= null">DISCOUNT_TYPE, </if>
+		<if test="is_mutiple_rate!= null">IS_MUTIPLE_RATE, </if>
+		<if test="number_of_invoice!= null">NUMBER_OF_INVOICE, </if>
+		<if test="is_diftaxno_transferrable!= null">IS_DIFTAXNO_TRANSFERRABLE, </if>
+		<if test="language!= null">LANGUAGE, </if>
+		<if test="invoice_type_discription!= null">INVOICE_TYPE_DISCRIPTION, </if>
+		<if test="transaction_tax_discription!= null">TRANSACTION_TAX_DISCRIPTION, </if>
+	</sql>
+	<insert id="addInvoiceType" parameterType="java.util.Map">
+	    INSERT INTO BAS_INVOICE_TYPE
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+	  <trim prefix=" (" suffix=") " suffixOverrides=", ">
+		<if test="data_owner!= null">#{data_owner}, </if>
+		<if test="data_owned_department!= null">#{data_owned_department}, </if>
+		<if test="data_created_by!= null">#{data_created_by}, </if>
+		<if test="data_created_department!= null">#{data_created_department}, </if>
+		<if test="data_created_date!= null">#{data_created_date}, </if>
+		<if test="data_modified_by!= null">#{data_modified_by}, </if>
+		<if test="last_modified_date!= null">#{last_modified_date}, </if>
+		<if test="status_code!= null">#{status_code}, </if>
+		<if test="transaction_tax_area!= null">#{transaction_tax_area}, </if>
+		<if test="invoice_type!= null">#{invoice_type}, </if>
+		<if test="invoice_input_output!= null">#{invoice_input_output}, </if>
+		<if test="media_declaration_format!= null">#{MEDIA_DECLARATION_FORMAT}, </if>
+		<if test="tax_principle!= null">#{tax_principle}, </if>
+		<if test="invoice_detailed_amount!= null">#{invoice_detailed_amount}, </if>
+		<if test="tolerance_amount!= null">#{tolerance_amount}, </if>
+		<if test="invoice_copies!= null">#{invoice_copies}, </if>
+		<if test="discount_type!= null">#{discount_type}, </if>
+		<if test="is_mutiple_rate!= null">#{is_mutiple_rate}, </if>
+		<if test="number_of_invoice!= null">#{number_of_invoice}, </if>
+		<if test="is_diftaxno_transferrable!= null">#{is_diftaxno_transferrable}, </if>
+		<if test="language!= null">#{language}, </if>
+		<if test="invoice_type_discription!= null">#{invoice_type_discription}, </if>
+		<if test="transaction_tax_discription!= null">#{transaction_tax_discription}, </if>
+	  </trim>
+	</insert>
+</mapper>

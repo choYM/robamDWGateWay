@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseBasTimeZoneSettingMapper">
+	<sql id="columnScope">
+		<if test="time_zone_no != null">TIME_ZONE_NO, </if>
+		<if test="time_zone_simpleno != null">TIME_ZONE_SIMPLENO, </if>
+		<if test="representational_city != null">REPRESENTATIONAL_CITY, </if>
+		<if test="data_created_date != null">data_created_date, </if>
+		<if test="status_code != null">status_code, </if>
+	</sql>
+
+	<!-- INSERT -->
+	<insert id="addBasicTimeZone" parameterType="java.util.Map">
+		INSERT INTO BAS_TIME_ZONE
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="time_zone_no != null">#{time_zone_no}, </if>
+			<if test="time_zone_simpleno != null">#{time_zone_simpleno}, </if>
+			<if test="representational_city != null">#{representational_city}, </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="status_code != null">#{status_code}, </if>
+		</trim>
+		
+	</insert>
+
+	<!-- UPDATE -->
+	<update id="updateBasicTimeZone" parameterType="java.util.Map">
+		UPDATE BAS_TIME_ZONE SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="time_zone_simpleno != null">time_zone_simpleno = #{time_zone_simpleno}, </if>
+			<if test="representational_city != null">representational_city = #{representational_city}, </if>
+			<if test="status_code != null">status_code = #{status_code}, </if>
+			<if test="last_modified_date != null">last_modified_date = #{last_modified_date}, </if>
+		</trim>
+		WHERE time_zone_no = #{time_zone_no}
+	</update>
+
+	<!-- DELETE -->
+	<delete id="deleteBasicTimeZone" parameterType="java.util.ArrayList">
+		DELETE FROM BAS_TIME_ZONE WHERE TIME_ZONE_NO IN
+		<foreach item="time_zone_no" collection="list" open="(" close=")" separator=",">
+			#{time_zone_no}
+		</foreach>
+	</delete>
+	
+	<select id="searchBasicTimeZoneList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT time_zone_no, time_zone_simpleno, representational_city, status_code
+		FROM BAS_TIME_ZONE 
+		<where>
+			<if test="time_zone_no != null and time_zone_no != ''">AND time_zone_no = #{time_zone_no} </if>
+			<if test="time_zone_simpleno != null and time_zone_simpleno != ''">AND time_zone_simpleno = #{time_zone_simpleno} </if>
+			<if test="representational_city != null and representational_city != ''">AND representational_city = #{representational_city} </if>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+		</where>
+		LIMIT #{start}, #{pageRows}
+	</select>
+
+	<select id="searchBasicTimeZoneDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT time_zone_no, time_zone_simpleno, representational_city, status_code 
+		FROM BAS_TIME_ZONE WHERE time_zone_no = #{time_zone_no}
+	</select>
+	
+	<select id="getBasicTimeZoneTotalRows" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT COUNT(*) AS totalRows  
+		FROM BAS_TIME_ZONE
+		<where>
+			<if test="time_zone_no != null and time_zone_no != ''">AND time_zone_no = #{time_zone_no} </if>
+			<if test="time_zone_simpleno != null and time_zone_simpleno != ''">AND time_zone_simpleno = #{time_zone_simpleno} </if>
+			<if test="representational_city != null and representational_city != ''">AND representational_city = #{representational_city} </if>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+		</where>
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_f13 银行资料维护 -->
+<!-- @author gejc -->
+<!-- @since 2017-02-17 -->
+<mapper namespace="dao.BaseBasBankSettingMapper">
+
+	<!-- 分页查询，查询数据量 -->
+	<select id="getBankListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			COUNT(*)  
+		FROM
+		 	BAS_BANK 
+		<where>
+			<if test="country_region!=null and country_region!=''">
+			 	AND country_region=#{country_region}	
+			</if>
+			<!-- 银行网点编号 -->
+			<if test="bank_branch!=null and bank_branch!=''">
+			 	AND bank_branch LIKE '%' #{bank_branch}	'%'
+			</if>
+			<!-- SWIFT码 -->
+			<if test="swift_code!=null and swift_code!=''">
+			 	AND swift_code LIKE '%' #{swift_code} '%'
+			</if>
+			<if test="bank_type!=null and bank_type!=''">
+			 	AND bank_type=#{bank_type}
+			</if>
+			<if test="bank_type_discription != null and bank_type_discription != ''">
+				and bank_type_discription like '%' #{bank_type_discription} '%'
+			</if>
+			<!-- 银行网点简称 -->
+			<if test="bank_branch_shotname!=null and bank_branch_shotname!=''">
+			 	AND bank_branch_shotname LIKE '%' #{bank_branch_shotname} '%'	
+			</if>
+			<!-- 银行网点全称 -->
+			<if test="bank_branch_fullname!=null and bank_branch_fullname!=''">
+			 	AND bank_branch_fullname LIKE '%' #{bank_branch_fullname} '%'	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</select>
+	
+	<!-- 分页查询银行数据 -->
+	<select id="getBankList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			status_code,country_region,bank_branch,bank_branch_shotname,bank_branch_fullname,
+			swift_code,iban,bank_type,bank_type_discription,contact_name,contact_address,communication_no    
+		FROM
+		 	BAS_BANK
+		<where>	
+			<if test="country_region!=null and country_region!=''">
+			 	AND country_region=#{country_region}	
+			</if>
+			<!-- 银行网点编号 -->
+			<if test="bank_branch!=null and bank_branch!=''">
+			 	AND bank_branch LIKE '%' #{bank_branch}	'%'
+			</if>
+			<!-- SWIFT码 -->
+			<if test="swift_code!=null and swift_code!=''">
+			 	AND swift_code LIKE '%' #{swift_code} '%'
+			</if>
+			<if test="bank_type!=null and bank_type!=''">
+			 	AND bank_type=#{bank_type}
+			</if>
+			<if test="bank_type_discription != null and bank_type_discription != ''">
+				and bank_type_discription like '%' #{bank_type_discription} '%'
+			</if>
+			<!-- 银行网点简称 -->
+			<if test="bank_branch_shotname!=null and bank_branch_shotname!=''">
+			 	AND bank_branch_shotname LIKE '%' #{bank_branch_shotname} '%'	
+			</if>
+			<!-- 银行网点全称 -->
+			<if test="bank_branch_fullname!=null and bank_branch_fullname!=''">
+			 	AND bank_branch_fullname LIKE '%' #{bank_branch_fullname} '%'	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where> 
+		  ORDER BY LAST_MODIFIED_DATE DESC  
+		  LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 查询指定银行数据 -->
+	<select  id="getBank" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			status_code,country_region,bank_branch,bank_branch_shotname,bank_branch_fullname,
+			swift_code,iban,bank_type,bank_type_discription,contact_name,contact_address,communication_no   
+		FROM
+		 	BAS_BANK
+		<where>	 
+			<if test="bank_branch!=null and bank_branch!=''">
+			 	AND bank_branch=#{bank_branch}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 新增银行数据 -->
+	<insert parameterType="hashmap" id="addBank">
+		INSERT INTO 
+			BAS_BANK
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="last_modified_date != null">#{last_modified_date}, </if>
+			<if test="status_code != null">#{status_code}, </if>
+			<if test="country_region != null">#{country_region}, </if>
+			<if test="bank_branch != null">#{bank_branch}, </if>
+			<if test="bank_branch_shotname != null">#{bank_branch_shotname}, </if>
+			<if test="bank_branch_fullname != null">#{bank_branch_fullname}, </if>
+			<if test="swift_code != null">#{swift_code}, </if>
+			<if test="iban != null">#{iban}, </if>
+			<if test="bank_type != null">#{bank_type}, </if>
+			<if test="bank_type_discription != null">#{bank_type_discription},</if>
+			<if test="contact_name != null">#{contact_name}, </if>
+			<if test="contact_address != null">#{contact_address}, </if>
+			<if test="communication_no != null">#{communication_no}, </if>
+			<if test="language != null">#{language}, </if>
+		</trim>		 
+	</insert>
+	
+	<sql id="columnScope">
+		<if test="data_created_date != null">data_created_date, </if>
+		<if test="last_modified_date != null">last_modified_date, </if>
+		<if test="status_code != null">status_code, </if>
+		<if test="country_region != null">country_region, </if>
+		<if test="bank_branch != null">bank_branch, </if>
+		<if test="bank_branch_shotname != null">bank_branch_shotname, </if>
+		<if test="bank_branch_fullname != null">bank_branch_fullname, </if>
+		<if test="swift_code != null">swift_code, </if>
+		<if test="iban != null">iban, </if>
+		<if test="bank_type != null">bank_type, </if>
+		<if test="bank_type_discription != null">bank_type_discription,</if>
+		<if test="contact_name != null">contact_name, </if>
+		<if test="contact_address != null">contact_address, </if>
+		<if test="communication_no != null">communication_no, </if>
+		<if test="language != null">language, </if>
+	</sql>
+	
+	<!-- 修改银行数据 -->
+	<update id="updateBank" parameterType="hashmap">
+		UPDATE 
+			BAS_BANK 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			<if test="country_region != null">country_region=#{country_region}, </if>
+			<if test="bank_branch_shotname != null">bank_branch_shotname=#{bank_branch_shotname}, </if>
+			<if test="bank_branch_fullname != null">bank_branch_fullname=#{bank_branch_fullname}, </if>
+			<if test="swift_code != null">swift_code=#{swift_code}, </if>
+			<if test="iban != null">iban=#{iban}, </if>
+			<if test="bank_type != null">bank_type=#{bank_type}, </if>
+			<if test="bank_type_discription != null">bank_type_discription=#{bank_type_discription},</if>
+			<if test="contact_name != null">contact_name=#{contact_name}, </if>
+			<if test="contact_address != null">contact_address=#{contact_address}, </if>
+			<if test="communication_no != null">communication_no=#{communication_no}, </if>
+ 		</trim> 
+		<where>
+			<if test="bank_branch!=null and bank_branch!=''">
+			 	AND bank_branch=#{bank_branch}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	
+	<!-- 审核银行数据 -->
+	<update id="auditBank" parameterType="hashmap">
+		UPDATE
+		BAS_BANK
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="status_code !=null">
+				status_code=#{status_code},
+			</if>
+			<if test="last_modified_date != null">
+				last_modified_date=#{last_modified_date}, 
+			</if>
+		</trim>	
+		<where>
+			<if test="bank_branch!=null and bank_branch!=''">
+				AND bank_branch=#{bank_branch}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+		</where> 
+	</update>
+	
+	<!-- 删除银行数据 -->
+	<delete id="deleteBank" parameterType="hashmap">
+	        DELETE FROM 
+	        	BAS_BANK
+	        <where>
+				<if test="bank_branch!=null and bank_branch!=''">
+					AND bank_branch=#{bank_branch}
+				</if>
+				<if test="language!=null and language!=''">
+					AND language=#{language}
+				</if>
+			</where>	 
+	</delete>
+	
+</mapper>

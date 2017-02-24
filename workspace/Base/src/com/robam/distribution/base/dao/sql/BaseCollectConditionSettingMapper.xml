@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_m30 收款条件维护服务 -->
+<!-- @author yangjian -->
+<!-- @since 2017-02-17 -->
+<mapper namespace="dao.BaseCollectConditionSettingMapper">
+	
+	<select id="selectCollectConditionCount" resultType="hashmap" parameterType="hashmap">
+		SELECT 
+			COUNT(*)
+		FROM 
+			BAS_COLLECTION_TERM 
+		<where>  
+			<!-- 收款条件编号 -->
+			<if test="collection_term!=null and collection_term!=''">
+				AND collection_term LIKE '%' #{collection_term} '%'
+			</if>
+			<!-- 收款条件说明 -->
+			<if test="collection_term_description!=null and collection_term_description!=''">
+				AND collection_term_description LIKE '%' #{collection_term_description} '%'
+			</if>
+			<if test="payment_type_property!=null and payment_type_property!=''">
+				AND payment_type_property=#{payment_type_property} 
+			</if>
+			<if test="is_deposit_received!=null and is_deposit_received!=''">
+				AND is_deposit_received=#{is_deposit_received}
+			</if>
+			<if test="is_transaction_paid!=null and is_transaction_paid!=''">
+				AND is_transaction_paid=#{is_transaction_paid} 
+			</if>
+			<if test="final_payment_type!=null and final_payment_type!=''">
+				AND final_payment_type!=#{final_payment_type}
+			</if>
+			<if test="multiple_acctperiod_type!=null and multiple_acctperiod_type!=''">
+				AND multiple_acctperiod_type=#{multiple_acctperiod_type} 
+			</if>
+			<if test="multiple_acctperiod_discription!=null and multiple_acctperiod_discription!=''">
+				AND multiple_acctperiod_discription=#{multiple_acctperiod_discription}
+			</if>
+			<if test="payment_favorable_term!=null and payment_favorable_term!=''">
+				AND payment_favorable_term=#{payment_favorable_term}
+			</if>
+			<if test="payment_favorableterm_description!=null and payment_favorableterm_description!=''">
+				AND payment_favorableterm_description=#{payment_favorableterm_description}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="selectCollectConditionLimit" resultType="hashmap" parameterType="hashmap">
+		SELECT 
+			status_code,collection_term,collection_term_description,payment_type_property,
+			is_deposit_received,is_transaction_paid,final_payment_type,multiple_acctperiod_type,
+			multiple_acctperiod_discription,payment_favorable_term,payment_favorableterm_description,
+			payable_starting_standard,receivable_payment_season,receivable_payment_month,
+			receivable_payment_day,account_starting_standard,account_redeem_season,
+			account_redeem_month,account_redeem_date 
+		FROM 
+			BAS_COLLECTION_TERM
+		<where>
+			<!-- 收款条件编号 -->
+			<if test="collection_term!=null and collection_term!=''">
+				AND collection_term LIKE '%' #{collection_term} '%'
+			</if>
+			<!-- 收款条件说明 -->
+			<if test="collection_term_description!=null and collection_term_description!=''">
+				AND collection_term_description LIKE '%' #{collection_term_description} '%'
+			</if>
+			<if test="payment_type_property!=null and payment_type_property!=''">
+				AND payment_type_property=#{payment_type_property} 
+			</if>
+			<if test="is_deposit_received!=null and is_deposit_received!=''">
+				AND is_deposit_received=#{is_deposit_received}
+			</if>
+			<if test="is_transaction_paid!=null and is_transaction_paid!=''">
+				AND is_transaction_paid=#{is_transaction_paid} 
+			</if>
+			<if test="final_payment_type!=null and final_payment_type!=''">
+				AND final_payment_type!=#{final_payment_type}
+			</if>
+			<if test="multiple_acctperiod_type!=null and multiple_acctperiod_type!=''">
+				AND multiple_acctperiod_type=#{multiple_acctperiod_type} 
+			</if>
+			<if test="multiple_acctperiod_discription!=null and multiple_acctperiod_discription!=''">
+				AND multiple_acctperiod_discription=#{multiple_acctperiod_discription}
+			</if>
+			<if test="payment_favorable_term!=null and payment_favorable_term!=''">
+				AND payment_favorable_term=#{payment_favorable_term}
+			</if>
+			<if test="payment_favorableterm_description!=null and payment_favorableterm_description!=''">
+				AND payment_favorableterm_description=#{payment_favorableterm_description}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+		</where>
+		ORDER BY multiple_acctperiod_discription ASC 
+		LIMIT #{startIndex},#{pageSize}
+	</select>
+	
+	<update id="updateCollectCondition">
+		UPDATE 
+			BAS_COLLECTION_TERM 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="collection_term_description != null">collection_term_description=#{collection_term_description}, </if>
+			<if test="final_payment_type != null">final_payment_type=#{final_payment_type}, </if>
+			<if test="multiple_acctperiod_type != null">multiple_acctperiod_type=#{multiple_acctperiod_type}, </if>
+			<if test="multiple_acctperiod_discription != null">multiple_acctperiod_discription=#{multiple_acctperiod_discription}, </if>
+			<if test="payment_type_property != null">payment_type_property=#{payment_type_property}, </if>
+			<if test="is_deposit_received != null">is_deposit_received=#{is_deposit_received}, </if>
+			<if test="is_transaction_paid != null">is_transaction_paid=#{is_transaction_paid}, </if>
+			<if test="payment_favorable_term != null">payment_favorable_term=#{payment_favorable_term}, </if>
+			<if test="payment_favorableterm_description != null">payment_favorableterm_description=#{payment_favorableterm_description}, </if>
+			<if test="payable_starting_standard != null">payable_starting_standard=#{payable_starting_standard}, </if>
+			<if test="receivable_payment_season != null">receivable_payment_season=#{receivable_payment_season}, </if>
+			<if test="receivable_payment_month != null">receivable_payment_month=#{receivable_payment_month}, </if>
+			<if test="receivable_payment_day != null">receivable_payment_day=#{receivable_payment_day}, </if>
+			<if test="account_starting_standard != null">account_starting_standard=#{account_starting_standard}, </if>
+			<if test="account_redeem_season != null">account_redeem_season=#{account_redeem_season}, </if>
+			<if test="account_redeem_month != null">account_redeem_month=#{account_redeem_month}, </if>
+			<if test="account_redeem_date != null">account_redeem_date=#{account_redeem_date}, </if>
+			<if test="language != null">language=#{language}, </if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if> 
+		</trim>	
+		<where>
+			<if test="collection_term!=null and collection_term!=''">
+				AND collection_term=#{collection_term}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+		</where>
+	</update>
+	
+	<delete id="deleteCollectCondition" parameterType="hashmap">
+		DELETE FROM 
+			BAS_COLLECTION_TERM
+		<where>
+			<if test="collection_term!=null and collection_term!=''">
+				AND collection_term=#{collection_term}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+		</where> 
+	</delete>
+	
+	<update id="auditCollectCondition" parameterType="hashmap">
+		UPDATE 
+			BAS_COLLECTION_TERM
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="status_code !=null">
+				status_code=#{status_code},
+			</if>
+			<if test="last_modified_date != null">
+				last_modified_date=#{last_modified_date}, 
+			</if>
+		</trim>	
+		<where>
+			<if test="collection_term!=null and collection_term!=''">
+				AND collection_term=#{collection_term}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+		</where> 
+	</update>
+	
+	<select id="queryCollectConditionCountId" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			status_code,collection_term,collection_term_description,payment_type_property,
+			is_deposit_received,is_transaction_paid,final_payment_type,multiple_acctperiod_type,
+			multiple_acctperiod_discription,payment_favorable_term,payment_favorableterm_description,
+			payable_starting_standard,receivable_payment_season,receivable_payment_month,
+			receivable_payment_day,account_starting_standard,account_redeem_season,
+			account_redeem_month,account_redeem_date 
+		FROM 
+			BAS_COLLECTION_TERM 
+		<where>
+			<if test="collection_term!=null and collection_term!=''">
+				AND collection_term=#{collection_term}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+		</where>
+	</select>
+	
+	<sql id="columnScope">
+		<if test="status_code != null">status_code, </if>
+		<if test="collection_term != null">collection_term, </if>
+		<if test="collection_term_description != null">collection_term_description, </if>
+		<if test="final_payment_type != null">final_payment_type, </if>
+		<if test="multiple_acctperiod_type != null">multiple_acctperiod_type, </if>
+		<if test="multiple_acctperiod_discription != null">multiple_acctperiod_discription, </if>
+		<if test="payment_type_property != null">payment_type_property, </if>
+		<if test="is_deposit_received != null">is_deposit_received, </if>
+		<if test="is_transaction_paid != null">is_transaction_paid, </if>
+		<if test="payment_favorable_term != null">payment_favorable_term, </if>
+		<if test="payment_favorableterm_description != null">payment_favorableterm_description, </if>
+		<if test="payable_starting_standard != null">payable_starting_standard, </if>
+		<if test="receivable_payment_season != null">receivable_payment_season, </if>
+		<if test="receivable_payment_month != null">receivable_payment_month, </if>
+		<if test="receivable_payment_day != null">receivable_payment_day, </if>
+		<if test="account_starting_standard != null">account_starting_standard, </if>
+		<if test="account_redeem_season != null">account_redeem_season, </if>
+		<if test="account_redeem_month != null">account_redeem_month, </if>
+		<if test="account_redeem_date != null">account_redeem_date, </if>
+		<if test="language != null">language, </if>
+		<if test="data_created_date != null">data_created_date, </if>
+		<if test="last_modified_date != null">last_modified_date, </if>
+	</sql>
+	<insert id="addCollectCondition" parameterType="hashmap">
+		INSERT INTO 
+			BAS_COLLECTION_TERM
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>	 
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="status_code != null">#{status_code}, </if>
+			<if test="collection_term != null">#{collection_term}, </if>
+			<if test="collection_term_description != null">#{collection_term_description}, </if>
+			<if test="final_payment_type != null">#{final_payment_type}, </if>
+			<if test="multiple_acctperiod_type != null">#{multiple_acctperiod_type}, </if>
+			<if test="multiple_acctperiod_discription != null">#{multiple_acctperiod_discription}, </if>
+			<if test="payment_type_property != null">#{payment_type_property}, </if>
+			<if test="is_deposit_received != null">#{is_deposit_received}, </if>
+			<if test="is_transaction_paid != null">#{is_transaction_paid}, </if>
+			<if test="payment_favorable_term != null">#{payment_favorable_term}, </if>
+			<if test="payment_favorableterm_description != null">#{payment_favorableterm_description}, </if>
+			<if test="payable_starting_standard != null">#{payable_starting_standard}, </if>
+			<if test="receivable_payment_season != null">#{receivable_payment_season}, </if>
+			<if test="receivable_payment_month != null">#{receivable_payment_month}, </if>
+			<if test="receivable_payment_day != null">#{receivable_payment_day}, </if>
+			<if test="account_starting_standard != null">#{account_starting_standard}, </if>
+			<if test="account_redeem_season != null">#{account_redeem_season}, </if>
+			<if test="account_redeem_month != null">#{account_redeem_month}, </if>
+			<if test="account_redeem_date != null">#{account_redeem_date}, </if>
+			<if test="language != null">#{language}, </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="last_modified_date != null">#{last_modified_date}, </if>
+		</trim>
+	</insert>
+</mapper>

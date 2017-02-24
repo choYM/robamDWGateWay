@@ -1,0 +1,1386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 商品品牌、门店类别维护作业、门店商品其他属性维护作业、休假类型维护作业、
+					  商品价格带维护作业 、商品系列维护作业-->
+<mapper namespace="dao.BaseApplicationCategoryCodesSettingMapper">
+	<!-- 应用分类码维护 - BAS_APPLICATION_CATEGORY -->
+	<sql id="columnScope">
+		<if test="status_code != null">status_code,</if>
+		<if test="acc != null">acc,</if>
+		<if test="acc_code != null">acc_code,</if>
+		<if test="upper_acc_code != null">upper_acc_code,</if>
+		<if test="reference_field1 != null">reference_field1,</if>
+		<if test="reference_field2 != null">reference_field2,</if>
+		<if test="reference_field3 != null">reference_field3,</if>
+		<if test="reference_field4 != null">reference_field4,</if>
+		<if test="reference_field5 != null">reference_field5,</if>
+		<if test="reference_field6 != null">reference_field6,</if>
+		<if test="reference_field7 != null">reference_field7,</if>
+		<if test="reference_field8 != null">reference_field8,</if>
+		<if test="reference_field9 != null">reference_field9,</if>
+		<if test="reference_field10 != null">reference_field10,</if>
+		<if test="reference_field11 != null">reference_field11,</if>
+		<if test="reference_field12 != null">reference_field12,</if>
+		<if test="reference_field13 != null">reference_field13,</if>
+		<if test="reference_field14 != null">reference_field14,</if>
+		<if test="reference_field15 != null">reference_field15,</if>
+		<if test="reference_field16 != null">reference_field16,</if>
+		<if test="reference_field17 != null">reference_field17,</if>
+		<if test="reference_field18 != null">reference_field18,</if>
+		<if test="reference_field19 != null">reference_field19,</if>
+		<if test="reference_field20 != null">reference_field20,</if>
+		<if test="data_owner != null">data_owner,</if>
+		<if test="data_owned_department != null">data_owned_department,</if>
+		<if test="data_created_by != null">data_created_by,</if>
+		<if test="data_created_department != null">data_created_department,</if>
+		<if test="data_created_date != null">data_created_date,</if>
+		<if test="data_modified_by != null">data_modified_by,</if>
+		<if test="last_modified_date != null">last_modified_date,</if>
+		<if test="language != null">language,</if>
+		<if test="acc_description != null">acc_description,</if>
+		<if test="upper_acc_description != null">upper_acc_description,</if>
+	</sql>
+
+	<!-- 商品品牌 服务 -->
+	<!-- 预设条件查询列表总数 -->
+	<select id="selectBrandCount" parameterType="hashmap" resultType="hashmap">
+		SELECT count(*) 
+		  FROM BAS_APPLICATION_CATEGORY 
+		 <where>
+			<if test="acc != null and acc != ''">
+				acc = #{acc}
+			</if>
+			<!-- 品牌编号 -->
+			<if test="acc_code != null and acc_code != ''">
+				AND acc_code like '%' #{acc_code} '%'
+			</if>
+			<!-- 品牌名称 -->
+			<if test="acc_description != null and acc_description != ''">
+				AND acc_description like '%' #{acc_description} '%'
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据预设条件查询商品品牌列表（分页） -->
+	<select id="getBrandList" parameterType="hashmap" resultType="hashmap">
+		SELECT status_code,acc_code,acc_description
+		  FROM BAS_APPLICATION_CATEGORY 
+		<where>
+			<if test="acc != null and acc != ''">
+				acc = #{acc}
+			</if>
+			<!-- 品牌编号 -->
+			<if test="acc_code != null and acc_code != ''">
+				AND acc_code like '%' #{acc_code} '%'
+			</if>
+			<!-- 品牌名称 -->
+			<if test="acc_description != null and acc_description != ''">
+				AND acc_description like '%' #{acc_description} '%'
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+		</where>
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 修改商品品牌 -->
+	<update id="updateBrand" parameterType="hashmap" >
+		UPDATE BAS_APPLICATION_CATEGORY SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="status_code != null">status_code=#{status_code},</if>
+			<if test="upper_acc_code != null">upper_acc_code=#{upper_acc_code},</if>
+			<if test="reference_field1 != null">reference_field1=#{reference_field1},</if>
+			<if test="reference_field2 != null">reference_field2=#{reference_field2},</if>
+			<if test="reference_field3 != null">reference_field3=#{reference_field3},</if>
+			<if test="reference_field4 != null">reference_field4=#{reference_field4},</if>
+			<if test="reference_field5 != null">reference_field5=#{reference_field5},</if>
+			<if test="reference_field6 != null">reference_field6=#{reference_field6},</if>
+			<if test="reference_field7 != null">reference_field7=#{reference_field7},</if>
+			<if test="reference_field8 != null">reference_field8=#{reference_field8},</if>
+			<if test="reference_field9 != null">reference_field9=#{reference_field9},</if>
+			<if test="reference_field10 != null">reference_field10=#{reference_field10},</if>
+			<if test="reference_field11 != null">reference_field11=#{reference_field11},</if>
+			<if test="reference_field12 != null">reference_field12=#{reference_field12},</if>
+			<if test="reference_field13 != null">reference_field13=#{reference_field13},</if>
+			<if test="reference_field14 != null">reference_field14=#{reference_field14},</if>
+			<if test="reference_field15 != null">reference_field15=#{reference_field15},</if>
+			<if test="reference_field16 != null">reference_field16=#{reference_field16},</if>
+			<if test="reference_field17 != null">reference_field17=#{reference_field17},</if>
+			<if test="reference_field18 != null">reference_field18=#{reference_field18},</if>
+			<if test="reference_field19 != null">reference_field19=#{reference_field19},</if>
+			<if test="reference_field20 != null">reference_field20=#{reference_field20},</if>
+			<if test="data_owner != null">data_owner=#{data_owner},</if>
+			<if test="data_owned_department != null">data_owned_department=#{data_owned_department},</if>
+			<if test="data_created_by != null">data_created_by=#{data_created_by},</if>
+			<if test="data_created_department != null">data_created_department=#{data_created_department},</if>
+			<if test="data_created_date != null">data_created_date=#{data_created_date},</if>
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			<if test="acc_description != null">acc_description=#{acc_description},</if>
+			<if test="upper_acc_description != null">upper_acc_description=#{upper_acc_description},</if>
+		</trim>
+		WHERE acc = #{acc} 
+		  AND acc_code = #{acc_code} 
+		  AND language = #{language}		
+	</update>
+	 
+	 
+	 <!-- 新增品牌详细资料 -->
+	 <insert id="addBrand" parameterType="hashmap">
+	 	
+	 	INSERT INTO BAS_APPLICATION_CATEGORY
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<include refid="columnScope"></include>
+	 	</trim>
+	 	VALUES
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<if test="status_code != null">'Y',</if>
+			<if test="acc != null">#{acc},</if>
+			<if test="acc_code != null">#{acc_code},</if>
+			<if test="upper_acc_code != null">#{upper_acc_code},</if>
+			<if test="reference_field1 != null">#{reference_field1},</if>
+			<if test="reference_field2 != null">#{reference_field2},</if>
+			<if test="reference_field3 != null">#{reference_field3},</if>
+			<if test="reference_field4 != null">#{reference_field4},</if>
+			<if test="reference_field5 != null">#{reference_field5},</if>
+			<if test="reference_field6 != null">#{reference_field6},</if>
+			<if test="reference_field7 != null">#{reference_field7},</if>
+			<if test="reference_field8 != null">#{reference_field8},</if>
+			<if test="reference_field9 != null">#{reference_field9},</if>
+			<if test="reference_field10 != null">#{reference_field10},</if>
+			<if test="reference_field11 != null">#{reference_field11},</if>
+			<if test="reference_field12 != null">#{reference_field12},</if>
+			<if test="reference_field13 != null">#{reference_field13},</if>
+			<if test="reference_field14 != null">#{reference_field14},</if>
+			<if test="reference_field15 != null">#{reference_field15},</if>
+			<if test="reference_field16 != null">#{reference_field16},</if>
+			<if test="reference_field17 != null">#{reference_field17},</if>
+			<if test="reference_field18 != null">#{reference_field18},</if>
+			<if test="reference_field19 != null">#{reference_field19},</if>
+			<if test="reference_field20 != null">#{reference_field20},</if>
+			<if test="data_owner != null">#{data_owner},</if>
+			<if test="data_owned_department != null">#{data_owned_department},</if>
+			<if test="data_created_by != null">#{data_created_by},</if>
+			<if test="data_created_department != null">#{data_created_department},</if>
+			<if test="data_created_date != null">#{data_created_date},</if>
+			<if test="data_modified_by != null">#{data_modified_by},</if>
+			<if test="last_modified_date != null">#{last_modified_date},</if>
+			<if test="language != null">'zh_CN',</if>
+			<if test="acc_description != null">#{acc_description},</if>
+			<if test="upper_acc_description != null">#{upper_acc_description},</if>
+	 	</trim>
+	 </insert>
+	 
+	 <!-- 批量删除 -->
+	 <delete id="deleteBrand" parameterType="hashmap">
+        DELETE FROM BAS_APPLICATION_CATEGORY 
+         WHERE acc=#{acc} 
+           AND acc_code=#{acc_code}
+           AND language = #{language}	
+    </delete>
+    
+    <!-- 审核商品品牌 -->
+    <update id="auditBrand" parameterType="hashmap">
+    	UPDATE BAS_APPLICATION_CATEGORY 
+    	   SET 
+			<trim suffixOverrides=",">
+				<if test="status_code !=null">status_code=#{status_code},</if>
+				<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+				<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			</trim>
+    	 WHERE acc=#{acc}
+    	   AND acc_code=#{acc_code}
+    	   AND language = #{language} 
+    </update>
+    
+    <!-- 判断商品品牌是否存在记录 -->
+    <select id="judgeBrand" parameterType="hashmap" resultType="java.lang.Integer">
+    	SELECT COUNT(1) 
+    	  FROM BAS_APPLICATION_CATEGORY 
+    	 WHERE acc = #{acc}
+    	   AND acc_code = #{acc_code}
+    	   AND language = #{language}
+    </select>
+    
+    <select id="getBrand" parameterType="hashmap" resultType="hashmap">
+    	select  status_code,acc_code, acc_description 
+    	from BAS_APPLICATION_CATEGORY
+    	where acc = #{acc}
+    	   and acc_code = #{acc_code}
+    	   and language = #{language}
+    </select>
+    
+    <!-- 门店类别维护作业  暂时无需此服务-->
+    <!-- 
+    <select id="selectSiteCategoryCount" resultType="hashmap" parameterType="hashmap">
+			select count(distinct acc,acc_code,language) 
+			from BAS_APPLICATION_CATEGORY where 1=1
+			<if test="acc!=null and acc!=''">
+				and acc=#{acc}
+			</if>
+			<if test="acc_code!=null and acc_code!=''">
+				and acc_code=#{acc_code}
+			</if>
+			<if test="acc_description!=null and acc_description!=''">
+				and acc_description like '%' #{acc_description} '%'
+			</if>
+			<if test="language!=null and language!=''">
+				and language=#{language}
+			</if>
+	</select>
+	<select id="selectSiteCategoryLimit" resultType="hashmap" parameterType="hashmap">
+			select distinct status_code,acc_code,acc_description
+			FROM BAS_APPLICATION_CATEGORY WHERE 1=1 
+			<if test="acc!=null and acc!=''">
+				and acc=#{acc}
+			</if>
+			<if test="acc_code!=null and acc_code!=''">
+				and acc_code=#{acc_code}
+			</if>
+			<if test="acc_description!=null and acc_description!=''">
+				and acc_description like '%' #{acc_description} '%'
+			</if>
+			<if test="language!=null and language!=''">
+				and language=#{language}
+			</if>
+			order by acc,acc_code,language asc LIMIT #{startIndex},#{pageSize}
+	</select>
+	<update id="updateSiteCategory" parameterType="hashmap">
+	        update BAS_APPLICATION_CATEGORY
+	        set acc_description=#{acc_description}
+	        where acc=#{acc} and acc_code=#{acc_code} and language=#{language}
+	</update>
+	<delete id="deleteSiteCategory" parameterType="hashmap">
+	   delete from BAS_APPLICATION_CATEGORY where language=#{language} and (
+	   <foreach collection="list" item="item" index="index" separator="or">  
+	       ( acc=#{item.acc} and acc_code=#{item.acc_code})
+	    </foreach>
+	    )
+	</delete>
+	<update id="auditSiteCategory" parameterType="java.util.List">
+	        update BAS_APPLICATION_CATEGORY
+	        set status_code=#{status_code}
+	        where language=#{language} and (
+		   <foreach collection="list" item="item" index="index" separator="or">  
+		       ( acc=#{item.acc} and acc_code=#{item.acc_code})
+		    </foreach>
+		    )
+	</update>
+	<insert id="addSiteCategory" parameterType="hashmap">
+	     <![CDATA[
+	     insert into BAS_APPLICATION_CATEGORY
+	     (status_code,acc,acc_code,upper_acc_code,reference_field1,reference_field2,
+	     reference_field3,reference_field4,reference_field5,reference_field6,reference_field7,reference_field8,
+	     reference_field9,reference_field10,reference_field11,reference_field12,reference_field13,
+	     reference_field14,reference_field15,reference_field16,reference_field17,reference_field18,
+	     reference_field19,reference_field20,data_owner,data_owned_department,data_created_by,
+	     data_created_department,data_created_date,data_modified_by,last_modified_date,language,
+	     acc_description,upper_acc_description) 
+	     values
+	     (#{status_code},#{acc},#{acc_code},#{upper_acc_code},#{reference_field1},#{reference_field2},
+	     #{reference_field3},#{reference_field4},#{reference_field5},#{reference_field6},#{reference_field7},
+	     #{reference_field8},#{reference_field9},#{reference_field10},#{reference_field11},#{reference_field12},
+	     #{reference_field13},#{reference_field14},#{reference_field15},#{reference_field16},#{reference_field17},
+	     #{reference_field18},#{reference_field19},#{reference_field20},#{data_owner},#{data_owned_department},
+	     #{data_created_by},#{data_created_department},#{data_created_date},#{data_modified_by},#{last_modified_date},
+	     #{language},#{acc_description},#{upper_acc_description})
+	     ]]>
+	</insert>
+	<select id="selectSiteCategoryId" resultType="hashmap" parameterType="hashmap">
+			SELECT COUNT(DISTINCT acc,acc_code,language) 
+			FROM BAS_APPLICATION_CATEGORY where 1=1
+			<if test="acc!=null and acc!=''">
+				and acc=#{acc}
+			</if>
+			<if test="acc_code!=null and acc_code!=''">
+				and acc_code=#{acc_code}
+			</if>
+			<if test="language!=null and language!=''">
+				and language=#{language}
+			</if>
+	</select>
+	-->
+	
+	<!-- 门店、商品其他属性维护作业 -->
+	<select id="selectOtherAttributeCount" resultType="hashmap" parameterType="hashmap">
+			SELECT COUNT(DISTINCT acc,acc_code,language) 
+			FROM BAS_APPLICATION_CATEGORY 
+			<where>
+				<if test="acc!=null and acc!=''">
+				    acc=#{acc}
+				</if>
+				<!-- 属性编号 -->
+				<if test="acc_code != null and acc_code != ''">
+					AND acc_code like '%' #{acc_code} '%'
+				</if>
+				<!-- 属性名称 -->
+				<if test="acc_description != null and acc_description != ''">
+					AND acc_description like '%' #{acc_description} '%'
+				</if>
+				<if test="language!=null and language!=''">
+					AND language=#{language}
+				</if>
+				<if test="status_code != null and status_code != ''">
+					AND status_code = #{status_code}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectOtherAttributeLimit" resultType="hashmap" parameterType="hashmap">
+			SELECT DISTINCT status_code,acc_code,acc_description
+			FROM BAS_APPLICATION_CATEGORY 
+			<where>
+				<if test="acc!=null and acc!=''">
+					acc=#{acc}
+				</if>
+				<!-- 属性编号 -->
+				<if test="acc_code != null and acc_code != ''">
+					AND acc_code like '%' #{acc_code} '%'
+				</if>
+				<!-- 属性名称 -->
+				<if test="acc_description != null and acc_description != ''">
+					AND acc_description like '%' #{acc_description} '%'
+				</if>
+				<if test="language!=null and language!=''">
+					AND language=#{language}
+				</if>
+				<if test="status_code != null and status_code != ''">
+					AND status_code = #{status_code}
+			</if>
+			</where>
+			ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	
+	<update id="updateOtherAttribute" parameterType="hashmap">
+	        UPDATE BAS_APPLICATION_CATEGORY SET
+	        
+	        <trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="status_code != null">status_code=#{status_code},</if>
+			<if test="upper_acc_code != null">upper_acc_code=#{upper_acc_code},</if>
+			<if test="reference_field1 != null">reference_field1=#{reference_field1},</if>
+			<if test="reference_field2 != null">reference_field2=#{reference_field2},</if>
+			<if test="reference_field3 != null">reference_field3=#{reference_field3},</if>
+			<if test="reference_field4 != null">reference_field4=#{reference_field4},</if>
+			<if test="reference_field5 != null">reference_field5=#{reference_field5},</if>
+			<if test="reference_field6 != null">reference_field6=#{reference_field6},</if>
+			<if test="reference_field7 != null">reference_field7=#{reference_field7},</if>
+			<if test="reference_field8 != null">reference_field8=#{reference_field8},</if>
+			<if test="reference_field9 != null">reference_field9=#{reference_field9},</if>
+			<if test="reference_field10 != null">reference_field10=#{reference_field10},</if>
+			<if test="reference_field11 != null">reference_field11=#{reference_field11},</if>
+			<if test="reference_field12 != null">reference_field12=#{reference_field12},</if>
+			<if test="reference_field13 != null">reference_field13=#{reference_field13},</if>
+			<if test="reference_field14 != null">reference_field14=#{reference_field14},</if>
+			<if test="reference_field15 != null">reference_field15=#{reference_field15},</if>
+			<if test="reference_field16 != null">reference_field16=#{reference_field16},</if>
+			<if test="reference_field17 != null">reference_field17=#{reference_field17},</if>
+			<if test="reference_field18 != null">reference_field18=#{reference_field18},</if>
+			<if test="reference_field19 != null">reference_field19=#{reference_field19},</if>
+			<if test="reference_field20 != null">reference_field20=#{reference_field20},</if>
+			<if test="data_owner != null">data_owner=#{data_owner},</if>
+			<if test="data_owned_department != null">data_owned_department=#{data_owned_department},</if>
+			<if test="data_created_by != null">data_created_by=#{data_created_by},</if>
+			<if test="data_created_department != null">data_created_department=#{data_created_department},</if>
+			<if test="data_created_date != null">data_created_date=#{data_created_date},</if>
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			<if test="acc_description != null">acc_description=#{acc_description},</if>
+			<if test="upper_acc_description != null">upper_acc_description=#{upper_acc_description},</if>
+		</trim>
+		WHERE acc = #{acc} AND acc_code = #{acc_code} AND language = #{language}	
+	</update>
+	
+	<delete id="deleteOtherAttribute" parameterType="hashmap">
+	   DELETE FROM BAS_APPLICATION_CATEGORY 
+	    WHERE language=#{language} 
+	      AND acc=#{acc}
+	      AND acc_code=#{acc_code}
+	</delete>
+	
+	
+	<update id="auditOtherAttribute" parameterType="java.util.List">
+        UPDATE BAS_APPLICATION_CATEGORY
+           SET 
+			<trim suffixOverrides=",">
+				<if test="status_code !=null">status_code=#{status_code},</if>
+				<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+				<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			</trim>
+         WHERE language=#{language} 
+		   AND acc=#{acc}
+		   AND acc_code=#{acc_code}
+	</update>
+	
+	<insert id="addOtherAttribute" parameterType="hashmap">
+		
+		INSERT INTO BAS_APPLICATION_CATEGORY
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<include refid="columnScope"></include>
+	 	</trim>
+	 	VALUES
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<if test="status_code != null">'Y',</if>
+			<if test="acc != null">#{acc},</if>
+			<if test="acc_code != null">#{acc_code},</if>
+			<if test="upper_acc_code != null">#{upper_acc_code},</if>
+			<if test="reference_field1 != null">#{reference_field1},</if>
+			<if test="reference_field2 != null">#{reference_field2},</if>
+			<if test="reference_field3 != null">#{reference_field3},</if>
+			<if test="reference_field4 != null">#{reference_field4},</if>
+			<if test="reference_field5 != null">#{reference_field5},</if>
+			<if test="reference_field6 != null">#{reference_field6},</if>
+			<if test="reference_field7 != null">#{reference_field7},</if>
+			<if test="reference_field8 != null">#{reference_field8},</if>
+			<if test="reference_field9 != null">#{reference_field9},</if>
+			<if test="reference_field10 != null">#{reference_field10},</if>
+			<if test="reference_field11 != null">#{reference_field11},</if>
+			<if test="reference_field12 != null">#{reference_field12},</if>
+			<if test="reference_field13 != null">#{reference_field13},</if>
+			<if test="reference_field14 != null">#{reference_field14},</if>
+			<if test="reference_field15 != null">#{reference_field15},</if>
+			<if test="reference_field16 != null">#{reference_field16},</if>
+			<if test="reference_field17 != null">#{reference_field17},</if>
+			<if test="reference_field18 != null">#{reference_field18},</if>
+			<if test="reference_field19 != null">#{reference_field19},</if>
+			<if test="reference_field20 != null">#{reference_field20},</if>
+			<if test="data_owner != null">#{data_owner},</if>
+			<if test="data_owned_department != null">#{data_owned_department},</if>
+			<if test="data_created_by != null">#{data_created_by},</if>
+			<if test="data_created_department != null">#{data_created_department},</if>
+			<if test="data_created_date != null">#{data_created_date},</if>
+			<if test="data_modified_by != null">#{data_modified_by},</if>
+			<if test="last_modified_date != null">#{last_modified_date},</if>
+			<if test="language != null">'zh_CN',</if>
+			<if test="acc_description != null">#{acc_description},</if>
+			<if test="upper_acc_description != null">#{upper_acc_description},</if>
+	 	</trim>
+	</insert>
+	
+	<select id="judgeOtherAttribute" resultType="java.lang.Integer" parameterType="hashmap">
+		SELECT COUNT(1) 
+    	  FROM BAS_APPLICATION_CATEGORY 
+    	 WHERE acc = #{acc}
+    	   AND acc_code = #{acc_code}
+    	   AND language = #{language}
+	</select>
+	
+	<select id="getOtherAttribute" parameterType="hashmap" resultType="hashmap">
+		select status_code, acc_code,acc_description
+		from BAS_APPLICATION_CATEGORY 
+    	 where acc = #{acc}
+    	   and acc_code = #{acc_code}
+    	   and language = #{language}
+	</select>
+	
+	<!-- 休假类型维护 -->
+	<select id="getVacationCategoryListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT COUNT(*) 
+		  FROM BAS_APPLICATION_CATEGORY 
+		<where>
+			<if test="acc!=null and acc!=''">
+		 		acc=#{acc}	
+			</if>
+			<!-- 休假类型编号 -->
+			<if test="acc_code != null and acc_code != ''">
+				AND acc_code like '%' #{acc_code} '%'
+			</if>
+			<!-- 休假类型名称 -->
+			<if test="acc_description != null and acc_description != ''">
+				AND acc_description like '%' #{acc_description} '%'
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="reference_field11!=null and reference_field11!=''">
+			 	AND reference_field11=#{reference_field11}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</select>
+	
+	<select id="getVacationCategoryList" parameterType="hashmap" resultType="hashmap">
+		SELECT status_code,acc_code,reference_field11,acc_description 
+		  FROM BAS_APPLICATION_CATEGORY 
+		<where>
+			<if test="acc!=null and acc!=''">
+			 	acc=#{acc}	
+			</if>
+			<!-- 休假类型编号 -->
+			<if test="acc_code != null and acc_code != ''">
+				AND acc_code like '%' #{acc_code} '%'
+			</if>
+			<!-- 休假类型名称 -->
+			<if test="acc_description != null and acc_description != ''">
+				AND acc_description like '%' #{acc_description} '%'
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="reference_field11!=null and reference_field11!=''">
+			 	AND reference_field11=#{reference_field11}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where> 
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	
+	<insert id="addVacationCategory" parameterType="hashmap">
+		INSERT INTO BAS_APPLICATION_CATEGORY
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<include refid="columnScope"></include>
+	 	</trim>
+	 	VALUES
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<if test="status_code != null">'Y',</if>
+			<if test="acc != null">#{acc},</if>
+			<if test="acc_code != null">#{acc_code},</if>
+			<if test="upper_acc_code != null">#{upper_acc_code},</if>
+			<if test="reference_field1 != null">#{reference_field1},</if>
+			<if test="reference_field2 != null">#{reference_field2},</if>
+			<if test="reference_field3 != null">#{reference_field3},</if>
+			<if test="reference_field4 != null">#{reference_field4},</if>
+			<if test="reference_field5 != null">#{reference_field5},</if>
+			<if test="reference_field6 != null">#{reference_field6},</if>
+			<if test="reference_field7 != null">#{reference_field7},</if>
+			<if test="reference_field8 != null">#{reference_field8},</if>
+			<if test="reference_field9 != null">#{reference_field9},</if>
+			<if test="reference_field10 != null">#{reference_field10},</if>
+			<if test="reference_field11 != null">#{reference_field11},</if>
+			<if test="reference_field12 != null">#{reference_field12},</if>
+			<if test="reference_field13 != null">#{reference_field13},</if>
+			<if test="reference_field14 != null">#{reference_field14},</if>
+			<if test="reference_field15 != null">#{reference_field15},</if>
+			<if test="reference_field16 != null">#{reference_field16},</if>
+			<if test="reference_field17 != null">#{reference_field17},</if>
+			<if test="reference_field18 != null">#{reference_field18},</if>
+			<if test="reference_field19 != null">#{reference_field19},</if>
+			<if test="reference_field20 != null">#{reference_field20},</if>
+			<if test="data_owner != null">#{data_owner},</if>
+			<if test="data_owned_department != null">#{data_owned_department},</if>
+			<if test="data_created_by != null">#{data_created_by},</if>
+			<if test="data_created_department != null">#{data_created_department},</if>
+			<if test="data_created_date != null">#{data_created_date},</if>
+			<if test="data_modified_by != null">#{data_modified_by},</if>
+			<if test="last_modified_date != null">#{last_modified_date},</if>
+			<if test="language != null">'zh_CN',</if>
+			<if test="acc_description != null">#{acc_description},</if>
+			<if test="upper_acc_description != null">#{upper_acc_description},</if>
+	 	</trim>
+	</insert>
+	
+	<update id="updateVacationCategory" parameterType="hashmap">
+		UPDATE BAS_APPLICATION_CATEGORY SET
+	        
+	        <trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="status_code != null">status_code=#{status_code},</if>
+			<if test="upper_acc_code != null">upper_acc_code=#{upper_acc_code},</if>
+			<if test="reference_field1 != null">reference_field1=#{reference_field1},</if>
+			<if test="reference_field2 != null">reference_field2=#{reference_field2},</if>
+			<if test="reference_field3 != null">reference_field3=#{reference_field3},</if>
+			<if test="reference_field4 != null">reference_field4=#{reference_field4},</if>
+			<if test="reference_field5 != null">reference_field5=#{reference_field5},</if>
+			<if test="reference_field6 != null">reference_field6=#{reference_field6},</if>
+			<if test="reference_field7 != null">reference_field7=#{reference_field7},</if>
+			<if test="reference_field8 != null">reference_field8=#{reference_field8},</if>
+			<if test="reference_field9 != null">reference_field9=#{reference_field9},</if>
+			<if test="reference_field10 != null">reference_field10=#{reference_field10},</if>
+			<if test="reference_field11 != null">reference_field11=#{reference_field11},</if>
+			<if test="reference_field12 != null">reference_field12=#{reference_field12},</if>
+			<if test="reference_field13 != null">reference_field13=#{reference_field13},</if>
+			<if test="reference_field14 != null">reference_field14=#{reference_field14},</if>
+			<if test="reference_field15 != null">reference_field15=#{reference_field15},</if>
+			<if test="reference_field16 != null">reference_field16=#{reference_field16},</if>
+			<if test="reference_field17 != null">reference_field17=#{reference_field17},</if>
+			<if test="reference_field18 != null">reference_field18=#{reference_field18},</if>
+			<if test="reference_field19 != null">reference_field19=#{reference_field19},</if>
+			<if test="reference_field20 != null">reference_field20=#{reference_field20},</if>
+			<if test="data_owner != null">data_owner=#{data_owner},</if>
+			<if test="data_owned_department != null">data_owned_department=#{data_owned_department},</if>
+			<if test="data_created_by != null">data_created_by=#{data_created_by},</if>
+			<if test="data_created_department != null">data_created_department=#{data_created_department},</if>
+			<if test="data_created_date != null">data_created_date=#{data_created_date},</if>
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			<if test="acc_description != null">acc_description=#{acc_description},</if>
+			<if test="upper_acc_description != null">upper_acc_description=#{upper_acc_description},</if>
+		</trim>
+		WHERE acc = #{acc} 
+		  AND acc_code = #{acc_code} 
+		  AND language = #{language}
+	</update>
+	
+	<update id="auditVacationCategory" parameterType="hashmap">
+		UPDATE BAS_APPLICATION_CATEGORY
+	       SET 
+			<trim suffixOverrides=",">
+				<if test="status_code !=null">status_code=#{status_code},</if>
+				<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+				<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			</trim>
+	     WHERE language=#{language} 
+		   AND acc=#{acc}
+		   AND acc_code=#{acc_code}
+	</update>
+	
+	
+	<delete id="deleteVacationCategory" parameterType="hashmap">
+		DELETE FROM BAS_APPLICATION_CATEGORY 
+	     WHERE language=#{language} 
+	       AND acc=#{acc}
+	       AND acc_code=#{acc_code}
+	</delete>
+	
+	<select id="judgeVacationCategory" resultType="java.lang.Integer" parameterType="hashmap">
+		SELECT COUNT(1) 
+    	  FROM BAS_APPLICATION_CATEGORY 
+    	 WHERE acc = #{acc}
+    	   AND acc_code = #{acc_code}
+    	   AND language = #{language}
+	</select>
+	
+	<!-- 根据主键查询休假类型 -->
+	<select id="getVacationCategory" parameterType="hashmap" resultType="hashmap">
+		select status_code, acc_code,reference_field11,acc_description 
+		from BAS_APPLICATION_CATEGORY 
+		where acc = #{acc}
+    	   and acc_code = #{acc_code}
+    	   and language = #{language}
+	</select>
+	
+	
+	<!-- 商品价格带维护作业 -->
+	<select id="getPriceZoneListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT COUNT(*) 
+		FROM BAS_APPLICATION_CATEGORY
+		<where>
+			<if test="acc!=null and acc!=''">
+			    acc=#{acc}	
+			</if>
+			<!-- 价格带编号 -->
+			<if test="acc_code!=null and acc_code!=''">
+			 	AND acc_code like '%' #{acc_code} '%'	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="reference_field6!=null and reference_field6!=''">
+			 	AND reference_field6=#{reference_field6}	
+			</if>
+			<if test="reference_field7!=null and reference_field7!=''">
+			 	AND reference_field7=#{reference_field7}	
+			</if>
+			<!-- 价格带说明 -->
+			<if test="acc_description!=null and acc_description!=''">
+			 	AND acc_description like '%' #{acc_description} '%'	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</select>
+	
+	<select id="getPriceZoneList" parameterType="hashmap" resultType="hashmap">
+		SELECT status_code,acc_code,reference_field6,reference_field7,acc_description 
+		  FROM BAS_APPLICATION_CATEGORY 
+		<where>
+			 <if test="acc!=null and acc!=''">
+			    acc=#{acc}	
+			</if>
+			<!-- 价格带编号 -->
+			<if test="acc_code!=null and acc_code!=''">
+			 	AND acc_code like '%' #{acc_code} '%'	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="reference_field6!=null and reference_field6!=''">
+			 	AND reference_field6=#{reference_field6}	
+			</if>
+			<if test="reference_field7!=null and reference_field7!=''">
+			 	AND reference_field7=#{reference_field7}	
+			</if>
+			<!-- 价格带说明 -->
+			<if test="acc_description!=null and acc_description!=''">
+			 	AND acc_description like '%' #{acc_description} '%'	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where> 
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<select id="getPriceZone" parameterType="hashmap" resultType="hashmap">
+		SELECT status_code,acc_code,reference_field6,reference_field7,acc_description 
+		  FROM BAS_APPLICATION_CATEGORY
+		  <where>
+		  	 <if test="acc!=null and acc!=''">
+			 	 acc=#{acc}	
+			 </if>
+			 <if test="acc_code!=null and acc_code!=''">
+			 	AND acc_code=#{acc_code}	
+			 </if>
+			 <if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			 </if>
+		  </where>
+	</select>
+	
+	<insert id="addPriceZone" parameterType="hashmap">
+		INSERT INTO BAS_APPLICATION_CATEGORY
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<include refid="columnScope"></include>
+	 	</trim>
+	 	VALUES
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<if test="status_code != null">'Y',</if>
+			<if test="acc != null">#{acc},</if>
+			<if test="acc_code != null">#{acc_code},</if>
+			<if test="upper_acc_code != null">#{upper_acc_code},</if>
+			<if test="reference_field1 != null">#{reference_field1},</if>
+			<if test="reference_field2 != null">#{reference_field2},</if>
+			<if test="reference_field3 != null">#{reference_field3},</if>
+			<if test="reference_field4 != null">#{reference_field4},</if>
+			<if test="reference_field5 != null">#{reference_field5},</if>
+			<if test="reference_field6 != null">#{reference_field6},</if>
+			<if test="reference_field7 != null">#{reference_field7},</if>
+			<if test="reference_field8 != null">#{reference_field8},</if>
+			<if test="reference_field9 != null">#{reference_field9},</if>
+			<if test="reference_field10 != null">#{reference_field10},</if>
+			<if test="reference_field11 != null">#{reference_field11},</if>
+			<if test="reference_field12 != null">#{reference_field12},</if>
+			<if test="reference_field13 != null">#{reference_field13},</if>
+			<if test="reference_field14 != null">#{reference_field14},</if>
+			<if test="reference_field15 != null">#{reference_field15},</if>
+			<if test="reference_field16 != null">#{reference_field16},</if>
+			<if test="reference_field17 != null">#{reference_field17},</if>
+			<if test="reference_field18 != null">#{reference_field18},</if>
+			<if test="reference_field19 != null">#{reference_field19},</if>
+			<if test="reference_field20 != null">#{reference_field20},</if>
+			<if test="data_owner != null">#{data_owner},</if>
+			<if test="data_owned_department != null">#{data_owned_department},</if>
+			<if test="data_created_by != null">#{data_created_by},</if>
+			<if test="data_created_department != null">#{data_created_department},</if>
+			<if test="data_created_date != null">#{data_created_date},</if>
+			<if test="data_modified_by != null">#{data_modified_by},</if>
+			<if test="last_modified_date != null">#{last_modified_date},</if>
+			<if test="language != null">'zh_CN',</if>
+			<if test="acc_description != null">#{acc_description},</if>
+			<if test="upper_acc_description != null">#{upper_acc_description},</if>
+	 	</trim>
+	</insert>
+	
+	<update id="updatePriceZone" parameterType="hashmap">
+		UPDATE BAS_APPLICATION_CATEGORY SET
+	        
+	        <trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="status_code != null">status_code=#{status_code},</if>
+			<if test="upper_acc_code != null">upper_acc_code=#{upper_acc_code},</if>
+			<if test="reference_field1 != null">reference_field1=#{reference_field1},</if>
+			<if test="reference_field2 != null">reference_field2=#{reference_field2},</if>
+			<if test="reference_field3 != null">reference_field3=#{reference_field3},</if>
+			<if test="reference_field4 != null">reference_field4=#{reference_field4},</if>
+			<if test="reference_field5 != null">reference_field5=#{reference_field5},</if>
+			<if test="reference_field6 != null">reference_field6=#{reference_field6},</if>
+			<if test="reference_field7 != null">reference_field7=#{reference_field7},</if>
+			<if test="reference_field8 != null">reference_field8=#{reference_field8},</if>
+			<if test="reference_field9 != null">reference_field9=#{reference_field9},</if>
+			<if test="reference_field10 != null">reference_field10=#{reference_field10},</if>
+			<if test="reference_field11 != null">reference_field11=#{reference_field11},</if>
+			<if test="reference_field12 != null">reference_field12=#{reference_field12},</if>
+			<if test="reference_field13 != null">reference_field13=#{reference_field13},</if>
+			<if test="reference_field14 != null">reference_field14=#{reference_field14},</if>
+			<if test="reference_field15 != null">reference_field15=#{reference_field15},</if>
+			<if test="reference_field16 != null">reference_field16=#{reference_field16},</if>
+			<if test="reference_field17 != null">reference_field17=#{reference_field17},</if>
+			<if test="reference_field18 != null">reference_field18=#{reference_field18},</if>
+			<if test="reference_field19 != null">reference_field19=#{reference_field19},</if>
+			<if test="reference_field20 != null">reference_field20=#{reference_field20},</if>
+			<if test="data_owner != null">data_owner=#{data_owner},</if>
+			<if test="data_owned_department != null">data_owned_department=#{data_owned_department},</if>
+			<if test="data_created_by != null">data_created_by=#{data_created_by},</if>
+			<if test="data_created_department != null">data_created_department=#{data_created_department},</if>
+			<if test="data_created_date != null">data_created_date=#{data_created_date},</if>
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			<if test="acc_description != null">acc_description=#{acc_description},</if>
+			<if test="upper_acc_description != null">upper_acc_description=#{upper_acc_description},</if>
+		</trim>
+		WHERE acc = #{acc} 
+		  AND acc_code = #{acc_code} 
+		  AND language = #{language}
+	</update>
+	
+	<update id="auditPriceZone" parameterType="hashmap">
+	    UPDATE BAS_APPLICATION_CATEGORY
+	       SET 
+			<trim suffixOverrides=",">
+				<if test="status_code !=null">status_code=#{status_code},</if>
+				<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+				<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			</trim>
+	     WHERE language=#{language} 
+		   AND acc=#{acc}
+		   AND acc_code=#{acc_code}
+	</update>
+	
+	<delete id="deletePriceZone" parameterType="hashmap">
+	    DELETE FROM BAS_APPLICATION_CATEGORY 
+	     WHERE language=#{language} 
+	       AND acc=#{acc}
+	       AND acc_code=#{acc_code}
+	</delete>
+	<select id="judgePriceZone" resultType="java.lang.Integer" parameterType="hashmap">
+		SELECT COUNT(1) 
+    	  FROM BAS_APPLICATION_CATEGORY 
+    	 WHERE acc = #{acc}
+    	   AND acc_code = #{acc_code}
+    	   AND language = #{language}
+	</select>
+	
+	
+	<!-- 商品系列维护作业 -->
+	<select id="getSeriesListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT COUNT(*) 
+		  FROM BAS_APPLICATION_CATEGORY 
+		 <where>
+		 	<if test="acc!=null and acc!=''">
+			    acc=#{acc}	
+			</if>
+			<!-- 商品系列编号 -->
+			<if test="acc_code!=null and acc_code!=''">
+			 	AND acc_code like '%' #{acc_code} '%'
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<!-- 商品系列说明 -->
+			<if test="acc_description!=null and acc_description!=''">
+			 	AND acc_description like '%' #{acc_description} '%'	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		 </where>
+	</select>
+	
+	<select id="getSeriesList" parameterType="hashmap" resultType="hashmap">
+		SELECT status_code,acc_code,acc_description 
+		  FROM BAS_APPLICATION_CATEGORY 
+		<where>
+			<if test="acc!=null and acc!=''">
+			 	acc=#{acc}	
+			</if>
+			<!-- 商品系列编号 -->
+			<if test="acc_code!=null and acc_code!=''">
+			 	AND acc_code like '%' #{acc_code} '%'	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<!-- 商品系列说明 -->
+			<if test="acc_description!=null and acc_description!=''">
+			 	AND acc_description like '%' #{acc_description} '%'	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<select id="getSeries" parameterType="hashmap" resultType="hashmap">
+		SELECT status_code,acc_code,acc_description 
+		  FROM BAS_APPLICATION_CATEGORY 
+		 <where>
+		 	<if test="acc!=null and acc!=''">
+			 	acc=#{acc}	
+			</if>
+			<if test="acc_code!=null and acc_code!=''">
+			 	AND acc_code=#{acc_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		 </where>
+	</select>
+	
+	<insert id="addSeries" parameterType="hashmap">
+		INSERT INTO BAS_APPLICATION_CATEGORY
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<include refid="columnScope"></include>
+	 	</trim>
+	 	VALUES
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<if test="status_code != null">'Y',</if>
+			<if test="acc != null">#{acc},</if>
+			<if test="acc_code != null">#{acc_code},</if>
+			<if test="upper_acc_code != null">#{upper_acc_code},</if>
+			<if test="reference_field1 != null">#{reference_field1},</if>
+			<if test="reference_field2 != null">#{reference_field2},</if>
+			<if test="reference_field3 != null">#{reference_field3},</if>
+			<if test="reference_field4 != null">#{reference_field4},</if>
+			<if test="reference_field5 != null">#{reference_field5},</if>
+			<if test="reference_field6 != null">#{reference_field6},</if>
+			<if test="reference_field7 != null">#{reference_field7},</if>
+			<if test="reference_field8 != null">#{reference_field8},</if>
+			<if test="reference_field9 != null">#{reference_field9},</if>
+			<if test="reference_field10 != null">#{reference_field10},</if>
+			<if test="reference_field11 != null">#{reference_field11},</if>
+			<if test="reference_field12 != null">#{reference_field12},</if>
+			<if test="reference_field13 != null">#{reference_field13},</if>
+			<if test="reference_field14 != null">#{reference_field14},</if>
+			<if test="reference_field15 != null">#{reference_field15},</if>
+			<if test="reference_field16 != null">#{reference_field16},</if>
+			<if test="reference_field17 != null">#{reference_field17},</if>
+			<if test="reference_field18 != null">#{reference_field18},</if>
+			<if test="reference_field19 != null">#{reference_field19},</if>
+			<if test="reference_field20 != null">#{reference_field20},</if>
+			<if test="data_owner != null">#{data_owner},</if>
+			<if test="data_owned_department != null">#{data_owned_department},</if>
+			<if test="data_created_by != null">#{data_created_by},</if>
+			<if test="data_created_department != null">#{data_created_department},</if>
+			<if test="data_created_date != null">#{data_created_date},</if>
+			<if test="data_modified_by != null">#{data_modified_by},</if>
+			<if test="last_modified_date != null">#{last_modified_date},</if>
+			<if test="language != null">'zh_CN',</if>
+			<if test="acc_description != null">#{acc_description},</if>
+			<if test="upper_acc_description != null">#{upper_acc_description},</if>
+	 	</trim>
+	</insert>
+	
+	<update id="updateSeries" parameterType="hashmap">
+		UPDATE BAS_APPLICATION_CATEGORY SET
+	        
+	        <trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="status_code != null">status_code=#{status_code},</if>
+			<if test="upper_acc_code != null">upper_acc_code=#{upper_acc_code},</if>
+			<if test="reference_field1 != null">reference_field1=#{reference_field1},</if>
+			<if test="reference_field2 != null">reference_field2=#{reference_field2},</if>
+			<if test="reference_field3 != null">reference_field3=#{reference_field3},</if>
+			<if test="reference_field4 != null">reference_field4=#{reference_field4},</if>
+			<if test="reference_field5 != null">reference_field5=#{reference_field5},</if>
+			<if test="reference_field6 != null">reference_field6=#{reference_field6},</if>
+			<if test="reference_field7 != null">reference_field7=#{reference_field7},</if>
+			<if test="reference_field8 != null">reference_field8=#{reference_field8},</if>
+			<if test="reference_field9 != null">reference_field9=#{reference_field9},</if>
+			<if test="reference_field10 != null">reference_field10=#{reference_field10},</if>
+			<if test="reference_field11 != null">reference_field11=#{reference_field11},</if>
+			<if test="reference_field12 != null">reference_field12=#{reference_field12},</if>
+			<if test="reference_field13 != null">reference_field13=#{reference_field13},</if>
+			<if test="reference_field14 != null">reference_field14=#{reference_field14},</if>
+			<if test="reference_field15 != null">reference_field15=#{reference_field15},</if>
+			<if test="reference_field16 != null">reference_field16=#{reference_field16},</if>
+			<if test="reference_field17 != null">reference_field17=#{reference_field17},</if>
+			<if test="reference_field18 != null">reference_field18=#{reference_field18},</if>
+			<if test="reference_field19 != null">reference_field19=#{reference_field19},</if>
+			<if test="reference_field20 != null">reference_field20=#{reference_field20},</if>
+			<if test="data_owner != null">data_owner=#{data_owner},</if>
+			<if test="data_owned_department != null">data_owned_department=#{data_owned_department},</if>
+			<if test="data_created_by != null">data_created_by=#{data_created_by},</if>
+			<if test="data_created_department != null">data_created_department=#{data_created_department},</if>
+			<if test="data_created_date != null">data_created_date=#{data_created_date},</if>
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			<if test="acc_description != null">acc_description=#{acc_description},</if>
+			<if test="upper_acc_description != null">upper_acc_description=#{upper_acc_description},</if>
+		</trim>
+		WHERE acc = #{acc} 
+		  AND acc_code = #{acc_code} 
+		  AND language = #{language}
+	</update>
+	
+	<update id="auditSeries" parameterType="hashmap">
+	    UPDATE BAS_APPLICATION_CATEGORY
+	       SET 
+			<trim suffixOverrides=",">
+				<if test="status_code !=null">status_code=#{status_code},</if>
+				<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+				<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			</trim>
+	     WHERE language=#{language} 
+		   AND acc=#{acc}
+		   AND acc_code=#{acc_code}
+	</update>
+	
+	<delete id="deleteSeries" parameterType="hashmap">
+	    DELETE FROM BAS_APPLICATION_CATEGORY 
+	     WHERE language=#{language} 
+	       AND acc=#{acc}
+	       AND acc_code=#{acc_code}
+	</delete>
+	
+	<select id="judgeSeries" resultType="java.lang.Integer" parameterType="hashmap">
+		SELECT COUNT(1) 
+    	  FROM BAS_APPLICATION_CATEGORY 
+    	 WHERE acc = #{acc}
+    	   AND acc_code = #{acc_code}
+    	   AND language = #{language}
+	</select>
+	
+	
+	<!-- 应付账务类型 author by YangJian -->
+	<!-- 预设条件查询列表总数 -->
+	<select id="selectPayAccountTypeCount" parameterType="hashmap" resultType="hashmap">
+		SELECT count(*) 
+		  FROM  BAS_APPLICATION_CATEGORY 
+		 <where>
+			<if test="status_code != null and status_code != ''">
+				status_code = #{status_code}
+			</if>
+			<if test="acc != null and acc != ''">
+				AND acc = #{acc}
+			</if>
+			<!-- 应付帐务类型编号 -->
+			<if test="acc_code != null and acc_code != ''">
+				AND acc_code like '%' #{acc_code} '%'
+			</if>
+			<!-- 应付帐务类型说明 -->
+			<if test="acc_description!=null and acc_description!=''">
+			 	AND acc_description like '%' #{acc_description} '%'	
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据预设条件查询应付账务类型列表（分页） -->
+	<select id="getPayAccountTypeList" parameterType="hashmap" resultType="hashmap">
+		SELECT status_code,status_code, acc_code, acc_description
+		  FROM  BAS_APPLICATION_CATEGORY
+		<where>
+			<if test="status_code != null and status_code != ''">
+				status_code = #{status_code}
+			</if>
+			<if test="acc != null and acc != ''">
+				AND acc = #{acc}
+			</if>
+			<!-- 应付帐务类型编号 -->
+			<if test="acc_code != null and acc_code != ''">
+				AND acc_code like '%' #{acc_code} '%'
+			</if>
+			<!-- 应付帐务类型说明 -->
+			<if test="acc_description!=null and acc_description!=''">
+			 	AND acc_description like '%' #{acc_description} '%'	
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+		</where>
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 修改应付账务类型 -->
+	<update id="updatePayAccountType" parameterType="hashmap" >
+		UPDATE BAS_APPLICATION_CATEGORY SET
+	        
+	        <trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="status_code != null">status_code=#{status_code},</if>
+			<if test="upper_acc_code != null">upper_acc_code=#{upper_acc_code},</if>
+			<if test="reference_field1 != null">reference_field1=#{reference_field1},</if>
+			<if test="reference_field2 != null">reference_field2=#{reference_field2},</if>
+			<if test="reference_field3 != null">reference_field3=#{reference_field3},</if>
+			<if test="reference_field4 != null">reference_field4=#{reference_field4},</if>
+			<if test="reference_field5 != null">reference_field5=#{reference_field5},</if>
+			<if test="reference_field6 != null">reference_field6=#{reference_field6},</if>
+			<if test="reference_field7 != null">reference_field7=#{reference_field7},</if>
+			<if test="reference_field8 != null">reference_field8=#{reference_field8},</if>
+			<if test="reference_field9 != null">reference_field9=#{reference_field9},</if>
+			<if test="reference_field10 != null">reference_field10=#{reference_field10},</if>
+			<if test="reference_field11 != null">reference_field11=#{reference_field11},</if>
+			<if test="reference_field12 != null">reference_field12=#{reference_field12},</if>
+			<if test="reference_field13 != null">reference_field13=#{reference_field13},</if>
+			<if test="reference_field14 != null">reference_field14=#{reference_field14},</if>
+			<if test="reference_field15 != null">reference_field15=#{reference_field15},</if>
+			<if test="reference_field16 != null">reference_field16=#{reference_field16},</if>
+			<if test="reference_field17 != null">reference_field17=#{reference_field17},</if>
+			<if test="reference_field18 != null">reference_field18=#{reference_field18},</if>
+			<if test="reference_field19 != null">reference_field19=#{reference_field19},</if>
+			<if test="reference_field20 != null">reference_field20=#{reference_field20},</if>
+			<if test="data_owner != null">data_owner=#{data_owner},</if>
+			<if test="data_owned_department != null">data_owned_department=#{data_owned_department},</if>
+			<if test="data_created_by != null">data_created_by=#{data_created_by},</if>
+			<if test="data_created_department != null">data_created_department=#{data_created_department},</if>
+			<if test="data_created_date != null">data_created_date=#{data_created_date},</if>
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			<if test="acc_description != null">acc_description=#{acc_description},</if>
+			<if test="upper_acc_description != null">upper_acc_description=#{upper_acc_description},</if>
+		</trim>
+		WHERE acc = #{acc} 
+		  AND acc_code = #{acc_code} 
+		  AND language = #{language}
+	</update>
+	 
+	 
+	 <!-- 新增应付账务类型 -->
+	 <insert id="addPayAccountType" parameterType="hashmap">
+	 	INSERT INTO BAS_APPLICATION_CATEGORY
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<include refid="columnScope"></include>
+	 	</trim>
+	 	VALUES
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<if test="status_code != null">'Y',</if>
+			<if test="acc != null">#{acc},</if>
+			<if test="acc_code != null">#{acc_code},</if>
+			<if test="upper_acc_code != null">#{upper_acc_code},</if>
+			<if test="reference_field1 != null">#{reference_field1},</if>
+			<if test="reference_field2 != null">#{reference_field2},</if>
+			<if test="reference_field3 != null">#{reference_field3},</if>
+			<if test="reference_field4 != null">#{reference_field4},</if>
+			<if test="reference_field5 != null">#{reference_field5},</if>
+			<if test="reference_field6 != null">#{reference_field6},</if>
+			<if test="reference_field7 != null">#{reference_field7},</if>
+			<if test="reference_field8 != null">#{reference_field8},</if>
+			<if test="reference_field9 != null">#{reference_field9},</if>
+			<if test="reference_field10 != null">#{reference_field10},</if>
+			<if test="reference_field11 != null">#{reference_field11},</if>
+			<if test="reference_field12 != null">#{reference_field12},</if>
+			<if test="reference_field13 != null">#{reference_field13},</if>
+			<if test="reference_field14 != null">#{reference_field14},</if>
+			<if test="reference_field15 != null">#{reference_field15},</if>
+			<if test="reference_field16 != null">#{reference_field16},</if>
+			<if test="reference_field17 != null">#{reference_field17},</if>
+			<if test="reference_field18 != null">#{reference_field18},</if>
+			<if test="reference_field19 != null">#{reference_field19},</if>
+			<if test="reference_field20 != null">#{reference_field20},</if>
+			<if test="data_owner != null">#{data_owner},</if>
+			<if test="data_owned_department != null">#{data_owned_department},</if>
+			<if test="data_created_by != null">#{data_created_by},</if>
+			<if test="data_created_department != null">#{data_created_department},</if>
+			<if test="data_created_date != null">#{data_created_date},</if>
+			<if test="data_modified_by != null">#{data_modified_by},</if>
+			<if test="last_modified_date != null">#{last_modified_date},</if>
+			<if test="language != null">'zh_CN',</if>
+			<if test="acc_description != null">#{acc_description},</if>
+			<if test="upper_acc_description != null">#{upper_acc_description},</if>
+	 	</trim>
+	 </insert>
+	 
+	 <!-- 批量删除应付账务类型 -->
+	 <delete id="deletePayAccountType" parameterType="hashmap">
+        DELETE FROM BAS_APPLICATION_CATEGORY 
+	     WHERE language=#{language} 
+	       AND acc=#{acc}
+	       AND acc_code=#{acc_code}
+    </delete>
+    
+    <!-- 审核应付账务类型 -->
+    <update id="auditPayAccountType" parameterType="hashmap">
+    	UPDATE BAS_APPLICATION_CATEGORY 
+	       SET 
+	       <trim suffixOverrides=",">
+	       		<if test="status_code !=null">status_code=#{status_code},</if>
+	       		<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+	       </trim>
+	     WHERE language=#{language} 
+		   AND acc=#{acc}
+		   AND acc_code=#{acc_code}
+    </update>
+    
+    <!-- 判断应付账务类型是否存在记录 -->
+    <select id="judgePayAccountType" parameterType="hashmap" resultType="java.lang.Integer">
+    	SELECT COUNT(1) 
+    	  FROM BAS_APPLICATION_CATEGORY 
+    	 WHERE acc = #{acc}
+    	   AND acc_code = #{acc_code}
+    	   AND language = #{language}
+    </select>
+
+	<!-- 根据主键获取应付账务类型资料 -->
+	<select id="getPayAccountType" parameterType="hashmap" resultType="hashmap">
+		select status_code,acc_code,acc_description 
+		from BAS_APPLICATION_CATEGORY
+		where acc = #{acc}
+   	    and acc_code = #{acc_code}
+   	    and language = #{language}
+	</select>
+
+	<!-- drp_bas_m04-员工职称维护作业  author by YangJian create by 2017-02-17-->
+   	<!-- 根据预设条件查询员工职称列表（分页）count -->
+   	<select id="BasEmployeeTitleCount" parameterType="hashmap" resultType="hashmap">
+   		select count(*)
+   			from BAS_APPLICATION_CATEGORY 
+   		where 1=1 
+		<if test="acc != null and acc != ''">
+			and acc = #{acc}
+		</if>
+		<!-- 员工编号 -->
+		<if test="acc_code != null and acc_code != ''">
+			and acc_code like '%' #{acc_code} '%'
+		</if>
+		<!-- 员工名称 -->
+		<if test="acc_description!=null and acc_description!=''">
+			and acc_description like '%' #{acc_description} '%'	
+		</if>
+		<if test="language != null and language != ''">
+			and language = #{language}
+		</if>
+		<if test="status_code != null and status_code != ''">
+			and status_code = #{status_code}
+		</if>
+   	</select>
+   	
+   	<!-- 根据预设条件查询员工职称列表（分页）limit -->
+   	<select id="BasEmployeeTitleLimit" parameterType="hashmap" resultType="hashmap">
+   		select status_code,acc_code, acc_description
+   			from BAS_APPLICATION_CATEGORY 
+   		where 1=1 
+		<if test="acc != null and acc != ''">
+			and acc = #{acc}
+		</if>
+		<if test="acc_code != null and acc_code != ''">
+			and acc_code like '%' #{acc_code} '%'
+		</if>
+		<if test="acc_description!=null and acc_description!=''">
+			 and acc_description like '%' #{acc_description} '%'	
+		</if>
+		<if test="language != null and language != ''">
+			and language = #{language}
+		</if>
+		<if test="status_code != null and status_code != ''">
+			and status_code = #{status_code}
+		</if>
+		order by LAST_MODIFIED_DATE desc limit #{startIndex}, #{pageSize} 
+   	</select>
+   	
+   	<!-- 修改员工职称 -->
+   	<update id="modifyEmployeeTitle" parameterType="hashmap">
+   		update BAS_APPLICATION_CATEGORY
+   		set
+        <trim suffixOverrides=",">
+			<if test="status_code != null">status_code=#{status_code},</if>
+			<if test="upper_acc_code != null">upper_acc_code=#{upper_acc_code},</if>
+			<if test="reference_field1 != null">reference_field1=#{reference_field1},</if>
+			<if test="reference_field2 != null">reference_field2=#{reference_field2},</if>
+			<if test="reference_field3 != null">reference_field3=#{reference_field3},</if>
+			<if test="reference_field4 != null">reference_field4=#{reference_field4},</if>
+			<if test="reference_field5 != null">reference_field5=#{reference_field5},</if>
+			<if test="reference_field6 != null">reference_field6=#{reference_field6},</if>
+			<if test="reference_field7 != null">reference_field7=#{reference_field7},</if>
+			<if test="reference_field8 != null">reference_field8=#{reference_field8},</if>
+			<if test="reference_field9 != null">reference_field9=#{reference_field9},</if>
+			<if test="reference_field10 != null">reference_field10=#{reference_field10},</if>
+			<if test="reference_field11 != null">reference_field11=#{reference_field11},</if>
+			<if test="reference_field12 != null">reference_field12=#{reference_field12},</if>
+			<if test="reference_field13 != null">reference_field13=#{reference_field13},</if>
+			<if test="reference_field14 != null">reference_field14=#{reference_field14},</if>
+			<if test="reference_field15 != null">reference_field15=#{reference_field15},</if>
+			<if test="reference_field16 != null">reference_field16=#{reference_field16},</if>
+			<if test="reference_field17 != null">reference_field17=#{reference_field17},</if>
+			<if test="reference_field18 != null">reference_field18=#{reference_field18},</if>
+			<if test="reference_field19 != null">reference_field19=#{reference_field19},</if>
+			<if test="reference_field20 != null">reference_field20=#{reference_field20},</if>
+			<if test="data_owner != null">data_owner=#{data_owner},</if>
+			<if test="data_owned_department != null">data_owned_department=#{data_owned_department},</if>
+			<if test="data_created_by != null">data_created_by=#{data_created_by},</if>
+			<if test="data_created_department != null">data_created_department=#{data_created_department},</if>
+			<if test="data_created_date != null">data_created_date=#{data_created_date},</if>
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			<if test="acc_description != null">acc_description=#{acc_description},</if>
+			<if test="upper_acc_description != null">upper_acc_description=#{upper_acc_description},</if>
+		</trim>
+		where acc = #{acc} and acc_code = #{acc_code} 
+		  and language = #{language}
+   	</update>
+   	
+   	<!-- 删除员工职称 -->
+   	<delete id="deleteEmployeeTitle" parameterType="hashmap">
+   		 delete FROM BAS_APPLICATION_CATEGORY 
+	     where language=#{language} and acc=#{acc}
+	       and acc_code=#{acc_code}
+   	</delete>
+   	
+   	<!-- 审核员工职称 -->
+   	<update id="auditEmployeeTitle" parameterType="hashmap">
+   		update BAS_APPLICATION_CATEGORY
+		set
+		<trim suffixOverrides=",">
+			<if test="status_code !=null">status_code=#{status_code},</if>	
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+		</trim>
+	     where language=#{language} and acc=#{acc}
+		   and acc_code=#{acc_code}
+   	</update>
+   	
+   	<!-- 新增员工职称 -->
+   	<insert id="addEmployeeTitle" parameterType="hashmap">
+	 	insert into BAS_APPLICATION_CATEGORY
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<include refid="columnScope"></include>
+	 	</trim>
+	 	values
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<if test="status_code != null">#{status_code},</if>
+			<if test="acc != null">#{acc},</if>
+			<if test="acc_code != null">#{acc_code},</if>
+			<if test="upper_acc_code != null">#{upper_acc_code},</if>
+			<if test="reference_field1 != null">#{reference_field1},</if>
+			<if test="reference_field2 != null">#{reference_field2},</if>
+			<if test="reference_field3 != null">#{reference_field3},</if>
+			<if test="reference_field4 != null">#{reference_field4},</if>
+			<if test="reference_field5 != null">#{reference_field5},</if>
+			<if test="reference_field6 != null">#{reference_field6},</if>
+			<if test="reference_field7 != null">#{reference_field7},</if>
+			<if test="reference_field8 != null">#{reference_field8},</if>
+			<if test="reference_field9 != null">#{reference_field9},</if>
+			<if test="reference_field10 != null">#{reference_field10},</if>
+			<if test="reference_field11 != null">#{reference_field11},</if>
+			<if test="reference_field12 != null">#{reference_field12},</if>
+			<if test="reference_field13 != null">#{reference_field13},</if>
+			<if test="reference_field14 != null">#{reference_field14},</if>
+			<if test="reference_field15 != null">#{reference_field15},</if>
+			<if test="reference_field16 != null">#{reference_field16},</if>
+			<if test="reference_field17 != null">#{reference_field17},</if>
+			<if test="reference_field18 != null">#{reference_field18},</if>
+			<if test="reference_field19 != null">#{reference_field19},</if>
+			<if test="reference_field20 != null">#{reference_field20},</if>
+			<if test="data_owner != null">#{data_owner},</if>
+			<if test="data_owned_department != null">#{data_owned_department},</if>
+			<if test="data_created_by != null">#{data_created_by},</if>
+			<if test="data_created_department != null">#{data_created_department},</if>
+			<if test="data_created_date != null">#{data_created_date},</if>
+			<if test="data_modified_by != null">#{data_modified_by},</if>
+			<if test="last_modified_date != null">#{last_modified_date},</if>
+			<if test="language != null">#{language},</if>
+			<if test="acc_description != null">#{acc_description},</if>
+			<if test="upper_acc_description != null">#{upper_acc_description},</if>
+	 	</trim>
+	 </insert>
+   	
+   	<!-- 判断员工职称 是否存在-->
+   	<select id="judgeEmployeeTitle" parameterType="hashmap" resultType="hashmap">
+   		select count(distinct acc_code)
+   		from BAS_APPLICATION_CATEGORY
+   		where language=#{language} and acc=#{acc}
+		   and acc_code=#{acc_code}
+   	</select>
+   	
+   	<!-- 根据主键查询员工职称 -->
+   	<select id="getEmployeeTitle" parameterType="hashmap" resultType="hashmap">
+   		select status_code,acc_code,acc_description
+   		from BAS_APPLICATION_CATEGORY
+   		where language=#{language} and acc=#{acc}
+		   and acc_code=#{acc_code}
+   	</select>
+</mapper>

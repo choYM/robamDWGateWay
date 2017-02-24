@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 币种维护作业 -->
+<mapper namespace="dao.BaseBasCurrencySettingMapper">
+	<!-- 币种维护作业 表字段 BAS_CURRENCY -->
+	<sql id="columnScope">
+		<if test="status_code != null">status_code,</if>
+		<if test="currency != null">currency,</if>
+		<if test="country_region != null">country_region,</if>
+		<if test="minimum_denomination != null">minimum_denomination,</if>
+		<if test="currency_symbol != null">currency_symbol,</if>
+		<if test="data_owner != null">data_owner,</if>
+		<if test="data_owned_department != null">data_owned_department,</if>
+		<if test="data_created_by != null">data_created_by,</if>
+		<if test="data_created_department != null">data_created_department,</if>
+		<if test="data_created_date != null">data_created_date,</if>
+		<if test="data_modified_by != null">data_modified_by,</if>
+		<if test="last_modified_date != null">last_modified_date,</if>
+		<if test="language != null">language,</if>
+		<if test="currency_description != null">currency_description,</if>
+		<if test="country_region_name != null">country_region_name,</if>
+	</sql>
+	<!-- 测试连接 -->
+	<select id="getAll" resultType="hashmap">
+		SELECT * from BAS_CURRENCY
+	</select>
+	<!-- 预设条件查询列表总数 -->
+	<select id="selectCount" parameterType="hashmap" resultType="hashmap">
+		SELECT count(*) 
+		  FROM BAS_CURRENCY 
+		 <where>
+		 	<!-- 币种编号 -->
+			<if test="currency != null and currency != ''">
+				currency LIKE '%' #{currency} '%'
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+			<if test="country_region != null and country_region != ''">
+				AND country_region = #{country_region}
+			</if>
+			<if test="minimum_denomination != null and minimum_denomination != ''">
+				AND minimum_denomination = #{minimum_denomination}
+			</if>
+			<!-- 币种符号 -->
+			<if test="currency_symbol != null and currency_symbol != ''">
+				AND currency_symbol like '%' #{currency_symbol} '%'
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+			<!-- 币种说明 -->
+			<if test="currency_description != null and currency_description != ''">
+				AND currency_description like '%' #{currency_description} '%'
+			</if>
+			<if test="country_region_name != null and country_region_name != ''">
+				AND country_region_name = #{country_region_name}
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据预设条件查询币种列表（分页） -->
+	<select id="getCurrencyList" parameterType="hashmap" resultType="hashmap">
+		SELECT currency,currency_description,country_region,country_region_name,minimum_denomination,
+			   currency_symbol,status_code
+		  FROM BAS_CURRENCY
+		<where>
+			<!-- 币种编号 -->
+			<if test="currency != null and currency != ''">
+				currency LIKE '%' #{currency} '%'
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+			<if test="country_region != null and country_region != ''">
+				AND country_region = #{country_region}
+			</if>
+			<if test="minimum_denomination != null and minimum_denomination != ''">
+				AND minimum_denomination = #{minimum_denomination}
+			</if>
+			<!-- 币种符号 -->
+			<if test="currency_symbol != null and currency_symbol != ''">
+				AND currency_symbol like '%' #{currency_symbol} '%'
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+			<!-- 币种说明 -->
+			<if test="currency_description != null and currency_description != ''">
+				AND currency_description like '%' #{currency_description} '%'
+			</if>
+			<if test="country_region_name != null and country_region_name != ''">
+				AND country_region_name = #{country_region_name}
+			</if>
+		</where>
+		ORDER BY last_modified_date DESC
+		LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 修改币种详细资料 -->
+	<update id="updateBaseCurrencyInfo" parameterType="hashmap" >
+		UPDATE BAS_CURRENCY SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="status_code != null">status_code=#{status_code},</if>
+			<if test="country_region != null">country_region=#{country_region},</if>
+			<if test="minimum_denomination != null">minimum_denomination=#{minimum_denomination},</if>
+			<if test="currency_symbol != null">currency_symbol=#{currency_symbol},</if>
+			<if test="data_owner != null">data_owner=#{data_owner},</if>
+			<if test="data_owned_department != null">data_owned_department=#{data_owned_department},</if>
+			<if test="data_created_by != null">data_created_by=#{data_created_by},</if>
+			<if test="data_created_department != null">data_created_department=#{data_created_department},</if>
+			<if test="data_created_date != null">data_created_date=#{data_created_date},</if>
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+			<if test="currency_description != null">currency_description=#{currency_description},</if>
+			<if test="country_region_name != null">country_region_name=#{country_region_name},</if>
+		</trim>
+		WHERE currency = #{currency} 
+		  AND language = #{language}
+	</update>
+	 
+	 <!-- 判断币种是否存在记录 -->
+    <select id="judgeCurrency" parameterType="hashmap" resultType="java.lang.Integer">
+    	SELECT COUNT(1) 
+    	  FROM BAS_CURRENCY 
+	   	<where>
+	   		<if test="currency != null and currency != ''">
+				currency = #{currency}
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+	    </where>
+    </select>
+	 
+	 <!-- 新增币种详细资料 -->
+	 <insert id="addCurrency" parameterType="hashmap">
+	 	INSERT INTO BAS_CURRENCY
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<include refid="columnScope"></include>
+	 	</trim>
+	 	VALUES
+	 	<trim prefix=" (" suffix=") " suffixOverrides=", ">
+	 		<if test="status_code != null">'Y',</if>
+			<if test="currency != null">#{currency},</if>
+			<if test="country_region != null">#{country_region},</if>
+			<if test="minimum_denomination != null">#{minimum_denomination},</if>
+			<if test="currency_symbol != null">#{currency_symbol},</if>
+			<if test="data_owner != null">#{data_owner},</if>
+			<if test="data_owned_department != null">#{data_owned_department},</if>
+			<if test="data_created_by != null">#{data_created_by},</if>
+			<if test="data_created_department != null">#{data_created_department},</if>
+			<if test="data_created_date != null">#{data_created_date},</if>
+			<if test="data_modified_by != null">#{data_modified_by},</if>
+			<if test="last_modified_date != null">#{last_modified_date},</if>
+			<if test="language != null">'zh_CN',</if>
+			<if test="currency_description != null">#{currency_description},</if>
+			<if test="country_region_name != null">#{country_region_name},</if>
+	 	</trim>
+	 </insert>
+	 
+	 <!-- 批量删除 -->
+	 <delete id="deleteBaseCurrencyInfo" parameterType="hashmap">
+        DELETE FROM BAS_CURRENCY 
+        <where>
+        	<if test="currency != null and currency != ''">
+        		currency = #{currency}
+        	</if>
+        	<if test="language != null and language != ''">
+        		AND language = #{language}
+        	</if>
+        </where>
+    </delete>
+    
+    
+    
+    <!-- 审核申请单 -->
+    <update id="auditCurrency" parameterType="hashmap">
+	    UPDATE BAS_CURRENCY SET
+    	<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="status_code != null">status_code=#{status_code},</if>
+			<if test="data_modified_by != null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date},</if>
+		</trim>
+	   	<where>
+	       	<if test="currency != null and currency != ''">
+        		currency = #{currency}
+        	</if>
+	       	<if test="language != null and language != ''">
+	       		AND language = #{language}
+	       	</if>
+	    </where>
+    </update>
+	 
+	<!-- 获取所有的币种 -->
+	<select id="getCoinsKind" parameterType="hashmap" resultType="hashmap">
+		SELECT currency,currency_description
+		  FROM BAS_CURRENCY
+		 WHERE LANGUAGE=#{language}
+	</select>
+	
+	<select id="getCurrency" parameterType="hashmap" resultType="hashmap">
+	   SELECT DISTINCT currency,currency_description,country_region,country_region_name,
+	      minimum_denomination,currency_symbol,status_code
+       FROM BAS_CURRENCY 
+	   	<where>
+	   		<if test="currency != null and currency != ''">
+				currency = #{currency}
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+	    </where>
+	
+	</select>
+	 
+</mapper>

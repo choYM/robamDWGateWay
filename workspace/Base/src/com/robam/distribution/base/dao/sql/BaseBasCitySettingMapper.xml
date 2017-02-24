@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- drp_bas_m08 城市资料维护作业  author by YangJian date 2017-02-14 -->
+<mapper namespace="dao.BaseBasCitySettingMapper">
+	<sql id="columnScope">
+		<if test="status_code!=null">status_code,</if>
+		<if test="country_region!=null">country_region,</if>
+		<if test="province!=null">province,</if>
+		<if test="city!=null">city,</if>
+		<if test="data_owner!=null">data_owner,</if>
+		<if test="data_owned_department!=null">data_owned_department,</if>
+		<if test="data_created_by!=null">data_created_by,</if>
+		<if test="data_created_department!=null">data_created_department,</if>
+		<if test="data_created_date!=null">data_created_date,</if>
+		<if test="data_modified_by!=null">data_modified_by,</if>
+		<if test="last_modified_date!=null">last_modified_date,</if>
+		<if test="language!=null">language,</if>
+		<if test="country_region_name!=null">country_region_name,</if>
+		<if test="province_name!=null">province_name,</if>
+		<if test="city_name!=null">city_name,</if>	
+	</sql>
+	<select id="selectCount" resultType="hashmap" parameterType="hashmap">
+		select count(distinct city_name) 
+		from BAS_CITY where 1=1 
+		<if test="country_region!=null and country_region!=''">
+			and country_region = #{country_region} 
+		</if>
+		<if test="province!=null and province!=''">
+			and province = #{province} 
+		</if>
+		<!-- 城市编号 -->
+		<if test="city!=null and city!=''">
+			and city like '%' #{city} '%'
+		</if>
+		<!-- 城市名称 -->
+		<if test="city_name!=null and city_name!=''">
+			and city_name like '%' #{city_name} '%'
+		</if>
+		<if test="language!=null and language!=''">
+			and language = #{language}
+		</if>
+		<if test="status_code != null and status_code != ''">
+			and status_code = #{status_code}
+		</if>
+	</select>
+	<select id="selectLimit" resultType="hashmap" parameterType="hashmap">
+		select status_code,country_region,country_region_name,province,
+			province_name,city,city_name 
+		from BAS_CITY where 1=1 
+		<if test="country_region!=null and country_region!=''">
+			and country_region = #{country_region} 
+		</if>
+		<if test="province!=null and province!=''">
+			and province = #{province} 
+		</if>
+		<!-- 城市编号 -->
+		<if test="city!=null and city!=''">
+			and city like '%' #{city} '%'
+		</if>
+		<!-- 城市名称 -->
+		<if test="city_name!=null and city_name!=''">
+			and city_name like '%' #{city_name} '%'
+		</if>
+		<if test="language!=null and language!=''">
+			and language = #{language}
+		</if>
+		<if test="status_code != null and status_code != ''">
+			and status_code = #{status_code}
+		</if>
+		order by LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	<update id="updateCity" parameterType="hashmap">
+		update BAS_CITY 
+		set 
+			city_name=#{city_name} 
+		where 1=1 
+		<if test="country_region!=null and country_region!=''">
+			and country_region = #{country_region} 
+		</if>
+		<if test="country_region_name!=null and country_region_name!=''">
+			and country_region_name = #{country_region_name} 
+		</if>
+		<if test="province!=null and province!=''">
+			and province = #{province} 
+		</if>
+		<if test="province_name!=null and province_name!=''">
+			and province_name = #{province_name} 
+		</if>
+		<if test="city!=null and city!=''">
+			and city = #{city} 
+		</if>
+		<if test="language!=null and language!=''">
+			and language = #{language}
+		</if>
+	</update>
+	<delete id="deleteCity" parameterType="hashmap">
+		delete from BAS_CITY 
+		where 1=1 
+			and language = #{language} and country_region=#{country_region} 
+			and province=#{province} and city=#{city} 
+		
+	</delete>
+	<delete id="deleteCounty" parameterType="hashmap">
+		delete from BAS_COUNTY_DISTRICT 
+		where 1=1 
+			and language = #{language} and country_region=#{country_region} 
+			and province=#{province} and city=#{city} 
+		
+	</delete>
+	<delete id="deleteStreet" parameterType="hashmap">
+		delete from BAS_STREET 
+		where 1=1 
+			and language = #{language} and country_region=#{country_region} 
+			and province=#{province} and city=#{city} 
+		
+	</delete>
+	<update id="auditCity" parameterType="hashmap">
+		update BAS_CITY 
+		set
+	    <trim prefix=" " suffix=" " suffixOverrides=", ">
+		 <if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		 <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		 <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+	    </trim>
+		where 1=1 
+			and language = #{language} and country_region=#{country_region} 
+			and province=#{province} and city=#{city} 
+	</update>
+	<select id="queryCountId" parameterType="hashmap" resultType="hashmap">
+		select count(city) 
+		from 
+		BAS_CITY 
+		where 1=1 
+		<if test="city!=null and city!=''">
+			and city=#{city}
+		</if>
+		<if test="country_region!=null and country_region!=''">
+			and country_region=#{country_region}
+		</if>
+		<if test="province!=null and province!=''">
+			and province=#{province}
+		</if>
+		<if test="language!=null and language!=''">
+			and language = #{language}
+		</if>
+	</select>
+	<insert id="addCity">
+		insert into BAS_CITY 
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		values
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="status_code!=null">#{status_code},</if>
+			<if test="country_region!=null">#{country_region},</if>
+			<if test="province!=null">#{province},</if>
+			<if test="city!=null">#{city},</if>
+			<if test="data_owner!=null">#{data_owner},</if>
+			<if test="data_owned_department!=null">#{data_owned_department},</if>
+			<if test="data_created_by!=null">#{data_created_by},</if>
+			<if test="data_created_department!=null">#{data_created_department},</if>
+			<if test="data_created_date!=null">#{data_created_date},</if>
+			<if test="data_modified_by!=null">#{data_modified_by},</if>
+			<if test="last_modified_date!=null">#{last_modified_date},</if>
+			<if test="language!=null">#{language},</if>
+			<if test="country_region_name!=null">#{country_region_name},</if>
+			<if test="province_name!=null">#{province_name},</if>
+			<if test="city_name!=null">#{city_name},</if>	
+		</trim>
+	</insert>
+	<select id="getCity" parameterType="hashmap" resultType="hashmap">
+	select distinct status_code,country_region,country_region_name,province,province_name,city,city_name 
+		from 
+		BAS_CITY 
+		where 1=1 
+		<if test="city!=null and city!=''">
+			and city=#{city}
+		</if>
+		<if test="country_region!=null and country_region!=''">
+			and country_region=#{country_region}
+		</if>
+		<if test="province!=null and province!=''">
+			and province=#{province}
+		</if>
+		<if test="language!=null and language!=''">
+			and language = #{language}
+		</if>
+	</select>
+</mapper>

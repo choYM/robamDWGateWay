@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.BaseBasStreetSettingMapper">
+	<select id="selectCount" resultType="hashmap" parameterType="hashmap">
+			SELECT COUNT(distinct city,country_region,county_district,language,province,street) 
+			FROM BAS_STREET WHERE 1=1
+			<if test="country_region!=null and country_region!=''">
+				AND country_region=#{country_region}
+			</if>
+			<if test="country_region_name!=null and country_region_name!=''">
+				AND country_region_name=#{country_region_name}
+			</if>
+			<if test="province!=null and province!=''">
+				AND province=#{province}
+			</if>
+			<if test="province_name!=null and province_name!=''">
+				AND province_name=#{province_name}
+			</if>
+			<if test="city!=null and city!=''">
+				AND city=#{city}
+			</if>
+			<if test="city_name!=null and city_name!=''">
+				AND city_name=#{city_name}
+			</if>
+			<if test="county_district!=null and county_district!=''">
+				AND county_district=#{county_district}
+			</if>
+			<if test="county_district_name!=null and county_district_name!=''">
+				AND county_district_name=#{county_district_name}
+			</if>
+			<!-- 街道编号 -->
+			<if test="street!=null and street!=''">
+				AND street LIKE '%' #{street} '%'
+			</if>
+			<!-- 街道名称 -->
+			<if test="street_name!=null and street_name!=''">
+				AND street_name LIKE '%' #{street_name} '%'
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+			
+	</select>
+	<select id="selectLimit" resultType="hashmap" parameterType="hashmap">
+			SELECT DISTINCT status_code,country_region,country_region_name,province,
+			province_name,city,city_name,county_district,county_district_name,street,street_name
+			FROM BAS_STREET WHERE 1=1 
+			<if test="country_region!=null and country_region!=''">
+				AND country_region=#{country_region}
+			</if>
+			<if test="country_region_name!=null and country_region_name!=''">
+				AND country_region_name=#{country_region_name}
+			</if>
+			<if test="province!=null and province!=''">
+				AND province=#{province}
+			</if>
+			<if test="province_name!=null and province_name!=''">
+				AND province_name=#{province_name}
+			</if>
+			<if test="city!=null and city!=''">
+				AND city=#{city}
+			</if>
+			<if test="city_name!=null and city_name!=''">
+				AND city_name=#{city_name}
+			</if>
+			<if test="county_district!=null and county_district!=''">
+				AND county_district=#{county_district}
+			</if>
+			<if test="county_district_name!=null and county_district_name!=''">
+				AND county_district_name=#{county_district_name}
+			</if>
+			<!-- 街道编号 -->
+			<if test="street!=null and street!=''">
+				AND street LIKE '%' #{street} '%'
+			</if>
+			<!-- 街道名称 -->
+			<if test="street_name!=null and street_name!=''">
+				AND street_name LIKE '%' #{street_name} '%'
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+			ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	<update id="modifyStreet" parameterType="java.util.Map">
+	  UPDATE BAS_STREET SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+		 <if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		 <if test="data_owner!= null">DATA_OWNER=#{data_owner}, </if>
+		 <if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT=#{data_owned_department}, </if>
+		 <if test="data_created_by!= null">DATA_CREATED_BY=#{data_created_by}, </if>
+		 <if test="data_created_department!= null">DATA_CREATED_DEPARTMENT=#{data_created_department}, </if>
+		 <if test="data_created_date!= null">DATA_CREATED_DATE=#{data_created_date}, </if>
+		 <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		 <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+		 <if test="country_region_name!= null">COUNTRY_REGION_NAME=#{country_region_name}, </if>
+		 <if test="province_name!= null">PROVINCE_NAME=#{province_name}, </if>
+		 <if test="city_name!= null">CITY_NAME=#{city_name}, </if>
+		 <if test="county_district_name!= null">COUNTY_DISTRICT_NAME=#{county_district_name}, </if>
+		 <if test="street_name!= null">STREET_NAME=#{street_name}, </if>
+	    </trim>
+	        WHERE country_region=#{country_region} AND province=#{province} AND city=#{city} 
+	        AND county_district=#{county_district} AND street=#{street} AND language=#{language}
+	</update>
+	<delete id="deleteStreet" parameterType="java.util.Map">
+	        DELETE FROM BAS_STREET WHERE language=#{language} AND country_region=#{country_region} AND province=#{province} AND city=#{city} 
+	          AND county_district=#{county_district} AND street=#{street}
+	</delete>
+	<update id="auditStreet" parameterType="java.util.Map">
+	        UPDATE BAS_STREET
+	        SET 
+        <trim prefix=" " suffix=" " suffixOverrides=", ">
+		 <if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		 <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		 <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+	    </trim>
+	        WHERE language=#{language} AND country_region=#{country_region} AND province=#{province} AND city=#{city} 
+		      AND county_district=#{county_district} AND street=#{street}
+	</update>
+	<sql id="columnScope">
+	    <if test="status_code!= null">STATUS_CODE, </if>
+		<if test="country_region!= null">COUNTRY_REGION, </if>
+		<if test="province!= null">PROVINCE, </if>
+		<if test="city!= null">CITY, </if>
+		<if test="county_district!= null">COUNTY_DISTRICT, </if>
+		<if test="street!= null">STREET, </if>
+		<if test="data_owner!= null">DATA_OWNER, </if>
+		<if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY, </if>
+		<if test="data_created_department!= null">DATA_CREATED_DEPARTMENT, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE, </if>
+		<if test="data_modified_by!= null">DATA_MODIFIED_BY, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE, </if>
+		<if test="language!= null">LANGUAGE, </if>
+		<if test="country_region_name!= null">COUNTRY_REGION_NAME, </if>
+		<if test="province_name!= null">PROVINCE_NAME, </if>
+		<if test="city_name!= null">CITY_NAME, </if>
+		<if test="county_district_name!= null">COUNTY_DISTRICT_NAME, </if>
+		<if test="street_name!= null">STREET_NAME, </if>
+	</sql>
+	<insert id="addStreet" parameterType="java.util.Map">
+	    INSERT INTO BAS_STREET
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+	  <trim prefix=" (" suffix=") " suffixOverrides=", ">
+		<if test="status_code!= null">#{status_code}, </if>
+		<if test="country_region!= null">#{country_region}, </if>
+		<if test="province!= null">#{province}, </if>
+		<if test="city!= null">#{city}, </if>
+		<if test="county_district!= null">#{county_district}, </if>
+		<if test="street!= null">#{street}, </if>
+		<if test="data_owner!= null">#{data_owner}, </if>
+		<if test="data_owned_department!= null">#{data_owned_department}, </if>
+		<if test="data_created_by!= null">#{data_created_by}, </if>
+		<if test="data_created_department!= null">#{data_created_department}, </if>
+		<if test="data_created_date!= null">#{data_created_date}, </if>
+		<if test="data_modified_by!= null">#{data_modified_by}, </if>
+		<if test="last_modified_date!= null">#{last_modified_date}, </if>
+		<if test="language!= null">#{language}, </if>
+		<if test="country_region_name!= null">#{country_region_name}, </if>
+		<if test="province_name!= null">#{province_name}, </if>
+		<if test="city_name!= null">#{city_name}, </if>
+		<if test="county_district_name!= null">#{county_district_name}, </if>
+		<if test="street_name!= null">#{street_name}, </if>
+	  </trim>
+	</insert>
+	<select id="judgeStreet" parameterType="hashmap" resultType="java.lang.Integer">
+			SELECT COUNT(1) 
+			FROM BAS_STREET
+			<where>
+	   		<if test="country_region!=null and country_region!=''">
+				AND country_region=#{country_region}
+			</if>
+			<if test="province!=null and province!=''">
+				AND province=#{province}
+			</if>
+			<if test="city!=null and city!=''">
+				AND city=#{city}
+			</if>
+			<if test="county_district!=null and county_district!=''">
+				AND county_district=#{county_district}
+			</if>
+			<if test="street!=null and street!=''">
+				AND street=#{street}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	    </where>
+	</select>
+	<select id="getStreet" parameterType="hashmap" resultType="hashmap">
+	   SELECT DISTINCT status_code,country_region,country_region_name,province,province_name,
+	       city,city_name,county_district,county_district_name,street,street_name
+	   FROM BAS_STREET
+			<where>
+	   		<if test="country_region!=null and country_region!=''">
+				AND country_region=#{country_region}
+			</if>
+			<if test="province!=null and province!=''">
+				AND province=#{province}
+			</if>
+			<if test="city!=null and city!=''">
+				AND city=#{city}
+			</if>
+			<if test="county_district!=null and county_district!=''">
+				AND county_district=#{county_district}
+			</if>
+			<if test="street!=null and street!=''">
+				AND street=#{street}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	    </where>
+	</select>
+</mapper>

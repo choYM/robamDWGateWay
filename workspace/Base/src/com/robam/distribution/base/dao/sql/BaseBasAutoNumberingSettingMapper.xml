@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- drp_bas_m23 自动编码设置维护作业规格  author by YangJian date 2017-02-21-->
+<mapper namespace="dao.BaseBasAutoNumberingSettingMapper">
+	<sql id="AutoNumberingRows">
+		<if test="rule_number !=null">rule_number,</if>
+		<if test="total_numbering_length !=null">total_numbering_length,</if>
+		<if test="numbering_result !=null">numbering_result,</if>
+		<if test="program_no !=null">program_no,</if>
+		<if test="table_no !=null">table_no,</if>
+		<if test="numbering_field_no !=null">numbering_field_no,</if>
+		<if test="note !=null">note,</if>
+		<if test="serial_no !=null">serial_no,</if>
+		<if test="numbered_item !=null">numbered_item,</if>
+		<if test="field_no !=null">field_no,</if>
+		<if test="date_format !=null">date_format,</if>
+		<if test="display_format !=null">display_format,</if>
+		<if test="length !=null">length,</if>
+		<if test="data_owner !=null">data_owner,</if>
+		<if test="data_owned_department !=null">data_owned_department,</if>
+		<if test="data_created_by !=null">data_created_by,</if>
+		<if test="data_created_department !=null">data_created_department,</if>
+		<if test="data_created_date !=null">data_created_date,</if>
+		<if test="data_modified_by !=null">data_modified_by,</if>
+		<if test="last_modified_date !=null">last_modified_date,</if>
+		<if test="status_code !=null">status_code,</if>
+		<if test="language !=null">language,</if>
+		<if test="rule_number_description !=null">rule_number_description,</if>
+		<if test="pragram_name !=null">pragram_name,</if>
+		<if test="table_name !=null">table_name,</if>
+		<if test="numbering_field_name !=null">numbering_field_name,</if>
+		<if test="field_name !=null">field_name,</if>
+	</sql>
+	
+	<!-- 根据预设条件查询自动编码设置列表（分页）Count -->
+	<select id="selectAutoNumberingCount" parameterType="hashmap" resultType="hashmap">
+		select count(distinct rule_number) 
+		from SYS_AUTO_NUMBERING 
+		where 1=1 
+		<!-- 规则编码 -->
+		<if test="rule_number !=null and rule_number !=''">
+			and rule_number like '%' #{rule_number} '%'
+		</if>
+		<!-- 规则编码说明 -->
+		<if test="rule_number_description !=null and rule_number_description !=''">
+			and rule_number_description like '%' #{rule_number_description} '%' 
+		</if>
+		<if test="program_no !=null and program_no !=''">
+			and program_no=#{program_no}
+		</if>
+		<if test="pragram_name !=null and pragram_name !=''">
+			and pragram_name=#{pragram_name}
+		</if>
+		<if test="total_numbering_length !=null and total_numbering_length !=''">
+			and total_numbering_length=#{total_numbering_length}
+		</if>
+		<!-- 编码结果 -->
+		<if test="numbering_result !=null and numbering_result !=''">
+			and numbering_result like '%' #{numbering_result} '%'
+		</if>
+		<if test="status_code !=null and status_code !=''">
+			and status_code=#{status_code}
+		</if>
+		<if test="table_no !=null and table_no !=''">
+			and table_no=#{table_no}
+		</if>
+		<if test="table_name !=null and table_name !=''">
+			and table_name=#{table_name}
+		</if>
+		<!-- 备注 -->
+		<if test="note !=null and note !=''">
+			and note like '%' #{note} '%'
+		</if>
+		<if test="numbering_field_no !=null and numbering_field_no !=''">
+			and numbering_field_no=#{numbering_field_no}
+		</if>
+		<if test="numbering_field_name !=null and numbering_field_name !=''">
+			and numbering_field_name=#{numbering_field_name}
+		</if>
+		<if test="language !=null and language !=''">
+			and language=#{language}
+		</if>
+	</select>
+	
+	<!-- 根据预设条件查询自动编码设置列表（分页）Limit -->
+	<select id="selectAutoNumberingLimit" parameterType="hashmap" resultType="hashmap">
+		select rule_number,rule_number_description,program_no,pragram_name,total_numbering_length,
+			numbering_result,status_code,table_no,table_name,note,numbering_field_no,numbering_field_name
+		from SYS_AUTO_NUMBERING 
+		where 1=1 
+		<!-- 规则编码 -->
+		<if test="rule_number !=null and rule_number !=''">
+			and rule_number like '%' #{rule_number} '%'
+		</if>
+		<!-- 规则编码说明 -->
+		<if test="rule_number_description !=null and rule_number_description !=''">
+			and rule_number_description like '%' #{rule_number_description} '%' 
+		</if>
+		<if test="program_no !=null and program_no !=''">
+			and program_no=#{program_no}
+		</if>
+		<if test="pragram_name !=null and pragram_name !=''">
+			and pragram_name=#{pragram_name}
+		</if>
+		<if test="total_numbering_length !=null and total_numbering_length !=''">
+			and total_numbering_length=#{total_numbering_length}
+		</if>
+		<!-- 编码结果 -->
+		<if test="numbering_result !=null and numbering_result !=''">
+			and numbering_result like '%' #{numbering_result} '%'
+		</if>
+		<if test="status_code !=null and status_code !=''">
+			and status_code=#{status_code}
+		</if>
+		<if test="table_no !=null and table_no !=''">
+			and table_no=#{table_no}
+		</if>
+		<if test="table_name !=null and table_name !=''">
+			and table_name=#{table_name}
+		</if>
+		<!-- 备注 -->
+		<if test="note !=null and note !=''">
+			and note like '%' #{note} '%'
+		</if>
+		<if test="numbering_field_no !=null and numbering_field_no !=''">
+			and numbering_field_no=#{numbering_field_no}
+		</if>
+		<if test="numbering_field_name !=null and numbering_field_name !=''">
+			and numbering_field_name=#{numbering_field_name}
+		</if>
+		<if test="language !=null and language !=''">
+			and language=#{language}
+		</if>
+		order by LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	
+	<!--  修改自动编码设置  -->
+	<update id="modifyAutoNumbering" parameterType="hashmap">
+		update SYS_AUTO_NUMBERING set
+		<trim suffixOverrides=",">
+			<if test="rule_number_description !=null">rule_number_description=#{rule_number_description},</if>
+			<if test="program_no !=null">program_no=#{program_no},</if>
+			<if test="pragram_name !=null">pragram_name=#{pragram_name},</if>
+			<if test="total_numbering_length !=null">total_numbering_length=#{total_numbering_length},</if>
+			<if test="numbering_result !=null">numbering_result=#{numbering_result},</if>
+			<if test="table_no !=null">table_no=#{table_no},</if>
+			<if test="table_name !=null">table_name=#{table_name},</if>
+			<if test="note !=null">note=#{note},</if>
+			<if test="numbering_field_no !=null">numbering_field_no=#{numbering_field_no},</if>
+			<if test="numbering_field_name !=null">numbering_field_name=#{numbering_field_name},</if>
+			<if test="numbered_item !=null">numbered_item=#{numbered_item},</if>
+			<if test="field_no !=null">field_no=#{field_no},</if>
+			<if test="field_name !=null">field_name=#{field_name},</if>
+			<if test="date_format !=null">date_format=#{date_format},</if>
+			<if test="display_format !=null">display_format=#{display_format},</if>
+			<if test="length !=null">length=#{length},</if>
+			<if test="data_owner !=null">data_owner=#{data_owner},</if>
+			<if test="data_owned_department !=null">data_owned_department=#{data_owned_department},</if>
+			<if test="data_created_by !=null">data_created_by=#{data_created_by},</if>
+			<if test="data_created_department !=null">data_created_department=#{data_created_department},</if>
+			<if test="data_created_date !=null">data_created_date=#{data_created_date},</if>
+			<if test="data_modified_by !=null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date !=null">last_modified_date=#{last_modified_date},</if>
+		</trim>
+		where 1=1 
+		<if test="rule_number !=null and rule_number !=''">
+			and rule_number=#{rule_number} 
+		</if>
+		<if test="language !=null and language !=''">
+			and language=#{language} 
+		</if>
+		<if test="serial_no !=null and serial_no !=''">
+			and serial_no=#{serial_no}
+		</if>
+	</update>
+	
+	<!-- 删除自动编码设置 -->
+	<delete id="deleteAutoNumbering" parameterType="hashmap">
+		delete from SYS_AUTO_NUMBERING 
+		where 1=1 and rule_number=#{rule_number} and language=#{language} 
+	</delete>
+	
+	<!-- 审核自动编码设置 -->
+	<update id="auditAutoNumbering" parameterType="hashmap">
+		update SYS_AUTO_NUMBERING set 
+		<trim suffixOverrides=",">
+			<if test="status_code !=null">status_code=#{status_code},</if>
+			<if test="data_modified_by !=null">data_modified_by=#{data_modified_by},</if>
+			<if test="last_modified_date !=null">last_modified_date=#{last_modified_date},</if>
+		</trim>
+		where 1=1 and rule_number=#{rule_number} and language=#{language} 
+	</update>
+	
+	<!-- 新增自助编码设置 -->
+	<insert id="addAutoNumbering" parameterType="hashmap">
+		insert into SYS_AUTO_NUMBERING
+		<trim prefix=" (" suffix=") " suffixOverrides=",">
+			<include refid="AutoNumberingRows"/>
+		</trim>		
+		values
+		<trim prefix=" (" suffix=") " suffixOverrides=",">
+			<if test="rule_number !=null">#{rule_number},</if>
+			<if test="total_numbering_length !=null">#{total_numbering_length},</if>
+			<if test="numbering_result !=null">#{numbering_result},</if>
+			<if test="program_no !=null">#{program_no},</if>
+			<if test="table_no !=null">#{table_no},</if>
+			<if test="numbering_field_no !=null">#{numbering_field_no},</if>
+			<if test="note !=null">#{note},</if>
+			<if test="serial_no !=null">#{serial_no},</if>
+			<if test="numbered_item !=null">#{numbered_item},</if>
+			<if test="field_no !=null">#{field_no},</if>
+			<if test="date_format !=null">#{date_format},</if>
+			<if test="display_format !=null">#{display_format},</if>
+			<if test="length !=null">#{length},</if>
+			<if test="data_owner !=null">#{data_owner},</if>
+			<if test="data_owned_department !=null">#{data_owned_department},</if>
+			<if test="data_created_by !=null">#{data_created_by},</if>
+			<if test="data_created_department !=null">#{data_created_department},</if>
+			<if test="data_created_date !=null">#{data_created_date},</if>
+			<if test="data_modified_by !=null">#{data_modified_by},</if>
+			<if test="last_modified_date !=null">#{last_modified_date},</if>
+			<if test="status_code !=null">#{status_code},</if>
+			<if test="language !=null">#{language},</if>
+			<if test="rule_number_description !=null">#{rule_number_description},</if>
+			<if test="pragram_name !=null">#{pragram_name},</if>
+			<if test="table_name !=null">#{table_name},</if>
+			<if test="numbering_field_name !=null">#{numbering_field_name},</if>
+			<if test="field_name !=null">#{field_name},</if>
+		</trim>
+	</insert>
+	
+	<!-- 根据主键获取记录 -->
+	<select id="getAutoNumbering1" parameterType="hashmap" resultType="hashmap">
+		select count(distinct rule_number) as count,rule_number,rule_number_description,program_no,pragram_name,
+			total_numbering_length,numbering_result,status_code,table_no,table_name,note,numbering_field_no,numbering_field_name 
+		from SYS_AUTO_NUMBERING
+		where 1=1 
+		<if test="rule_number !=null and rule_number !=''">
+			and rule_number=#{rule_number} 
+		</if>
+		<if test="language !=null and language !=''">
+			and language=#{language} 
+		</if>
+	</select>
+	<select id="getAutoNumbering2" parameterType="hashmap" resultType="hashmap">
+		select serial_no,numbered_item,field_no,field_name,
+			date_format,display_format,length 
+		from SYS_AUTO_NUMBERING
+		where 1=1 
+		<if test="rule_number !=null and rule_number !=''">
+			and rule_number=#{rule_number} 
+		</if>
+		<if test="language !=null and language !=''">
+			and language=#{language} 
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_m07 省别资料维护作业 -->
+<!-- @author gejc -->
+<!-- @since 2017-02-14 -->
+<mapper namespace="dao.BaseBasProvinceSettingMapper">
+
+	<!-- 查询总数据量 -->
+	<select id="getProvinceListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			COUNT(*) 
+		FROM
+		 	BAS_PROVINCE
+		<where>
+			<if test="country_region!=null and country_region!=''">
+			 	AND country_region=#{country_region}	
+			</if>
+			<!-- 省别编号 -->
+			<if test="province!=null and province!=''">
+			 	AND province LIKE '%' #{province} '%'	 
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="country_region_name!=null and country_region_name!=''">
+			 	AND country_region_name = #{country_region_name}
+			</if>
+			<!-- 省别名称 -->
+			<if test="province_name!=null and province_name!=''">
+			 	AND province_name like '%' #{province_name} '%'	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 分页查询省份 -->
+	<select id="getProvinceList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			country_region,province,status_code,
+			country_region_name,province_name 
+		FROM
+		 	BAS_PROVINCE 
+		<where>
+			<if test="country_region!=null and country_region!=''">
+			 	AND country_region=#{country_region}	
+			</if>
+			<!-- 省别编号 -->
+			<if test="province!=null and province!=''">
+			 	AND province LIKE '%' #{province} '%'	 
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="country_region_name!=null and country_region_name!=''">
+			 	AND country_region_name = #{country_region_name}	
+			</if>
+			<!-- 省别名称 -->
+			<if test="province_name!=null and province_name!=''">
+			 	AND province_name like '%' #{province_name} '%'	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+		  ORDER BY LAST_MODIFIED_DATE DESC  
+		  LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 查询省份 -->
+	<select  id="getProvince" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			country_region,province,status_code,
+			country_region_name,province_name 
+		FROM
+		 	BAS_PROVINCE 
+		<where>
+			<if test="country_region!=null and country_region!=''">
+			 	AND country_region=#{country_region}	
+			</if>
+			<if test="province!=null and province!=''">
+			 	AND province=#{province}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</select>
+	
+	<sql id="columnScope">
+	    <if test="data_created_date!= null">DATA_CREATED_DATE, </if>
+		<if test="country_region!= null">country_region, </if>
+		<if test="province!= null">province, </if>
+		<if test="status_code!= null">status_code, </if>
+		<if test="language!= null">language, </if>
+		<if test="country_region_name!= null">country_region_name, </if>
+		<if test="province_name!= null">province_name, </if>
+	</sql>
+	
+	<!-- 新增省份 -->
+	<insert id="addProvince" parameterType="hashmap">
+		INSERT INTO
+			BAS_PROVINCE
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="data_created_date!= null">#{data_created_date}, </if>
+			<if test="country_region!= null">#{country_region},</if>
+			<if test="province!= null">#{province},</if>
+			<if test="status_code!= null">#{status_code},</if>
+			<if test="language!= null">#{language},</if>
+			<if test="country_region_name!= null">#{country_region_name},</if>
+			<if test="province_name!= null">#{province_name},</if>
+		</trim>
+	</insert>
+	
+	<!-- 修改省份 -->
+	<update id="updateProvince" parameterType="hashmap">
+		UPDATE 
+			BAS_PROVINCE 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+  			<if test="country_region_name!=null">country_region_name=#{country_region_name},</if>
+  			<if test="province_name!=null">province_name=#{province_name},</if>
+ 		</trim>
+		<where>
+			<if test="country_region!=null and country_region!=''">
+			 	AND country_region=#{country_region}	
+			</if>
+			<if test="province!=null and province!=''">
+			 	AND province=#{province}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	
+	<!-- 审批省份 -->
+	<update id="auditProvince" parameterType="hashmap">
+	        UPDATE 
+	        	BAS_PROVINCE
+	        SET 
+		 	 <trim prefix=" " suffix=" " suffixOverrides=", ">
+		         <if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		         <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		         <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+	         </trim>
+		 	<where>
+		 	 	<if test="country_region!=null and country_region!=''">
+				 	AND country_region=#{country_region}	
+				</if>
+				<if test="province!=null and province!=''">
+				 	AND province=#{province}	
+				</if>
+				<if test="language!=null and language!=''">
+				 	AND language=#{language}	
+				</if>
+		 	</where>	     
+	</update>
+	
+	<!-- 删除省份 -->
+	<delete id="deleteProvince" parameterType="hashmap">
+	        DELETE FROM 
+	        	BAS_PROVINCE 
+	    <where>
+	        <if test="country_region!=null and country_region!=''">
+				 AND country_region=#{country_region}	
+			</if>
+			<if test="province!=null and province!=''">
+				 AND province=#{province}	
+			</if>
+			<if test="language!=null and language!=''">
+				 AND language=#{language}	
+			</if>
+	     </where>
+	</delete>
+	
+	<!-- 删除省份时，删除该省份下层层级 -->
+	<!-- 删除城市 -->
+	<delete id="deleteCity" parameterType="hashmap">
+	        DELETE FROM 
+	        	BAS_CITY
+	    <where>
+	        <if test="country_region!=null and country_region!=''">
+				 AND country_region=#{country_region}	
+			</if>
+			<if test="province!=null and province!=''">
+				 AND province=#{province}	
+			</if>
+			<if test="language!=null and language!=''">
+				 AND language=#{language}	
+			</if>
+	     </where>
+	</delete>
+	<!-- 删除区县 -->
+	<delete id="deleteCounty" parameterType="hashmap">
+	        DELETE FROM 
+	        	BAS_COUNTY_DISTRICT 
+	    <where>
+	        <if test="country_region!=null and country_region!=''">
+				 AND country_region=#{country_region}	
+			</if>
+			<if test="province!=null and province!=''">
+				 AND province=#{province}	
+			</if>
+			<if test="language!=null and language!=''">
+				 AND language=#{language}	
+			</if>
+	     </where>
+	</delete>
+	<!-- 删除街道 -->
+	<delete id="deleteStreet" parameterType="hashmap">
+	        DELETE FROM 
+	        	BAS_STREET 
+	    <where>
+	        <if test="country_region!=null and country_region!=''">
+				 AND country_region=#{country_region}	
+			</if>
+			<if test="province!=null and province!=''">
+				 AND province=#{province}	
+			</if>
+			<if test="language!=null and language!=''">
+				 AND language=#{language}	
+			</if>
+	     </where>
+	</delete>
+</mapper>

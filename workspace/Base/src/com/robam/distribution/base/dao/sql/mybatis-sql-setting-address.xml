@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.digiwin.app.dao.AddressDao">
+	<select id="getAddress" parameterType="address" resultType="address">
+		select ADDRESS_TYPE as addressType,COUNTRY_REGION as countryRegion,PROVINCE,CITY,COUNTY,STREET,DETAILED_ADDRESS as detailedAddress from ADDRESS 
+		where 1=1 
+		<if test="addressId!=null and addressId!=''">
+		 and ADDRESS_ID=#{addressId}		
+		</if>
+		<if test="requestNo!=null and requestNo!=''">
+		 and REQUEST_NO=#{requestNo}		
+		</if>
+	</select>
+	<select id="getMaxId" resultType="string">
+		select max(ADDRESS_ID+1) from ADDRESS
+	</select>
+	<insert id="addAddress" parameterType="address">
+		<![CDATA[
+			insert into ADDRESS(ADDRESS_ID,ADDRESS_TYPE,COUNTRY_REGION,PROVINCE,CITY,COUNTY,STREET,DETAILED_ADDRESS,REQUEST_NO) 
+			values(
+				#{addressId},#{addressType},#{countryRegion},#{province},#{city},#{county},#{street},#{detailedAddress},#{requestNo}
+			)
+		]]>
+	</insert>
+	<update id="updateAddress" parameterType="address">
+		update ADDRESS 
+		<trim prefix="set" suffixOverrides=",">
+		<if test="addressType!=null and addressType!=''">
+		 ADDRESS_TYPE=#{addressType},		
+		</if>
+		<if test="countryRegion!=null and countryRegion!=''">
+		 COUNTRY_REGION=#{countryRegion},		
+		</if>
+		<if test="province!=null and province!=''">
+		 PROVINCE=#{province},		
+		</if>
+		<if test="city!=null and city!=''">
+		 CITY=#{city},		
+		</if>
+		<if test="county!=null and county!=''">
+		 COUNTY=#{county},		
+		</if>
+		<if test="street!=null and street!=''">
+		 STREET=#{street},		
+		</if>
+		<if test="detailedAddress!=null and detailedAddress!=''">
+		 DETAILED_ADDRESS=#{detailedAddress},		
+		</if>
+		</trim>
+		 where 1=1 
+		<if test="addressId!=null and addressId!=''">
+		 and ADDRESS_ID=#{addressId}		
+		</if>	
+		<if test="requestNo!=null and requestNo!=''">
+		 and REQUEST_NO=#{requestNo}		
+		</if>	 
+	</update>
+</mapper>

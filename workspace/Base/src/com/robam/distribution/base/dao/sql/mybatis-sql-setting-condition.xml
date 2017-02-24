@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.digiwin.app.dao.ConditionDao">
+	<select id="getCondition" parameterType="condition" resultType="condition">
+		<![CDATA[
+			select ADDRESS_TYPE,COUNTRY_REGION,PROVINCE,CITY,COUNTY,STREET,DETAILED_ADDRESS from address 
+			where ADDRESS_ID=#{addressId} and REQUEST_NO=#{requestNo}
+		]]>
+	</select>
+	<select id="getConditionLib" parameterType="condition" resultType="condition">
+		<![CDATA[
+			select ADDRESS_TYPE,COUNTRY_REGION,PROVINCE,CITY,COUNTY,STREET,DETAILED_ADDRESS from address 
+			where ADDRESS_ID=#{addressId} and REQUEST_NO=#{requestNo}
+		]]>
+	</select>
+	<insert id="addCondition" parameterType="condition">
+		<![CDATA[
+			insert into address(ADDRESS_ID,ADDRESS_TYPE,COUNTRY_REGION,PROVINCE,CITY,COUNTY,STREET,DETAILED_ADDRESS,REQUEST_NO) 
+			values(
+				#{addressId},#{addressType},#{countryRegion},#{province},#{city},#{county},#{street},#{detailedAddress},#{requestNo}
+			)
+		]]>
+	</insert>
+	
+</mapper>

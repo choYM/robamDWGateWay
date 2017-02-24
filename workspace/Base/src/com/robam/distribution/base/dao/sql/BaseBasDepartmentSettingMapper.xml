@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 部门维护作业 author by YangJian date 2017-02-20 -->
+<mapper namespace="dao.BaseBasDepartmentSettingMapper">
+	<sql id="departmentRows">
+		<if test="status_code !=null">STATUS_CODE,</if>
+		<if test="department !=null">department,</if>
+		<if test="responsibility_center_type !=null">RESPONSIBILITY_CENTER_TYPE,</if>
+		<if test="responsibility_center !=null">RESPONSIBILITY_CENTER,</if>
+		<if test="valid_date !=null">VALID_DATE,</if>
+		<if test="invalid_date !=null">INVALID_DATE,</if>
+		<if test="expense_catagory !=null">EXPENSE_CATAGORY,</if>
+		<if test="legal_person !=null">legal_person,</if>
+		<if test="department_name !=null">department_name,</if>
+		<if test="department_supervisor_employeeno !=null">department_supervisor_employeeno,</if>
+		<if test="data_owner !=null">DATA_OWNER,</if>
+		<if test="data_owned_department !=null">DATA_OWNED_DEPARTMENT,</if>
+		<if test="data_created_by !=null">DATA_CREATED_BY,</if>
+		<if test="data_created_department !=null">DATA_CREATED_DEPARTMENT,</if>
+		<if test="data_created_date !=null">DATA_CREATED_DATE,</if>
+		<if test="data_modified_by !=null">DATA_MODIFIED_BY,</if>
+		<if test="last_modified_date !=null">LAST_MODIFIED_DATE,</if>
+		<if test="language !=null">LANGUAGE,</if>
+		<if test="legal_person_name !=null">legal_person_name,</if>
+		<if test="responsibility_center_description !=null">RESPONSIBILITY_CENTER_DESCRIPTION,</if>
+		<if test="department_supervisor_name !=null">DEPARTMENT_SUPERVISOR_NAME,</if>
+	</sql>
+	<!-- 根据预设条件查询部门列表（分页）Count  -->
+	<select id="SelectBasDepartmentCount" parameterType="hashmap" resultType="hashmap">
+		select count(distinct department) 
+		from BAS_DEPARTMENT
+		where 1=1 
+		<if test="department !=null and department !=''">
+			and department=#{department}
+		</if>
+		<if test="department_name !=null and department_name !=''">
+			and department_name=#{department_name}
+		</if>
+		<if test="responsibility_center_type !=null and responsibility_center_type !=''">
+			and RESPONSIBILITY_CENTER_TYPE=#{responsibility_center_type}
+		</if>
+		<if test="responsibility_center_description !=null and responsibility_center_description !=''">
+			and RESPONSIBILITY_CENTER_DESCRIPTION like '%' #{responsibility_center_description} '%' 
+		</if>
+		<if test="legal_person !=null and legal_person !=''">
+			and legal_person=#{legal_person}
+		</if>
+		<if test="legal_person_name !=null and legal_person_name !=''">
+			and legal_person_name like '%' #{legal_person_name} '%'
+		</if>
+		<if test="status_code !=null and status_code !=''">
+			and STATUS_CODE=#{status_code}
+		</if>
+		<if test="responsibility_center !=null and responsibility_center !=''">
+			and RESPONSIBILITY_CENTER=#{responsibility_center}
+		</if>
+		<if test="responsibility_center_description !=null and responsibility_center_description !=''">
+			and RESPONSIBILITY_CENTER_DESCRIPTION like '%' #{responsibility_center_description} '%'
+		</if>
+		<if test="expense_catagory !=null and expense_catagory !=''">
+			and EXPENSE_CATAGORY=#{expense_catagory}
+		</if>
+		<if test="valid_date !=null and valid_date !=''">
+			and VALID_DATE=#{valid_date}
+		</if>
+		<if test="invalid_date !=null and invalid_date !=''">
+			and INVALID_DATE=#{invalid_date}
+		</if>
+		<if test="language !=null and language !=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+	
+	<!-- 根据预设条件查询部门列表（分页）Limit  -->
+	<select id="SelectBasDepartmentLimit" parameterType="hashmap" resultType="hashmap">
+		select department,department_name,responsibility_center_type,
+			responsibility_center_description,legal_person,legal_person_name,status_code,
+			responsibility_center,expense_catagory,
+			DATE_FORMAT(valid_date,'%Y/%m/%d') as valid_date,DATE_FORMAT(invalid_date,'%Y/%m/%d') as invalid_date,
+			department_supervisor_employeeno,department_supervisor_name 
+		from BAS_DEPARTMENT
+		where 1=1 
+		<if test="department !=null and department !=''">
+			and department=#{department}
+		</if>
+		<if test="department_name !=null and department_name !=''">
+			and department_name=#{department_name}
+		</if>
+		<if test="responsibility_center_type !=null and responsibility_center_type !=''">
+			and RESPONSIBILITY_CENTER_TYPE=#{responsibility_center_type}
+		</if>
+		<if test="responsibility_center_description !=null and responsibility_center_description !=''">
+			and RESPONSIBILITY_CENTER_DESCRIPTION like '%' #{responsibility_center_description} '%' 
+		</if>
+		<if test="legal_person !=null and legal_person !=''">
+			and legal_person=#{legal_person}
+		</if>
+		<if test="legal_person_name !=null and legal_person_name !=''">
+			and legal_person_name like '%' #{legal_person_name} '%'
+		</if>
+		<if test="status_code !=null and status_code !=''">
+			and STATUS_CODE=#{status_code}
+		</if>
+		<if test="responsibility_center !=null and responsibility_center !=''">
+			and RESPONSIBILITY_CENTER=#{responsibility_center}
+		</if>
+		<if test="responsibility_center_description !=null and responsibility_center_description !=''">
+			and RESPONSIBILITY_CENTER_DESCRIPTION like '%' #{responsibility_center_description} '%'
+		</if>
+		<if test="upper_department !=null and upper_department !=''">
+			and UPPER_department=#{upper_department}
+		</if>
+		<if test="upper_department_name !=null and upper_department_name !=''">
+			and UPPER_DEPARTMENT_NAME=#{upper_department_name}
+		</if>
+		<if test="expense_catagory !=null and expense_catagory !=''">
+			and EXPENSE_CATAGORY=#{expense_catagory}
+		</if>
+		<if test="valid_date !=null and valid_date !=''">
+			and VALID_DATE=#{valid_date}
+		</if>
+		<if test="invalid_date !=null and invalid_date !=''">
+			and INVALID_DATE=#{invalid_date}
+		</if>
+		<if test="language !=null and language !=''">
+			and LANGUAGE=#{language}
+		</if>
+		order by LAST_MODIFIED_DATE desc limit #{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 修改部门（包含审核部门） -->
+	<update id="modifyDepartment" parameterType="hashmap">
+		update BAS_DEPARTMENT 
+		set 
+		<trim suffixOverrides=",">
+			<if test="last_modified_date != null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+			<if test="department_name !=null">department_name=#{department_name},</if>
+			<if test="responsibility_center_type !=null">RESPONSIBILITY_CENTER_TYPE=#{responsibility_center_type},</if>
+			<if test="responsibility_center_description !=null">RESPONSIBILITY_CENTER_DESCRIPTION=#{responsibility_center_description},</if>
+			<if test="legal_person !=null">legal_person=#{legal_person},</if>
+			<if test="legal_person_name !=null">legal_person_name=#{legal_person_name},</if>
+			<if test="status_code !=null">STATUS_CODE=#{status_code},</if>
+			<if test="responsibility_center !=null">RESPONSIBILITY_CENTER=#{responsibility_center},</if>
+			<if test="responsibility_center_description !=null">RESPONSIBILITY_CENTER_DESCRIPTION=#{responsibility_center_description},</if>
+			<if test="expense_catagory !=null">EXPENSE_CATAGORY=#{expense_catagory},</if>
+			<if test="valid_date !=null">VALID_DATE=#{valid_date},</if>
+			<if test="invalid_date !=null">INVALID_DATE=#{invalid_date},</if>
+			<if test="department_supervisor_employeeno !=null">department_supervisor_employeeno=#{department_supervisor_employeeno},</if>
+			<if test="department_supervisor_name !=null">DEPARTMENT_SUPERVISOR_NAME=#{department_supervisor_name},</if>
+		</trim>
+		where 1=1 
+		<if test="department !=null and department !=''">
+			and department=#{department}
+		</if>
+		<if test="language !=null and language !=''">
+			and LANGUAGE=#{language}
+		</if>
+	</update>
+	
+	<!-- 删除部门 -->
+	<delete id="deleteDepartment" parameterType="hashmap">
+		delete from BAS_DEPARTMENT 
+		where 1=1 and department=#{department} and LANGUAGE=#{language}
+	</delete>
+	
+	<!-- 新增部门 -->
+	<insert id="addDepartment" parameterType="hashmap">
+		insert into BAS_DEPARTMENT 
+		<trim prefix=" (" suffix=") " suffixOverrides=",">
+			<include refid="departmentRows"/>
+		</trim>
+		values
+		<trim prefix=" (" suffix=") " suffixOverrides=",">
+			<if test="status_code !=null">#{status_code},</if>
+			<if test="department !=null">#{department},</if>
+			<if test="responsibility_center_type !=null">#{responsibility_center_type},</if>
+			<if test="responsibility_center !=null">#{responsibility_center},</if>
+			<if test="valid_date !=null">#{valid_date},</if>
+			<if test="invalid_date !=null">#{invalid_date},</if>
+			<if test="expense_catagory !=null">#{expense_catagory},</if>
+			<if test="legal_person !=null">#{legal_person},</if>
+			<if test="department_name !=null">#{department_name},</if>
+			<if test="department_supervisor_employeeno !=null">#{department_supervisor_employeeno},</if>
+			<if test="data_owner !=null">#{data_owner},</if>
+			<if test="data_owned_department !=null">#{data_owned_department},</if>
+			<if test="data_created_by !=null">#{data_created_by},</if>
+			<if test="data_created_department !=null">#{data_created_department},</if>
+			<if test="data_created_date !=null">#{data_created_date},</if>
+			<if test="data_modified_by !=null">#{data_modified_by},</if>
+			<if test="last_modified_date !=null">#{last_modified_date},</if>
+			<if test="language !=null">#{language},</if>
+			<if test="legal_person_name !=null">#{legal_person_name},</if>
+			<if test="responsibility_center_description !=null">#{responsibility_center_description},</if>
+			<if test="department_supervisor_name !=null">#{department_supervisor_name},</if>
+		</trim>
+	</insert>
+	
+	<!-- 判断部门是否存在 -->
+	<select id="getDepartment" parameterType="hashmap" resultType="hashmap">
+		select count(distinct department) as count,department,department_name,
+			responsibility_center_type,responsibility_center_description,legal_person,legal_person_name,
+			status_code,responsibility_center,responsibility_center_description,
+			expense_catagory,valid_date,invalid_date,department_supervisor_employeeno,
+			department_supervisor_name 
+		from BAS_DEPARTMENT
+		where 1=1 and department=#{department} and LANGUAGE=#{language}
+	</select>
+</mapper>

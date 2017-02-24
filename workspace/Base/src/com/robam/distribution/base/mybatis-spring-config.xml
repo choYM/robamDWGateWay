@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<!-- MyBatis XML mappers -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:BaseBasApplicationCategoryCodesSettingMapper.xml</value>
+				<value>classpath:BaseBasCollectConditionSettingMapper.xml</value>
+				<value>classpath:BaseBasContinentSettingMapper.xml</value>
+				<value>classpath:BaseBasPaymentMethodSettingMapper.xml</value>
+				<value>classpath:BaseBasPostcodeSettingMapper.xml</value>
+				<value>classpath:BaseBasReferenceSettingMapper.xml</value>
+				<value>classpath:BaseBasTimeZoneSettingMapper.xml</value>
+				<value>classpath:BaseBasUnitConversionrateSettingMapper.xml</value>
+				<value>classpath:BaseBasUnitSettingMapper.xml</value>
+				<value>classpath:BaseBasAccountTypeSettingMapper.xml</value>
+
+				<!-- 门店申请单地址维护作业 -->
+				<value>classpath:BaseStoresAddressSettingMapper.xml</value>
+				<!-- 门店申请单维护作业 -->
+				<value>classpath:BaseStoresDataAcccessSettingMapper.xml</value>
+				<!-- 商品品牌、门店类别维护作业、门店商品其他属性维护作业、休假类型维护作业、
+					  商品价格带维护作业 、商品系列维护作业-->
+				<value>classpath:BaseApplicationCategoryCodesSettingMapper.xml</value>
+				<!-- 使用币别设定作业 -->
+				<value>classpath:BaseBasCurrencyUsedSettingMapper.xml</value>
+				<!-- 币种维护作业 -->
+				<value>classpath:BaseBasCurrencySettingMapper.xml</value>
+				<!-- 国家维护作业 -->
+				<value>classpath:BaseBasCountrySettingMapper.xml</value>
+				<!-- 省别维护作业 -->
+				<value>classpath:BaseBasProvinceSettingMapper.xml</value>
+				<!-- 城市维护作业 -->
+				<value>classpath:BaseBasCitySettingMapper.xml</value>
+				<!-- 县/行政区域维护作业 -->
+				<value>classpath:BaseBasCountryDistrictSettingMapper.xml</value>
+				<!-- 街道维护作业 -->
+				<value>classpath:BaseBasStreetSettingMapper.xml</value>
+				<!-- 收款条件维护 -->
+				<value>classpath:BaseCollectConditionSettingMapper.xml</value>
+				<!-- 发票类型维护作业 -->
+				<value>classpath:BaseBasInvoiceTypeSettingMapper.xml</value>
+				<!-- 组织结构查询作业 -->
+				<value>classpath:BaseBasOrganizationHierarchySettingMapper.xml</value>
+				<!-- 组织层级建立作业 -->
+				<!-- 银行资料维护作业 -->
+				<value>classpath:BaseBasBankSettingMapper.xml</value>
+				<!-- drp_bas_f07-传票摘要弹性预设作业 -->
+				<value>classpath:BaseBasVoucherFlexibilitySettingMapper.xml</value>
+				<!-- 付款条件维护作业 -->
+				<value>classpath:BaseBasPaymentConditionSettingMapper.xml</value>
+				
+				<!-- 页面公共服务 -->
+				<value>classpath:BaseCommonSettingMapper.xml</value>
+				<!-- 缴款优惠折扣维护作业 -->
+				<value>classpath:BaseBasPaymentPreconditionSettingMapper.xml</value>
+				<!-- 月汇率维护作业 -->
+				<value>classpath:BaseBasMonthlyExchangeRateSettingMapper.xml</value>
+				<!-- 交易对象付款方式设定作业 -->
+				<value>classpath:BaseBasTransPaymentMethodSettingMapper.xml</value>
+				<!-- 日汇率维护作业 -->
+				<value>classpath:BaseBasDailyExchangeRateSettingMapper.xml</value>
+				<!-- 单一税别设置作业规格 -->
+				<value>classpath:BaseBasSingleTaxSettingMapper.xml</value>
+				<!-- 款别依据点设置服务规格 -->
+				<value>classpath:BaseBasSitePaymentTypeSettingMapper.xml</value>
+				<!-- 组织基础维护作业 -->
+				<value>classpath:BaseBasOrganizationSettingMapper.xml</value>
+				<!-- 组织地址维护作业 -->
+				<value>classpath:BaseOrgAddressSettingMapper.xml</value>
+				<!-- 交易对象付款方式 -->
+				<value>classpath:BaseBasTransPaymentMethodSettingMapper.xml</value>
+				<!-- 多账期设置作业 -->
+				<value>classpath:BaseMultiAccountSettingMapper.xml</value>
+				<!-- 常用条件查询作业 -->
+				<value>classpath:BaseSearchConditionMapper.xml</value>
+				<!-- 单据设置作业 -->
+				<value>classpath:BaseSysDocumentSettingSettingMapper.xml</value>
+				<!-- 枚举作业 -->
+				<value>classpath:BaseEnumerateMapper.xml</value>
+				<!-- 单据别维护作业 -->
+				<value>classpath:BaseBasDocumentSettingMapper.xml</value>
+				<!-- 自動邊碼設置作業 -->
+				<value>classpath:BaseBasAutoNumberingSettingMapper.xml </value>
+				<!-- 部门维护作业 -->
+				<value>classpath:BaseBasDepartmentSettingMapper.xml</value>
+				<!-- 员工维护作业 -->
+				<value>classpath:BaseBasEmployeeSettingMapper.xml</value>
+                <!-- 应用分类维护作业 -->
+				<value>classpath:BaseBasAccContrastSettingMapper.xml</value>
+                <!-- 门店导购员维护作业 -->
+				<value>classpath:BaseBasEmployeeGuideSettingMapper.xml</value>
+				<!-- 自动编码维护作业 -->
+				<value>classpath:BaseBasAutoNumberingSettingMapper.xml</value>
+			</list>
+		</property>	
+	</bean>
+
+	<bean id="Dao" class="com.digiwin.dao.Dao"></bean>
+
+</beans>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_m17 日汇率维护作业 -->
+<!-- @author gejc -->
+<!-- @since 2017-02-16 -->
+<mapper namespace="dao.BaseBasDailyExchangeRateSettingMapper">
+	<!-- 1.查询日汇率 -->
+	<select id="getDailyExchangeRateList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			status_code,reference_table_no,reference_table_description,default_cross_exchrate,
+			DATE_FORMAT(date,'%Y/%m/%d') as date,transaction_currency_lot,
+			DATE_FORMAT(update_time,'%Y/%m/%d') as update_time,
+			exchrate_input_mode,update_mode,base_currency,
+			base_currency_description,transaction_currency,transaction_currency_description,
+			bank_buying_exchrate,bank_selling_exchrate,bank_average_exchrate,
+			customs_buying_exchrate,customs_selling_exchrate   
+		FROM 
+			BAS_DAILY_EXCHRATE 
+		<where>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+			<if test="reference_table_no!=null and reference_table_no!=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test="reference_table_description!=null and reference_table_description!=''">
+			 	AND reference_table_description=#{reference_table_description}	
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+			 	AND base_currency=#{base_currency}	
+			</if>
+			<if test="base_currency_description!=null and base_currency_description!=''">
+			 	AND base_currency_description=#{base_currency_description}	
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+			 	AND transaction_currency=#{transaction_currency}	
+			</if>
+			<if test="transaction_currency_description!=null and transaction_currency_description!=''">
+			 	AND transaction_currency_description=#{transaction_currency_description}	
+			</if>
+			<if test="date!=null and date!=''">
+			 	AND date=#{date}	
+			</if>
+			<if test="update_mode!=null and update_mode!=''">
+			 	AND update_mode=#{update_mode}	
+			</if>
+		</where> 
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 分页查询，查询数据量 -->
+	<select id="getDailyExchangeRateListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			COUNT(*) 
+		FROM 
+			BAS_DAILY_EXCHRATE 
+		<where> 
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+			<if test="reference_table_no!=null and reference_table_no!=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test="reference_table_description!=null and reference_table_description!=''">
+			 	AND reference_table_description=#{reference_table_description}	
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+			 	AND base_currency=#{base_currency}	
+			</if>
+			<if test="base_currency_description!=null and base_currency_description!=''">
+			 	AND base_currency_description=#{base_currency_description}	
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+			 	AND transaction_currency=#{transaction_currency}	
+			</if>
+			<if test="transaction_currency_description!=null and transaction_currency_description!=''">
+			 	AND transaction_currency_description=#{transaction_currency_description}	
+			</if>
+			<if test="date!=null and date!=''">
+			 	AND date=#{date}	
+			</if>
+			<if test="update_mode!=null and update_mode!=''">
+			 	AND update_mode=#{update_mode}	
+			</if>
+		</where>
+	</select>
+	
+	<sql id="columnScope">
+	    <if test="data_owner!= null">DATA_OWNER, </if>
+		<if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY, </if>
+		<if test="data_created_department!= null">DATA_CREATED_DEPARTMENT, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE, </if>
+		<if test="data_modified_by!= null">DATA_MODIFIED_BY, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE, </if>
+		<if test="update_mode!= null">update_mode, </if>
+		<if test="status_code!= null">status_code, </if>
+		<if test="reference_table_no!= null">reference_table_no, </if>
+		<if test="reference_table_description!= null">reference_table_description, </if>
+		<if test="default_cross_exchrate!= null">default_cross_exchrate, </if>
+		<if test="date!= null">date,</if>
+		<if test="transaction_currency_lot!= null">transaction_currency_lot, </if>
+		<if test="exchrate_input_mode!= null">exchrate_input_mode,</if>
+		<if test="base_currency!= null">base_currency, </if>
+		<if test="base_currency_description!= null">base_currency_description, </if>
+		<if test="transaction_currency!= null">transaction_currency, </if>
+		<if test="transaction_currency_description!= null">transaction_currency_description, </if>
+		<if test="bank_buying_exchrate!= null">bank_buying_exchrate, </if>
+		<if test="bank_selling_exchrate!= null">bank_selling_exchrate, </if>
+		<if test="bank_average_exchrate!= null">bank_average_exchrate, </if>
+		<if test="customs_buying_exchrate!= null">customs_buying_exchrate, </if>
+		<if test="customs_selling_exchrate!= null">customs_selling_exchrate, </if>
+		<if test="language!= null">language, </if>
+	</sql>
+	<!-- 2.新增日汇率 -->
+	<insert id="addDailyExchangeRate" parameterType="hashmap">
+		INSERT INTO
+			BAS_DAILY_EXCHRATE
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>	
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+		<if test="data_owner!= null">#{data_owner}, </if>
+		<if test="data_owned_department!= null">#{data_owned_department}, </if>
+		<if test="data_created_by!= null">#{data_created_by}, </if>
+		<if test="data_created_department!= null">#{data_created_department}, </if>
+		<if test="data_created_date!= null">#{data_created_date}, </if>
+		<if test="data_modified_by!= null">#{data_modified_by}, </if>
+		<if test="last_modified_date!= null">#{last_modified_date}, </if>
+		<if test="update_mode!= null">#{update_mode}, </if>
+		<if test="status_code!= null">#{status_code}, </if>
+		<if test="reference_table_no!= null">#{reference_table_no}, </if>
+		<if test="reference_table_description!= null">#{reference_table_description}, </if>
+		<if test="default_cross_exchrate!= null">#{default_cross_exchrate}, </if>
+		<if test="date!= null">#{date},</if>
+		<if test="transaction_currency_lot!= null">#{transaction_currency_lot}, </if>
+		<if test="exchrate_input_mode!= null">#{exchrate_input_mode},</if>
+		<if test="base_currency!= null">#{base_currency}, </if>
+		<if test="base_currency_description!= null">#{base_currency_description}, </if>
+		<if test="transaction_currency!= null">#{transaction_currency}, </if>
+		<if test="transaction_currency_description!= null">#{transaction_currency_description}, </if>
+		<if test="bank_buying_exchrate!= null">#{bank_buying_exchrate}, </if>
+		<if test="bank_selling_exchrate!= null">#{bank_selling_exchrate}, </if>
+		<if test="bank_average_exchrate!= null">#{bank_average_exchrate}, </if>
+		<if test="customs_buying_exchrate!= null">#{customs_buying_exchrate}, </if>
+		<if test="customs_selling_exchrate!= null">#{customs_selling_exchrate}, </if>
+		<if test="language!= null">#{language}, </if>
+		</trim>		
+	</insert>
+	
+	<!-- 新增前查询是否存在该数据 -->
+	<select id="getDailyExchangeRate" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			status_code,reference_table_no,reference_table_description,default_cross_exchrate,
+			DATE_FORMAT(date,'%Y/%m/%d') as date,transaction_currency_lot,
+			DATE_FORMAT(update_time,'%Y/%m/%d') as update_time,exchrate_input_mode,update_mode,
+			base_currency,base_currency_description,transaction_currency,transaction_currency_description,
+			bank_buying_exchrate,bank_selling_exchrate,bank_average_exchrate,customs_buying_exchrate,
+			customs_selling_exchrate  
+		 FROM 
+		 	BAS_DAILY_EXCHRATE 
+		<where>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+			<if test="reference_table_no!=null and reference_table_no!=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+			 	AND base_currency=#{base_currency}	
+			</if>
+			<if test="date!=null and date!=''">
+			 	AND date=#{date}	
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+			 	AND transaction_currency=#{transaction_currency}	
+			</if>
+		</where>
+	</select>
+	
+	<!-- 3.修改日汇率 -->
+	<update id="modifyDailyExchangeRate" parameterType="hashmap">
+		 UPDATE 
+		 	BAS_DAILY_EXCHRATE 
+		 <trim prefix="set" suffixOverrides=",">
+			<if test="data_owner!= null">DATA_OWNER=#{data_owner}, </if>
+		    <if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT=#{data_owned_department}, </if>
+		    <if test="data_created_by!= null">DATA_CREATED_BY=#{data_created_by}, </if>
+		    <if test="data_created_department!= null">DATA_CREATED_DEPARTMENT=#{data_created_department}, </if>
+		    <if test="data_created_date!= null">DATA_CREATED_DATE=#{data_created_date}, </if>
+		    <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		    <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+  			<if test="default_cross_exchrate!= null">default_cross_exchrate=#{default_cross_exchrate}, </if>
+			<if test="transaction_currency_lot!= null">transaction_currency_lot=#{transaction_currency_lot}, </if>
+			<if test="exchrate_input_mode!= null">exchrate_input_mode=#{exchrate_input_mode},</if>
+			<if test="base_currency_description!= null">base_currency_description=#{base_currency_description}, </if>
+			<if test="transaction_currency_description!= null">transaction_currency_description=#{transaction_currency_description}, </if>
+			<if test="bank_buying_exchrate!= null">bank_buying_exchrate=#{bank_buying_exchrate}, </if>
+			<if test="bank_selling_exchrate!= null">bank_selling_exchrate=#{bank_selling_exchrate}, </if>
+			<if test="bank_average_exchrate!= null">bank_average_exchrate=#{bank_average_exchrate}, </if>
+			<if test="customs_buying_exchrate!= null">customs_buying_exchrate=#{customs_buying_exchrate}, </if>
+			<if test="customs_selling_exchrate!= null">customs_selling_exchrate=#{customs_selling_exchrate}, </if>
+ 		</trim>			
+		<where>
+			<if test="reference_table_no!=null and reference_table_no!=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+			 	AND base_currency=#{base_currency}	
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+			 	AND transaction_currency=#{transaction_currency}	
+			</if>
+			<if test="date!=null and date!=''">
+			 	AND date=#{date}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	
+	<!-- 4.删除日汇率 -->
+	<delete id="deleteDailyExchangeRate" parameterType="hashmap">
+	  DELETE FROM 
+	  	BAS_DAILY_EXCHRATE 
+	  <where> 
+			<if test="reference_table_no!=null and reference_table_no!=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+			 	AND base_currency=#{base_currency}	
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+			 	AND transaction_currency=#{transaction_currency}	
+			</if>
+			<if test="date!=null and date!=''">
+			 	AND date=#{date}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+	   </where>     
+	</delete>
+	
+	<!-- 5.审核日汇率 -->
+	<update id="auditDailyExchangeRate" parameterType="hashmap">
+	   UPDATE 
+	   		BAS_DAILY_EXCHRATE
+	   SET 
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+		 <if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		 <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		 <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+	    </trim>
+	  	<where> 
+			<if test="reference_table_no!=null and reference_table_no!=''">
+			 	AND reference_table_no=#{reference_table_no}	
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+			 	AND base_currency=#{base_currency}	
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+			 	AND transaction_currency=#{transaction_currency}	
+			</if>
+			<if test="date!=null and date!=''">
+			 	AND date=#{date}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+	   	</where> 
+	</update>
+</mapper>

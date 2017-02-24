@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_f02 交易对象付款方式维护作业-->
+<!-- @author gejc -->
+<!-- @since 2017-02-16 -->
+<mapper namespace="dao.BaseBasTransPaymentMethodSettingMapper">
+
+	<!-- 1.查询交易对象付款方式 -->
+	<select id="getTransPaymentMethodList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			operation_organization,operation_organization_name,transaction_object,transaction_object_name,status_code,
+			is_endorsement_forbidden,poundage,poundage_deduction_mode,bill_mailing_mode,
+			postage,postage_deduction_mode,notification_mode  
+		FROM 
+		 	BAS_TRANSACTION_PAYMENT 
+		<where>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+			<if test="operation_organization!=null and operation_organization!=''">
+			 	AND operation_organization=#{operation_organization}	
+			</if>
+			<if test="operation_organization_name!=null and operation_organization_name!=''">
+			 	AND operation_organization_name=#{operation_organization_name}	
+			</if>
+			<if test="transaction_object!=null and transaction_object!=''">
+			 	AND transaction_object=#{transaction_object}	
+			</if>
+			<if test="transaction_object_name!=null and transaction_object_name!=''">
+			 	AND transaction_object_name=#{transaction_object_name}	
+			</if>
+		</where>
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 分页查询，查询数据量 -->
+	<select id="getTransPaymentMethodListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			COUNT(*) 
+		FROM 
+			BAS_TRANSACTION_PAYMENT 
+		<where>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+			<if test="operation_organization!=null and operation_organization!=''">
+			 	AND operation_organization=#{operation_organization}	
+			</if>
+			<if test="operation_organization_name!=null and operation_organization_name!=''">
+			 	AND operation_organization_name=#{operation_organization_name}	
+			</if>
+			<if test="transaction_object!=null and transaction_object!=''">
+			 	AND transaction_object=#{transaction_object}	
+			</if>
+			<if test="transaction_object_name!=null and transaction_object_name!=''">
+			 	AND transaction_object_name=#{transaction_object_name}	
+			</if>
+		</where> 
+	</select>
+	
+	<sql id="columnScope">
+		<if test="data_created_date != null">data_created_date, </if>
+		<if test="last_modified_date != null">last_modified_date, </if>
+		<if test="operation_organization != null">operation_organization, </if>
+		<if test="operation_organization_name != null">operation_organization_name, </if>
+		<if test="transaction_object != null">transaction_object, </if>
+		<if test="transaction_object_name != null">transaction_object_name, </if>
+		<if test="status_code != null">status_code, </if>
+		<if test="is_endorsement_forbidden != null">is_endorsement_forbidden, </if>
+		<if test="poundage != null">poundage, </if>
+		<if test="poundage_deduction_mode != null">poundage_deduction_mode, </if>
+		<if test="bill_mailing_mode != null">bill_mailing_mode, </if>
+		<if test="postage != null">postage, </if>
+		<if test="postage_deduction_mode != null">postage_deduction_mode, </if>
+		<if test="notification_mode != null">notification_mode, </if>
+		<if test="language != null">language, </if>
+	</sql>
+	<!-- 2.新增交易对象付款方式 -->
+	<insert id="addTransPaymentMethod" parameterType="hashmap">
+		INSERT INTO
+			BAS_TRANSACTION_PAYMENT
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>	
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="last_modified_date != null">#{last_modified_date}, </if>
+			<if test="operation_organization != null">#{operation_organization}, </if>
+			<if test="operation_organization_name != null">#{operation_organization_name}, </if>
+			<if test="transaction_object != null">#{transaction_object}, </if>
+			<if test="transaction_object_name != null">#{transaction_object_name}, </if>
+			<if test="status_code != null">#{status_code}, </if>
+			<if test="is_endorsement_forbidden != null">#{is_endorsement_forbidden}, </if>
+			<if test="poundage != null">#{poundage}, </if>
+			<if test="poundage_deduction_mode != null">#{poundage_deduction_mode}, </if>
+			<if test="bill_mailing_mode != null">#{bill_mailing_mode}, </if>
+			<if test="postage != null">#{postage}, </if>
+			<if test="postage_deduction_mode != null">#{postage_deduction_mode}, </if>
+			<if test="notification_mode != null">#{notification_mode}, </if>
+			<if test="language != null">#{language}, </if>
+		</trim>	
+	</insert>
+	
+	<!-- 新增前查询是否存在该数据 -->
+	<select id="getTransPaymentMethod" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			operation_organization,operation_organization_name,transaction_object,transaction_object_name,status_code,
+			is_endorsement_forbidden,poundage,poundage_deduction_mode,bill_mailing_mode,
+			postage,postage_deduction_mode,notification_mode  
+		FROM 
+			BAS_TRANSACTION_PAYMENT
+		<where> 
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+			<if test="operation_organization!=null and operation_organization!=''">
+			 	AND operation_organization=#{operation_organization}	
+			</if>
+			<if test="transaction_object!=null and transaction_object!=''">
+			 	AND transaction_object=#{transaction_object}	
+			</if>
+		</where>	
+	</select>
+	
+	<!-- 3.修改交易对象付款方式 -->
+	<update id="modifyTransPaymentMethod" parameterType="hashmap">
+		 UPDATE 
+		 	BAS_TRANSACTION_PAYMENT
+		 <trim prefix="set" suffixOverrides=",">
+		 	<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			<if test="is_endorsement_forbidden != null">is_endorsement_forbidden=#{is_endorsement_forbidden}, </if>
+			<if test="poundage != null">poundage=#{poundage}, </if>
+			<if test="poundage_deduction_mode != null">poundage_deduction_mode=#{poundage_deduction_mode}, </if>
+			<if test="bill_mailing_mode != null">bill_mailing_mode=#{bill_mailing_mode}, </if>
+			<if test="postage != null">postage=#{postage}, </if>
+			<if test="postage_deduction_mode != null">postage_deduction_mode=#{postage_deduction_mode}, </if>
+			<if test="notification_mode != null">notification_mode=#{notification_mode}, </if>
+ 		 </trim>
+ 		 <where>
+ 		 	<if test="operation_organization!=null and operation_organization!=''">
+			 	AND operation_organization=#{operation_organization}	
+			</if>
+			<if test="transaction_object!=null and transaction_object!=''">
+			 	AND transaction_object=#{transaction_object}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+ 		 </where>	
+	</update>
+	
+	<!-- 4.删除交易对象付款方式 -->
+	<delete id="deleteTransPaymentMethod" parameterType="hashmap">
+	  DELETE FROM 
+	  	BAS_TRANSACTION_PAYMENT
+	  <where>
+	  		<if test="operation_organization!=null and operation_organization!=''">
+			 	AND operation_organization=#{operation_organization}	
+			</if>
+			<if test="transaction_object!=null and transaction_object!=''">
+			 	AND transaction_object=#{transaction_object}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+	  </where>
+	</delete>
+	
+	<!-- 5.审核交易对象付款方式 -->
+	<update id="auditTransPaymentMethod" parameterType="hashmap">
+	        UPDATE 
+	        	BAS_TRANSACTION_PAYMENT
+	        <trim prefix="SET" suffixOverrides=",">
+				<if test="status_code !=null">
+					status_code=#{status_code},
+				</if>
+				<if test="last_modified_date != null">
+					last_modified_date=#{last_modified_date}, 
+				</if>
+			</trim>	
+	 		<where>
+		  		<if test="operation_organization!=null and operation_organization!=''">
+				 	AND operation_organization=#{operation_organization}	
+				</if>
+				<if test="transaction_object!=null and transaction_object!=''">
+				 	AND transaction_object=#{transaction_object}	
+				</if>
+				<if test="language!=null and language!=''">
+				 	AND language=#{language}	
+				</if>
+	  		</where>
+	</update>
+</mapper>

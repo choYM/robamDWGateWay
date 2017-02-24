@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 应付帐务类型维护服务 -->
+<!-- @author gelf -->
+<mapper namespace="dao.BaseBasPayAccountTypeSettingMapper">
+	<!-- 预设条件查询列表总数 -->
+	<select id="selectPayAccountTypeCount" parameterType="hashmap" resultType="hashmap">
+		SELECT count(*) 
+		  FROM BAS_PAY_ACCOUNT_TYPE 
+		 <where>
+			<if test="status_code != null and status_code != ''">
+				status_code = #{status_code}
+			</if>
+			<if test="payable_account_type != null and payable_account_type != ''">
+				AND payable_account_type = #{payable_account_type}
+			</if>
+			<if test="payable_account_name != null and payable_account_name != ''">
+				AND payable_account_name = #{payable_account_name}
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据预设条件查询应付账务类型列表（分页） -->
+	<select id="getPayAccountTypeList" parameterType="hashmap" resultType="hashmap">
+		SELECT status_code,payable_account_type,payable_account_name
+		  FROM BAS_PAY_ACCOUNT_TYPE
+		<where>
+			<if test="status_code != null and status_code != ''">
+				status_code = #{status_code}
+			</if>
+			<if test="payable_account_type != null and payable_account_type != ''">
+				AND payable_account_type = #{payable_account_type}
+			</if>
+			<if test="payable_account_name != null and payable_account_name != ''">
+				AND payable_account_name = #{payable_account_name}
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+		</where>
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 修改应付账务类型 -->
+	<update id="updatePayAccountType" parameterType="hashmap" >
+		UPDATE BAS_PAY_ACCOUNT_TYPE 
+		<trim prefix="set" suffixOverrides=",">
+		  <if test="payable_account_name != null">payable_account_name=#{payable_account_name},</if>
+		</trim>
+		<where>
+			<if test="payable_account_type != null and payable_account_type != ''">
+				payable_account_type = #{payable_account_type}
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+		</where> 
+	</update>
+	 
+	 
+	 <!-- 新增应付账务类型 -->
+	 <insert id="addPayAccountType" parameterType="hashmap">
+	 	INSERT INTO BAS_PAY_ACCOUNT_TYPE (
+	 			payable_account_type,payable_account_name,status_code,language
+	 			)
+	 		 VALUES (
+	 		 	#{payable_account_type},#{payable_account_name},#{status_code},#{language}
+	 		 	)
+	 </insert>
+	 
+	 <!-- 批量删除应付账务类型 -->
+	 <delete id="deletePayAccountType" parameterType="hashmap">
+        DELETE FROM BAS_PAY_ACCOUNT_TYPE 
+        <where>
+        	<if test="list != null">
+	       		payable_account_type IN
+	       		<foreach item="item" index="index" collection="list" open="("
+	           		separator=", " close=") ">
+	          			 #{item}
+	      		   </foreach>
+	       	</if>
+	       	<if test="language != null and language != ''">
+	       		AND language = #{language}
+	       	</if>
+        </where>
+    </delete>
+    
+    <!-- 审核应付账务类型 -->
+    <update id="auditPayAccountType" parameterType="hashmap">
+    	UPDATE BAS_PAY_ACCOUNT_TYPE 
+    	   SET status_code = #{status_code}
+	   	<where>
+	       	<if test="list != null">
+	       		payable_account_type IN
+        		<foreach item="item" index="index" collection="list"  open="(" 
+        			separator="," close=")">
+           			 #{item} 
+       		   </foreach>
+        	</if>
+        	<if test="language !=null and language != ''">
+        		 AND language = #{language}
+        	</if>
+	    </where>
+    </update>
+    
+    <!-- 判断应付账务类型是否存在记录 -->
+    <select id="judgePayAccountType" parameterType="hashmap" resultType="java.lang.Integer">
+    	SELECT COUNT(1) 
+    	  FROM BAS_PAY_ACCOUNT_TYPE 
+	   	<where>
+	   		<if test="payable_account_type != null and payable_account_type != ''">
+				payable_account_type = #{payable_account_type}
+			</if>
+			<if test="language != null and language != ''">
+				AND language = #{language}
+			</if>
+	    </where>
+    </select>
+</mapper>

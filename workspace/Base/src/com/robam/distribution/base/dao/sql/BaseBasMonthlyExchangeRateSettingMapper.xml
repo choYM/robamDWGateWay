@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 月汇率维护作业 -->
+<!-- @author liaogz -->
+<mapper namespace="dao.BaseBasMonthlyExchangeRateSettingMapper">
+	<sql id="columnScope">
+		<if test="reference_table_no!=null">REFERENCE_TABLE_NO,</if>
+		<if test="transaction_currency!=null">transaction_currency,</if>
+		<if test="base_currency!=null">BASE_CURRENCY,</if>
+		<if test="period!=null">PERIOD,</if>
+		<if test="bank_buying_exchrate!=null">bank_buying_exchrate,</if>
+		<if test="bank_selling_exchrate!=null">bank_selling_exchrate,</if>
+		<if test="bank_average_exchrate!=null">bank_average_exchrate,</if>
+		<if test="customs_buying_exchrate!=null">customs_buying_exchrate,</if>
+		<if test="customs_selling_exchrate!=null">customs_selling_exchrate,</if>
+		<if test="closing_foreign_exchrate!=null">closing_foreign_exchrate,</if>
+		<if test="reevaluation_exchange_rate!=null">REEVALUATION_EXCHANGE_RATE,</if>
+		<if test="update_time!=null">UPDATE_TIME,</if>
+		<if test="update_mode!=null">UPDATE_MODE,</if>
+		<if test="transaction_currency_lot!=null">TRANSACTION_CURRENCY_LOT,</if>
+		<if test="exchrate_input_mode!=null">exchrate_input_mode,</if>
+		<if test="data_owner!=null">DATA_OWNER,</if>
+		<if test="data_owned_department!=null">DATA_OWNED_DEPARTMENT,</if>
+		<if test="data_created_by!=null">DATA_CREATED_BY,</if>
+		<if test="data_created_department!=null">DATA_CREATED_DEPARTMENT,</if>
+		<if test="data_created_date!=null">DATA_CREATED_DATE,</if>
+		<if test="data_modified_by!=null">DATA_MODIFIED_BY,</if>
+		<if test="last_modified_date!=null">LAST_MODIFIED_DATE,</if>
+		<if test="status_code!=null">STATUS_CODE,</if>
+		<if test="language!=null">LANGUAGE,</if>
+		<if test="transaction_currency_description!=null">transaction_currency_description,</if>
+		<if test="base_currency_description!=null">BASE_CURRENCY_DESCRIPTION,</if>
+		<if test="reference_table_description!=null">REFERENCE_TABLE_DESCRIPTION,</if>
+	</sql>
+    <!-- 查询总笔数 -->
+	<select id="selectMonthlyExchangeRateCount" resultType="hashmap" parameterType="hashmap">
+			SELECT 
+				COUNT(distinct reference_table_no,transaction_currency,base_currency,period) 
+			FROM
+				BAS_MONTHLY_EXCHRATE
+			WHERE 1=1
+			<if test="reference_table_no!=null and reference_table_no!=''">
+				AND reference_table_no=#{reference_table_no}
+			</if>
+			<if test="reference_table_description!=null and reference_table_description!=''">
+				AND reference_table_description=#{reference_table_description}
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+				AND base_currency=#{base_currency}
+			</if>
+			<if test="base_currency_description!=null and base_currency_description!=''">
+				AND base_currency_description=#{base_currency_description}
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+				AND transaction_currency=#{transaction_currency}
+			</if>
+			<if test="transaction_currency_description!=null and transaction_currency_description!=''">
+				AND transaction_currency_description=#{transaction_currency_description}
+			</if>
+			<if test="period!=null and period!=''">
+				AND period=#{period}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+	</select>
+	
+	<!-- 查询当页的数据 -->
+	<select id="selectMonthlyExchangeRateLimit" resultType="hashmap" parameterType="hashmap">
+		 SELECT
+		 	 DISTINCT status_code,reference_table_no,
+		 	 reference_table_description,transaction_currency_lot,
+		 	 DATE_FORMAT(update_time,'%Y/%m/%d') as update_time,
+             period,exchrate_input_mode,update_mode,base_currency,base_currency_description,
+             transaction_currency,transaction_currency_description,
+             bank_buying_exchrate,bank_selling_exchrate,bank_average_exchrate,
+             customs_buying_exchrate,customs_selling_exchrate,
+             reevaluation_exchange_rate,closing_foreign_exchrate
+	     FROM 
+	     	 BAS_MONTHLY_EXCHRATE 
+	     WHERE 1=1 
+			<if test="reference_table_no!=null and reference_table_no!=''">
+				AND reference_table_no=#{reference_table_no}
+			</if>
+			<if test="reference_table_description!=null and reference_table_description!=''">
+				AND reference_table_description=#{reference_table_description}
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+				AND base_currency=#{base_currency}
+			</if>
+			<if test="base_currency_description!=null and base_currency_description!=''">
+				AND base_currency_description=#{base_currency_description}
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+				AND transaction_currency=#{transaction_currency}
+			</if>
+			<if test="transaction_currency_description!=null and transaction_currency_description!=''">
+				AND transaction_currency_description=#{transaction_currency_description}
+			</if>
+			<if test="period!=null and period!=''">
+				AND period=#{period}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+			ORDER BY 
+				LAST_MODIFIED_DATE DESC 
+			LIMIT 
+				#{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 修改月汇率 -->
+	<update id="modifyMonthlyExchangeRate" parameterType="hashmap">
+	        UPDATE 
+	        	BAS_MONTHLY_EXCHRATE
+	        SET 
+	        <trim prefix=" " suffix=" " suffixOverrides=", ">
+	        	<if test="reference_table_description!=null">reference_table_description=#{reference_table_description},</if>
+	        	<if test="transaction_currency_lot!=null">transaction_currency_lot=#{transaction_currency_lot},</if>
+	        	<if test="exchrate_input_mode!=null">exchrate_input_mode=#{exchrate_input_mode},</if>
+	        	<if test="base_currency_description!=null">base_currency_description=#{base_currency_description},</if>
+	        	<if test="transaction_currency_description!=null">transaction_currency_description=#{transaction_currency_description},</if>
+	        	<if test="bank_buying_exchrate!=null">bank_buying_exchrate=#{bank_buying_exchrate},</if>
+	        	<if test="bank_selling_exchrate!=null">bank_selling_exchrate=#{bank_selling_exchrate},</if>
+	        	<if test="bank_average_exchrate!=null">bank_average_exchrate=#{bank_average_exchrate},</if>
+	        	<if test="customs_buying_exchrate!=null">customs_buying_exchrate=#{customs_buying_exchrate},</if>
+	        	<if test="customs_selling_exchrate!=null">customs_selling_exchrate=#{customs_selling_exchrate},</if>
+	        	<if test="reevaluation_exchange_rate!=null">reevaluation_exchange_rate=#{reevaluation_exchange_rate},</if>
+	        	<if test="closing_foreign_exchrate!=null">closing_foreign_exchrate=#{closing_foreign_exchrate},</if>
+	        	<if test="last_modified_date!=null">last_modified_date=#{last_modified_date},</if>
+	        	<if test="data_modified_by!=null">data_modified_by=#{data_modified_by},</if>
+	        </trim>
+	        WHERE  
+	        	reference_table_no=#{reference_table_no} AND 
+	        	transaction_currency=#{transaction_currency} AND 
+	        	base_currency=#{base_currency} AND 
+	        	period=#{period} AND 
+	        	language=#{language}
+	</update>
+	
+	<!-- 删除月汇率 -->
+	<delete id="deleteMonthlyExchangeRate" parameterType="hashmap">
+		DELETE FROM 
+			BAS_MONTHLY_EXCHRATE 
+		WHERE 1=1 
+			AND reference_table_no=#{reference_table_no} AND 
+	        	transaction_currency=#{transaction_currency} AND 
+	        	base_currency=#{base_currency} AND 
+	        	period=#{period} AND language=#{language}
+	</delete>
+
+	<!-- 审核月汇率 -->
+	<update id="auditMonthlyExchangeRate" parameterType="hashmap">
+        UPDATE 
+        	BAS_MONTHLY_EXCHRATE
+        SET
+       	<trim prefix=" " suffix=" " suffixOverrides=", ">
+		 <if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		 <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		 <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+	    </trim>
+       	WHERE 1=1 
+			AND reference_table_no=#{reference_table_no} AND 
+	        	transaction_currency=#{transaction_currency} AND 
+	        	base_currency=#{base_currency} AND 
+	        	period=#{period} AND language=#{language}
+	</update>
+	
+	<!-- 查询是否存在相同主键的数据 -->
+	<select id="selectId" resultType="hashmap" parameterType="hashmap">
+			SELECT 
+				COUNT(distinct reference_table_no,transaction_currency,base_currency,period) 
+			FROM 
+				BAS_MONTHLY_EXCHRATE 
+			WHERE 1=1
+			<if test="reference_table_no!=null and reference_table_no!=''">
+				AND reference_table_no=#{reference_table_no}
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+				AND transaction_currency=#{transaction_currency}
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+				AND base_currency=#{base_currency}
+			</if>
+			<if test="period!=null and period!=''">
+				AND period=#{period}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	</select>
+	
+	<!-- 新增月汇率 -->
+	<insert id="addMonthlyExchangeRate" parameterType="hashmap">
+	     INSERT INTO 
+	     	BAS_MONTHLY_EXCHRATE
+	      <trim	prefix=" (" suffix=") " suffixOverrides=",">
+	      	<include refid="columnScope"/>
+	      </trim>
+	     VALUES
+	      <trim	prefix=" (" suffix=") " suffixOverrides=",">
+	      	<if test="reference_table_no!=null">#{reference_table_no},</if>
+			<if test="transaction_currency!=null">#{transaction_currency},</if>
+			<if test="base_currency!=null">#{base_currency},</if>
+			<if test="period!=null">#{period},</if>
+			<if test="bank_buying_exchrate!=null">#{bank_buying_exchrate},</if>
+			<if test="bank_selling_exchrate!=null">#{bank_selling_exchrate},</if>
+			<if test="bank_average_exchrate!=null">#{bank_average_exchrate},</if>
+			<if test="customs_buying_exchrate!=null">#{customs_buying_exchrate},</if>
+			<if test="customs_selling_exchrate!=null">#{customs_selling_exchrate},</if>
+			<if test="closing_foreign_exchrate!=null">#{closing_foreign_exchrate},</if>
+			<if test="reevaluation_exchange_rate!=null">#{reevaluation_exchange_rate},</if>
+			<if test="update_time!=null">#{update_time},</if>
+			<if test="update_mode!=null">#{update_mode},</if>
+			<if test="transaction_currency_lot!=null">#{transaction_currency_lot},</if>
+			<if test="exchrate_input_mode!=null">#{exchrate_input_mode},</if>
+			<if test="data_owner!=null">#{data_owner},</if>
+			<if test="data_owned_department!=null">#{data_owned_department},</if>
+			<if test="data_created_by!=null">#{data_created_by},</if>
+			<if test="data_created_department!=null">#{data_created_department},</if>
+			<if test="data_created_date!=null">#{data_created_date},</if>
+			<if test="data_modified_by!=null">#{data_modified_by},</if>
+			<if test="last_modified_date!=null">#{last_modified_date},</if>
+			<if test="status_code!=null">#{status_code},</if>
+			<if test="language!=null">#{language},</if>
+			<if test="transaction_currency_description!=null">#{transaction_currency_description},</if>
+			<if test="base_currency_description!=null">#{base_currency_description},</if>
+			<if test="reference_table_description!=null">#{reference_table_description},</if>
+	      </trim>
+	</insert>
+	
+	<select id="getMonthlyExchangeRate" parameterType="hashmap" resultType="hashmap">
+	   SELECT 
+				DISTINCT status_code,reference_table_no,reference_table_description,
+				transaction_currency_lot,update_time,period,exchrate_input_mode,update_mode,
+				base_currency,base_currency_description,transaction_currency,transaction_currency_description,
+				bank_buying_exchrate,bank_selling_exchrate,bank_average_exchrate,customs_buying_exchrate,
+				customs_selling_exchrate,reevaluation_exchange_rate,closing_foreign_exchrate
+			FROM 
+				BAS_MONTHLY_EXCHRATE 
+			WHERE 1=1
+			<if test="reference_table_no!=null and reference_table_no!=''">
+				AND reference_table_no=#{reference_table_no}
+			</if>
+			<if test="transaction_currency!=null and transaction_currency!=''">
+				AND transaction_currency=#{transaction_currency}
+			</if>
+			<if test="base_currency!=null and base_currency!=''">
+				AND base_currency=#{base_currency}
+			</if>
+			<if test="period!=null and period!=''">
+				AND period=#{period}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	</select>
+</mapper>

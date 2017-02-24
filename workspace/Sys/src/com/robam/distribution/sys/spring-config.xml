@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- spring context -->
+	<context:component-scan base-package="com.robam.distribution.sys.service.impl" />
+    
+    
+	<!-- 配置 properties configure -->
+	<context:property-placeholder
+		location="classpath:db.properties,classpath:Sys.properties"
+		ignore-unresolvable="true" />
+
+	<bean id="DWLoginDataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+        <property name="driverClassName" value="${jdbc_driverClassName}"></property>
+        <property name="url" value="${jdbc_url}"></property>
+        <property name="username" value="${jdbc_username}"></property>
+        <property name="password" value="${jdbc_password}"></property>
+	</bean>
+
+<!-- 	<bean id="DWApplicationDao" class="com.digiwin.app.framework.db.DWApplicationDao">
+		<constructor-arg ref="DWLoginDataSource" />
+	</bean> -->
+
+	<!-- module exception handler -->
+	<bean class="com.robam.distribution.sys.exception.LoginExceptionHandler" />
+
+</beans>

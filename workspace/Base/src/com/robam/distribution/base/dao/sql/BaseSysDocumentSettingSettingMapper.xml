@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 单据别设置 -->
+<!-- @author liaogz-->
+<!-- @since2017-2-17 -->
+<!-- drp_sys_m01 -->
+
+<mapper namespace="dao.BaseSysDocumentSettingSettingMapper">
+    <!-- 查询总笔数 -->
+	<select id="selectDocumentCount" resultType="hashmap" parameterType="hashmap">
+			SELECT COUNT(distinct document,language) 
+			FROM SYS_DOCUMENT_SETTING WHERE 1=1
+			<!-- 单据别 -->
+			<if test="document!=null and document!=''">
+				AND document LIKE '%' #{document} '%'
+			</if>
+			<!-- 单据别名称 -->
+			<if test="document_name!=null and document_name!=''">
+				AND document_name LIKE '%' #{document_name} '%'
+			</if>
+			<if test="module!=null and module!=''">
+				AND module=#{module}
+			</if>
+			<if test="module_name!=null and module_name!=''">
+				AND module_name=#{module_name}
+			</if>
+			<if test="document_type!=null and document_type!=''">
+				AND document_type=#{document_type}
+			</if>
+			<if test="corresponding_program_no!=null and corresponding_program_no!=''">
+				AND corresponding_program_no=#{corresponding_program_no}
+			</if>
+			<if test="corresponding_program_name!=null and corresponding_program_name!=''">
+				AND corresponding_program_name=#{corresponding_program_name}
+			</if>
+			<if test="is_auto_numbering!=null and is_auto_numbering!=''">
+				AND is_auto_numbering=#{is_auto_numbering}
+			</if>
+			<if test="period_code!=null and period_code!=''">
+				AND period_code=#{period_code}
+			</if>
+			<if test="serial_number_length!=null and serial_number_length!=''">
+				AND serial_number_length=#{serial_number_length}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+	</select>
+	<!-- 分页查询 -->
+	<select id="selectDocumentLimit" resultType="hashmap" parameterType="hashmap">
+			SELECT DISTINCT status_code,document,document_name,module,module_name,document_type,
+			'' as document_type_description,corresponding_program_no,corresponding_program_name,
+			is_auto_numbering,period_code,serial_number_length,numbering_result
+			FROM SYS_DOCUMENT_SETTING WHERE 1=1 
+			<!-- 单据别 -->
+			<if test="document!=null and document!=''">
+				AND document LIKE '%' #{document} '%'
+			</if>
+			<!-- 单据别名称 -->
+			<if test="document_name!=null and document_name!=''">
+				AND document_name LIKE '%' #{document_name} '%'
+			</if>
+			<if test="module!=null and module!=''">
+				AND module=#{module}
+			</if>
+			<if test="module_name!=null and module_name!=''">
+				AND module_name=#{module_name}
+			</if>
+			<if test="document_type!=null and document_type!=''">
+				AND document_type=#{document_type}
+			</if>
+			<if test="corresponding_program_no!=null and corresponding_program_no!=''">
+				AND corresponding_program_no=#{corresponding_program_no}
+			</if>
+			<if test="corresponding_program_name!=null and corresponding_program_name!=''">
+				AND corresponding_program_name=#{corresponding_program_name}
+			</if>
+			<if test="is_auto_numbering!=null and is_auto_numbering!=''">
+				AND is_auto_numbering=#{is_auto_numbering}
+			</if>
+			<if test="period_code!=null and period_code!=''">
+				AND period_code=#{period_code}
+			</if>
+			<if test="serial_number_length!=null and serial_number_length!=''">
+				AND serial_number_length=#{serial_number_length}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			<if test="status_code != null and status_code != ''">
+				AND status_code = #{status_code}
+			</if>
+			ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	<!-- 修改单据别设置 -->
+	<update id="modifyDocumentSetting" parameterType="java.util.Map">
+	  UPDATE SYS_DOCUMENT_SETTING SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+		<if test="module!= null">MODULE=#{module}, </if>
+		<if test="document_type!= null">DOCUMENT_TYPE=#{document_type}, </if>
+		<if test="corresponding_program_no!= null">CORRESPONDING_PROGRAM_NO=#{corresponding_program_no}, </if>
+		<if test="is_auto_numbering!= null">IS_AUTO_NUMBERING=#{is_auto_numbering}, </if>
+		<if test="period_code!= null">PERIOD_CODE=#{period_code}, </if>
+		<if test="serial_number_length!= null">SERIAL_NUMBER_LENGTH=#{serial_number_length}, </if>
+		<if test="numbering_result!= null">NUMBERING_RESULT=#{numbering_result}, </if>
+		<if test="data_owner!= null">DATA_OWNER=#{data_owner}, </if>
+		<if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT=#{data_owned_department}, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY=#{data_created_by}, </if>
+		<if test="data_created_department!= null">DATA_CREATED_DEPARTMENT=#{data_created_department}, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE=#{data_created_date}, </if>
+		<if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+		<if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		<if test="document_name!= null">DOCUMENT_NAME=#{document_name}, </if>
+		<if test="module_name!= null">MODULE_NAME=#{module_name}, </if>
+		<if test="corresponding_program_name!= null">CORRESPONDING_PROGRAM_NAME=#{corresponding_program_name}, </if>
+	    </trim>
+	        WHERE document=#{document} AND  language=#{language}
+	</update>
+	<!-- 删除单据别设置 -->
+	<delete id="deleteDocumentSetting" parameterType="java.util.Map">
+	        DELETE FROM SYS_DOCUMENT_SETTING WHERE language=#{language} AND document =#{document}
+	</delete>
+	<!-- 审核单据别设置 -->
+	<update id="auditDocumentSetting" parameterType="java.util.Map">
+	  UPDATE SYS_DOCUMENT_SETTING
+	    SET 
+        <trim prefix=" " suffix=" " suffixOverrides=", ">
+		 <if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		 <if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		 <if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+	    </trim>
+	   WHERE language=#{language} AND document =#{document}
+	</update>
+	<sql id="columnScope">
+	    <if test="document!= null">DOCUMENT, </if>
+		<if test="module!= null">MODULE, </if>
+		<if test="document_type!= null">DOCUMENT_TYPE, </if>
+		<if test="corresponding_program_no!= null">CORRESPONDING_PROGRAM_NO, </if>
+		<if test="is_auto_numbering!= null">IS_AUTO_NUMBERING, </if>
+		<if test="period_code!= null">PERIOD_CODE, </if>
+		<if test="serial_number_length!= null">SERIAL_NUMBER_LENGTH, </if>
+		<if test="numbering_result!= null">NUMBERING_RESULT, </if>
+		<if test="data_owner!= null">DATA_OWNER, </if>
+		<if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY, </if>
+		<if test="data_created_department!= null">DATA_CREATED_DEPARTMENT, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE, </if>
+		<if test="data_modified_by!= null">DATA_MODIFIED_BY, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE, </if>
+		<if test="status_code!= null">STATUS_CODE, </if>
+		<if test="language!= null">LANGUAGE, </if>
+		<if test="document_name!= null">DOCUMENT_NAME, </if>
+		<if test="module_name!= null">MODULE_NAME, </if>
+		<if test="corresponding_program_name!= null">CORRESPONDING_PROGRAM_NAME, </if>
+	</sql>
+	<!-- 新增单据别设置 -->
+	<insert id="addDocumentSetting" parameterType="java.util.Map">
+	    INSERT INTO SYS_DOCUMENT_SETTING
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+	  <trim prefix=" (" suffix=") " suffixOverrides=", ">
+		<if test="document!= null">#{document}, </if>
+		<if test="module!= null">#{module}, </if>
+		<if test="document_type!= null">#{document_type}, </if>
+		<if test="corresponding_program_no!= null">#{corresponding_program_no}, </if>
+		<if test="is_auto_numbering!= null">#{is_auto_numbering}, </if>
+		<if test="period_code!= null">#{period_code}, </if>
+		<if test="serial_number_length!= null">#{serial_number_length}, </if>
+		<if test="numbering_result!= null">#{numbering_result}, </if>
+		<if test="data_owner!= null">#{data_owner}, </if>
+		<if test="data_owned_department!= null">#{data_owned_department}, </if>
+		<if test="data_created_by!= null">#{data_created_by}, </if>
+		<if test="data_created_department!= null">#{data_created_department}, </if>
+		<if test="data_created_date!= null">#{data_created_date}, </if>
+		<if test="data_modified_by!= null">#{data_modified_by}, </if>
+		<if test="last_modified_date!= null">#{last_modified_date}, </if>
+		<if test="status_code!= null">#{status_code}, </if>
+		<if test="language!= null">#{language}, </if>
+		<if test="document_name!= null">#{document_name}, </if>
+		<if test="module_name!= null">#{module_name}, </if>
+		<if test="corresponding_program_name!= null">#{corresponding_program_name}, </if>
+	  </trim>
+	</insert>
+	<!-- 判断单据别设置是否存在 -->
+	<select id="judgeDocumentSetting" parameterType="hashmap" resultType="java.lang.Integer">
+			SELECT COUNT(1) 
+			FROM SYS_DOCUMENT_SETTING
+			<where>
+			<if test="document!=null and document!=''">
+				AND document=#{document}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	    </where>
+	</select>
+	<select id="getDocumentSettingByDoc" parameterType="hashmap" resultType="hashmap">
+	   SELECT module,module_name,document_type,'' as document_type_description,
+	   corresponding_program_no,corresponding_program_name,is_auto_numbering,
+	   period_code,serial_number_length,numbering_result
+	   FROM SYS_DOCUMENT_SETTING
+	   <where>
+			<if test="document!=null and document!=''">
+				AND document=#{document}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	    </where>
+	</select>
+</mapper>

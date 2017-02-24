@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_m12 组织基础资料其他地址维护作业 @author:gejc -->
+<mapper namespace="dao.BaseOrgAddressMapper">
+
+	<!-- 1.查询其他地址 -->
+	<select id="getOrganizationAddress" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			address_no,address_type,postcode,country_region,province,city,
+			county_district,street,detailed_address,
+			country_region_name,province_name,city_name,county_district_name,
+			street_name 
+		FROM
+		 	BAS_ORGANIZATION_ADDRESS 
+		WHERE 1=1 
+		<if test="status_code!=null and status_code!=''">
+		 	AND status_code=#{status_code}	
+		</if>
+		<if test="language!=null and language!=''">
+		 	AND language=#{language}	
+		</if>
+		<if test="organization!=null and organization!=''">
+		 	AND organization=#{organization}	
+		</if>
+		ORDER BY address_no ASC
+	</select>
+	
+	<!-- 查询当前组织下最大地址ID -->
+	<select id="getMaxId" resultType="string" parameterType="hashmap">
+		SELECT 
+			MAX(address_no+1) 
+		FROM 
+			BAS_ORGANIZATION_ADDRESS 
+		WHERE 1=1
+		<if test="organization!=null and organization!=''">
+		 	AND organization=#{organization}	
+		</if>
+	</select>
+	
+	<!-- 2.新增其他地址 -->
+	<insert id="addOrganizationAddress" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO 
+				BAS_ORGANIZATION_ADDRESS(
+					status_code,address_no,address_type,country_region,province,
+					city,county_district,street,detailed_address,organization,
+					postcode,country_region_name,province_name,city_name,
+					county_district_name,street_name,language,data_created_date) 
+			VALUES(
+				#{status_code},#{address_no},#{address_type},#{country_region},
+				#{province},#{city},#{county_district},#{street},
+				#{detailed_address},#{organization},#{postcode},
+				#{country_region_name},#{province_name},#{city_name},
+				#{county_district_name},#{street_name},#{language},NOW()
+			)
+		]]>
+	</insert>
+	
+	<!-- 3.修改其他地址 -->
+	<update id="modifyOrganizationAddress" parameterType="hashmap">
+		UPDATE 
+			BAS_ORGANIZATION_ADDRESS 
+		SET 	
+		 	address_type=#{address_type},			
+			country_region=#{country_region},		
+			province=#{province},		
+			city=#{city},		
+			county_district=#{county_district},		
+			street=#{street},		
+			detailed_address=#{detailed_address},		
+			postcode=#{postcode},		
+			country_region_name=#{country_region_name},		
+			province_name=#{province_name},			
+			city_name=#{city_name},			
+			county_district_name=#{county_district_name},		
+			street_name=#{street_name}		
+		 WHERE 1=1 
+		<if test="address_no!=null and address_no!=''">
+			AND address_no=#{address_no}		
+		</if>	
+		<if test="organization!=null and organization!=''">
+		 	AND organization=#{organization}	
+		</if>
+		<if test="language!=null and language!=''">
+		 	AND language=#{language}	
+		</if>
+	</update>
+	
+	<!-- 4.删除其他地址 -->
+	<delete id="deleteOrganizationAddress" parameterType="hashmap">
+	  DELETE FROM 
+	  	BAS_ORGANIZATION_ADDRESS 
+	  WHERE 1=1
+		<if test="address_no!=null and address_no!=''">
+		  	AND address_no=#{address_no}		
+		</if>
+		<if test="organization!=null and organization!=''">
+		 	AND organization=#{organization}	
+		</if>
+		<if test="language!=null and language!=''">
+		 	AND language=#{language}	
+		</if>
+	</delete>
+	
+	
+	<!-- 官忠服务 -->
+	<!-- 查询是否有数据，用以设定addressid -->
+	<select id="selectidfromaddress"  resultType="hashmap"  parameterType="com.robam.distribution.base.model.OrgAddress">
+		SELECT 
+			COUNT(DISTINCT organization) 
+		FROM 
+			BAS_ORGANIZATION_ADDRESS 
+		WHERE 1=1
+			<if test="organization!=null and organization!=''">
+				AND organization=#{organization}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	</select>
+	
+	<!-- 查询最大addressid -->
+	<select id="selectmaxaddressid" resultType="java.lang.String"  parameterType="com.robam.distribution.base.model.OrgAddress">
+			SELECT 
+				MAX(address_no)
+			FROM 
+				BAS_ORGANIZATION_ADDRESS
+			WHERE 1=1 
+				<if test="organization!=null and organization!=''">
+					AND organization=#{organization}
+				</if>
+				<if test="language!=null and language!=''">
+					AND language=#{language}
+				</if>
+	</select>
+</mapper>

@@ -1,0 +1,13 @@
+/.idea/
+/workspace/.metadata/
+/workspace/RemoteSystemsTempFiles/
+/workspace/**/.idea/
+/workspace/**/target/
+/workspace/**/*.iml
+/workspace/**/.settings/
+/workspace/**/bin/
+!/workspace/**/target/readme.md
+!/workspace/**/.classpath
+!/workspace/**/.project
+
+

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 门店导购员维护作业  author by YangJian date 2017-02-20-->
+<mapper namespace="dao.BaseBasEmployeeGuideSettingMapper">
+	<sql id="EmployeeRows">
+		<if test="status_code !=null">STATUS_CODE,</if>
+		<if test="employee_no !=null">EMPLOYEE_NO,</if>
+		<if test="role_type !=null">ROLE_TYPE,</if>
+		<if test="belonged_department !=null">BELONGED_DEPARTMENT,</if>
+		<if test="belonged_organization !=null">BELONGED_ORGANIZATION,</if>
+		<if test="belonged_store !=null">BELONGED_STORE,</if>
+		<if test="job_title !=null">JOB_TITLE,</if>
+		<if test="bank_no !=null">BANK_NO,</if>
+		<if test="accounts !=null">ACCOUNTS,</if>
+		<if test="surname !=null">SURNAME,</if>
+		<if test="middle_name !=null">MIDDLE_NAME,</if>
+		<if test="given_name !=null">GIVEN_NAME,</if>
+		<if test="employee_name !=null">EMPLOYEE_NAME,</if>
+		<if test="preference_name !=null">PREFERENCE_NAME,</if>
+		<if test="nickname !=null">NICKNAME,</if>
+		<if test="activate_agent_mechanism !=null">ACTIVATE_AGENT_MECHANISM,</if>
+		<if test="agent_emplyee_id !=null">AGENT_EMPLYEE_ID,</if>
+		<if test="chief_emplyee_id !=null">CHIEF_EMPLYEE_ID,</if>
+		<if test="contact_no !=null">CONTACT_NO,</if>
+		<if test="mobile_no !=null">MOBILE_NO,</if>
+		<if test="email !=null">EMAIL,</if>
+		<if test="country_region !=null">COUNTRY_REGION,</if>
+		<if test="province !=null">PROVINCE,</if>
+		<if test="city !=null">CITY,</if>
+		<if test="county_district !=null">COUNTY_DISTRICT,</if>
+		<if test="street !=null">STREET,</if>
+		<if test="detailed_address !=null">DETAILED_ADDRESS,</if>
+		<if test="postcode !=null">POSTCODE,</if>
+		<if test="data_owner !=null">DATA_OWNER,</if>
+		<if test="data_owned_department !=null">DATA_OWNED_DEPARTMENT,</if>
+		<if test="data_created_by !=null">DATA_CREATED_BY,</if>
+		<if test="data_created_department !=null">DATA_CREATED_DEPARTMENT,</if>
+		<if test="data_created_date !=null">DATA_CREATED_DATE,</if>
+		<if test="data_modified_by !=null">DATA_MODIFIED_BY,</if>
+		<if test="last_modified_date !=null">LAST_MODIFIED_DATE,</if>
+		<if test="language !=null">LANGUAGE,</if>
+		<if test="belonged_department_name !=null">BELONGED_DEPARTMENT_NAME,</if>
+		<if test="belonged_organization_name !=null">BELONGED_ORGANIZATION_NAME,</if>
+		<if test="belonged_store_name !=null">BELONGED_STORE_NAME,</if>
+		<if test="agent_emplyee_name !=null">AGENT_EMPLYEE_NAME,</if>
+		<if test="chief_emplyee_name !=null">CHIEF_EMPLYEE_NAME,</if>
+		<if test="country_region_name !=null">COUNTRY_REGION_NAME,</if>
+		<if test="province_name !=null">PROVINCE_NAME,</if>
+		<if test="city_name !=null">CITY_NAME,</if>
+		<if test="county_district_name !=null">COUNTY_DISTRICT_NAME,</if>
+		<if test="street_name !=null">STREET_NAME,</if>
+		<if test="job_title_description !=null">JOB_TITLE_DESCRIPTION,</if>
+		<if test="bank_name !=null">BANK_NAME,</if>
+	</sql>
+	
+	<!-- 根据预设条件查询门店导购员列表（分页） Count -->
+	<select id="SelectBasEmployeeCount" parameterType="hashmap" resultType="hashmap">
+		select count(distinct EMPLOYEE_NO) 
+		from BAS_EMPLOYEE 
+		where 1=1 
+		<!-- 导购员编号 -->
+		<if test="employee_no !=null and employee_no !=''">
+			and EMPLOYEE_NO like '%' #{employee_no} '%'
+		</if>
+		<if test="role_type !=null and role_type !=''">
+			and ROLE_TYPE=#{role_type}
+		</if>
+		<!-- 导购员姓名 -->
+		<if test="employee_name !=null and employee_name !=''">
+			and EMPLOYEE_NAME like '%' #{employee_name} '%'
+		</if>
+		<if test="belonged_department !=null and belonged_department !=''">
+			and BELONGED_DEPARTMENT=#{belonged_department}
+		</if>
+		<if test="belonged_department_name !=null and belonged_department_name !=''">
+			and BELONGED_DEPARTMENT_NAME=#{belonged_department_name}
+		</if>
+		<if test="belonged_store !=null and belonged_store !=''">
+			and BELONGED_STORE=#{belonged_store}
+		</if>
+		<if test="belonged_store_name !=null and belonged_store_name !=''">
+			and BELONGED_STORE_NAME=#{belonged_store_name}
+		</if>
+		<if test="belonged_organization !=null and belonged_organization !=''">
+			and BELONGED_ORGANIZATION=#{belonged_organization}
+		</if>
+		<if test="belonged_organization_name !=null and belonged_organization_name !=''">
+			and BELONGED_ORGANIZATION_NAME=#{belonged_organization_name}
+		</if>
+		<if test="status_code !=null and status_code !=''">
+			and STATUS_CODE=#{status_code}
+		</if>
+		<if test="language !=null and language !=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+	
+	<!-- 根据预设条件查询门店导购员列表（分页）Limit -->
+	<select id="SelectBasEmployeeLimit" parameterType="hashmap" resultType="hashmap">
+		select employee_no,employee_name,belonged_department,belonged_department_name,belonged_store,
+			belonged_store_name,belonged_organization,belonged_organization_name,status_code 
+		from BAS_EMPLOYEE 
+		where 1=1 
+		<!-- 导购员编号 -->
+		<if test="employee_no !=null and employee_no !=''">
+			and EMPLOYEE_NO like '%' #{employee_no} '%'
+		</if>
+		<if test="role_type !=null and role_type !=''">
+			and ROLE_TYPE=#{role_type}
+		</if>
+		<!-- 导购员姓名 -->
+		<if test="employee_name !=null and employee_name !=''">
+			and EMPLOYEE_NAME like '%' #{employee_name} '%'
+		</if>
+		<if test="belonged_department !=null and belonged_department !=''">
+			and BELONGED_DEPARTMENT=#{belonged_department}
+		</if>
+		<if test="belonged_department_name !=null and belonged_department_name !=''">
+			and BELONGED_DEPARTMENT_NAME=#{belonged_department_name}
+		</if>
+		<if test="belonged_store !=null and belonged_store !=''">
+			and BELONGED_STORE=#{belonged_store}
+		</if>
+		<if test="belonged_store_name !=null and belonged_store_name !=''">
+			and BELONGED_STORE_NAME=#{belonged_store_name}
+		</if>
+		<if test="belonged_organization !=null and belonged_organization !=''">
+			and BELONGED_ORGANIZATION=#{belonged_organization}
+		</if>
+		<if test="belonged_organization_name !=null and belonged_organization_name !=''">
+			and BELONGED_ORGANIZATION_NAME=#{belonged_organization_name}
+		</if>
+		<if test="status_code !=null and status_code !=''">
+			and STATUS_CODE=#{status_code}
+		</if>
+		<if test="language !=null and language !=''">
+			and LANGUAGE=#{language}
+		</if>
+		order by LAST_MODIFIED_DATE desc limit #{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 修改门店导购员(包含审核门店导购员) -->
+	<update id="modifyEmployeeGuide" parameterType="hashmap">
+		update BAS_EMPLOYEE 
+		set 
+		<trim suffixOverrides=",">
+			<if test="employee_name !=null">EMPLOYEE_NAME=#{employee_name},</if>
+			<if test="belonged_department !=null">BELONGED_DEPARTMENT=#{belonged_department},</if>
+			<if test="belonged_department_name !=null">BELONGED_DEPARTMENT_NAME=#{belonged_department_name},</if>
+			<if test="belonged_store !=null">BELONGED_STORE=#{belonged_store},</if>
+			<if test="belonged_store_name !=null">BELONGED_STORE_NAME=#{belonged_store_name},</if>
+			<if test="belonged_organization !=null">BELONGED_ORGANIZATION=#{belonged_organization},</if>
+			<if test="belonged_organization_name !=null">BELONGED_ORGANIZATION_NAME=#{belonged_organization_name},</if>
+			<if test="status_code !=null">STATUS_CODE=#{status_code},</if>
+		</trim>
+		where 1=1 
+		<if test="employee_no !=null and employee_no !=''">
+			and EMPLOYEE_NO=#{employee_no}
+		</if>
+		<if test="language !=null and language !=''">
+			and LANGUAGE=#{language}
+		</if>
+	</update>
+	
+	<!-- 删除门店导购员 -->
+	<delete id="deleteEmployeeGuide" parameterType="hashmap">
+		delete from BAS_EMPLOYEE
+		where 1=1 and EMPLOYEE_NO=#{employee_no} and LANGUAGE=#{language}
+	</delete>
+	
+	<!-- 新增门店导购员 -->
+	<insert id="addEmployeeGuide" parameterType="hashmap">
+		insert into BAS_EMPLOYEE 
+		<trim prefix=" (" suffix=") " suffixOverrides=",">
+			<include refid="EmployeeRows"/>
+		</trim>
+		values
+		<trim prefix=" (" suffix=") " suffixOverrides=",">
+			<if test="status_code !=null">#{status_code},</if>
+			<if test="employee_no !=null">#{employee_no},</if>
+			<if test="role_type !=null">#{role_type},</if>
+			<if test="belonged_department !=null">#{belonged_department},</if>
+			<if test="belonged_organization !=null">#{belonged_organization},</if>
+			<if test="belonged_store !=null">#{belonged_store},</if>
+			<if test="job_title !=null">#{job_title},</if>
+			<if test="bank_no !=null">#{bank_no},</if>
+			<if test="accounts !=null">#{accounts},</if>
+			<if test="surname !=null">#{surname},</if>
+			<if test="middle_name !=null">#{middle_name},</if>
+			<if test="given_name !=null">#{given_name},</if>
+			<if test="employee_name !=null">#{employee_name},</if>
+			<if test="preference_name !=null">#{preference_name},</if>
+			<if test="nickname !=null">#{nickname},</if>
+			<if test="activate_agent_mechanism !=null">#{activate_agent_mechanism},</if>
+			<if test="agent_emplyee_id !=null">#{agent_emplyee_id},</if>
+			<if test="chief_emplyee_id !=null">#{chief_emplyee_id},</if>
+			<if test="contact_no !=null">#{contact_no},</if>
+			<if test="mobile_no !=null">#{mobile_no},</if>
+			<if test="email !=null">#{email},</if>
+			<if test="country_region !=null">#{country_region},</if>
+			<if test="province !=null">#{province},</if>
+			<if test="city !=null">#{city},</if>
+			<if test="county_district !=null">#{county_district},</if>
+			<if test="street !=null">#{street},</if>
+			<if test="detailed_address !=null">#{detailed_address},</if>
+			<if test="postcode !=null">#{postcode},</if>
+			<if test="data_owner !=null">#{data_owner},</if>
+			<if test="data_owned_department !=null">#{data_owned_department},</if>
+			<if test="data_created_by !=null">#{data_created_by},</if>
+			<if test="data_created_department !=null">#{data_created_department},</if>
+			<if test="data_created_date !=null">#{data_created_date},</if>
+			<if test="data_modified_by !=null">#{data_modified_by},</if>
+			<if test="last_modified_date !=null">#{last_modified_date},</if>
+			<if test="language !=null">#{language},</if>
+			<if test="belonged_department_name !=null">#{belonged_department_name},</if>
+			<if test="belonged_organization_name !=null">#{belonged_organization_name},</if>
+			<if test="belonged_store_name !=null">#{belonged_store_name},</if>
+			<if test="agent_emplyee_name !=null">#{agent_emplyee_name},</if>
+			<if test="chief_emplyee_name !=null">#{chief_emplyee_name},</if>
+			<if test="country_region_name !=null">#{country_region_name},</if>
+			<if test="province_name !=null">#{province_name},</if>
+			<if test="city_name !=null">#{city_name},</if>
+			<if test="county_district_name !=null">#{county_district_name},</if>
+			<if test="street_name !=null">#{street_name},</if>
+			<if test="job_title_description !=null">#{job_title_description},</if>
+			<if test="bank_name !=null">#{bank_name},</if>
+		</trim>
+	</insert>
+	
+	<!--  根据门店导购员(判断门店导购员是否存在) -->
+	<select id="getEmployeeGuide" parameterType="hashmap" resultType="hashmap">
+		select count(distinct EMPLOYEE_NO) as count,employee_no,role_type,employee_name,belonged_department,
+			belonged_department_name,belonged_store,belonged_store_name,belonged_organization,
+			belonged_organization_name,status_code 
+		from BAS_EMPLOYEE 
+		where 1=1 
+		<if test="employee_no !=null and employee_no !=''">
+			and EMPLOYEE_NO=#{employee_no}
+		</if>
+		<if test="language !=null and language !=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+</mapper>

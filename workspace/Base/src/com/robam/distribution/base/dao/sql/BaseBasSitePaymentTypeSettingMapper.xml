@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 款别依据点设置服务规格 -->
+<!-- Author YangJian -->
+<mapper namespace="dao.BaseBasSitePaymentTypeSettingMapper">
+	<sql id="sitePaymentTypeRows">
+		<if test="status_code !=null">STATUS_CODE,</if>
+		<if test="operation_organization !=null">operation_organization,</if>
+		<if test="payment_type !=null">payment_type,</if>
+		<if test="default_currency !=null">default_currency,</if>
+		<if test="is_thirdparty_collection !=null">IS_THIRDPARTY_COLLECTION,</if>
+		<if test="collection_agency !=null">COLLECTION_AGENCY,</if>
+		<if test="collection_poundage_rate !=null">collection_poundage_rate,</if>
+		<if test="collection_poundage_money !=null">collection_poundage_money,</if>
+		<if test="is_collection_billing !=null">IS_COLLECTION_BILLING,</if>
+		<if test="is_default_paymenttype !=null">is_default_paymenttype,</if>
+		<if test="corresponding_payment_type !=null">corresponding_payment_type,</if>
+		<if test="is_discount_received !=null">is_discount_received,</if>
+		<if test="is_single_use !=null">IS_SINGLE_USE,</if>
+		<if test="entryno_minimum_length !=null">entryno_minimum_length,</if>
+		<if test="is_refundable !=null">is_refundable,</if>
+		<if test="is_give_change !=null">is_give_change,</if>
+		<if test="is_overcharge !=null">is_overcharge,</if>
+		<if test="data_owner !=null">DATA_OWNER,</if>
+		<if test="data_owner_dept !=null">DATA_OWNER_DEPT,</if>
+		<if test="data_created_by !=null">DATA_CREATED_BY,</if>
+		<if test="department !=null">DEPARTMENT,</if>
+		<if test="data_created_date !=null">DATA_CREATED_DATE,</if>
+		<if test="modified_by !=null">MODIFIED_BY,</if>
+		<if test="last_modified_date !=null">LAST_MODIFIED_DATE,</if>
+		<if test="bank_account !=null">bank_account,</if>
+		<if test="standard_poundage_rate !=null">standard_poundage_rate,</if>
+		<if test="coupon_consumption_mode !=null">coupon_consumption_mode,</if>
+		<if test="tax_deduction_sequence !=null">tax_deduction_sequence,</if>
+		<if test="is_account_currentorg !=null">is_account_currentorg,</if>
+		<if test="is_collection !=null">IS_COLLECTION,</if>
+		<if test="collecting_organization !=null">collecting_organization,</if>
+		<if test="card_ceilling_money !=null">card_ceilling_money,</if>
+		<if test="ceilling_poundage_money !=null">ceilling_poundage_money,</if>
+		<if test="is_payment_checkdetail !=null">is_payment_checkdetail,</if>
+		<if test="poundage_department !=null">poundage_department,</if>
+		<if test="language !=null">LANGUAGE,</if>
+		<if test="operation_organization_name !=null">operation_organization_NAME,</if>
+		<if test="payment_type_discription !=null">payment_type_discription,</if>
+		<if test="default_currency_discription !=null">default_currency_discription,</if>
+		<if test="collection_agency_name !=null">COLLECTION_AGENCY_NAME,</if>
+		<if test="corresponding_paymenttype_discription !=null">corresponding_paymenttype_discription,</if>
+		<if test="bank_account_discription !=null">bank_account_discription,</if>
+		<if test="collecting_organization_name !=null">collecting_organization_NAME,</if>
+		<if test="poundage_department_name !=null">poundage_department_name,</if>
+	</sql>
+	<!-- 根据预设条件查询缴款优惠条件维护列表（分页） -->
+	<select id="BasSitePaymentTypeSelectCount" parameterType="hashmap" resultType="hashmap">
+		select count(*) 
+		from BAS_PAYMENTTYPE_SETTING 
+		where 1=1 
+		<if test="operation_organization!=null and operation_organization!=''">
+			and operation_organization=#{operation_organization}
+		</if>
+		<if test="operation_organization_name!=null and operation_organization_name!=''">
+			and operation_organization_NAME=#{operation_organization_name}
+		</if>
+		<if test="payment_type!=null and payment_type!=''">
+			and payment_type=#{payment_type}
+		</if>
+		<if test="payment_type_discription!=null and payment_type_discription!=''">
+			and payment_type_discription=#{payment_type_discription}
+		</if>
+		<if test="default_currency!=null and default_currency!=''">
+			and default_currency=#{default_currency}
+		</if>
+		<if test="default_currency_discription!=null and default_currency_discription!=''">
+			and default_currency_discription=#{default_currency_discription}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+		<if test="status_code != null and status_code != ''">
+			and STATUS_CODE = #{status_code}
+		</if>
+	</select>
+	<select id="BasSitePaymentTypeSelectLimit" parameterType="hashmap" resultType="hashmap">
+		select status_code,operation_organization,operation_organization_name,
+			payment_type,payment_type_discription,default_currency,
+			default_currency_discription,standard_poundage_rate,bank_account,
+			bank_account_discription,is_account_currentorg,is_payment_checkdetail,
+			card_ceilling_money,coupon_consumption_mode,ceilling_poundage_money,
+			tax_deduction_sequence,is_thirdparty_collection,
+			is_collection,collection_agency,collection_agency_name,
+			collecting_organization,collecting_organization_name,collection_poundage_rate,
+			poundage_department,poundage_department_name,collection_poundage_money,
+			is_collection_billing,is_default_paymenttype,corresponding_payment_type,
+			corresponding_paymenttype_discription,is_discount_received,is_single_use,
+			is_refundable,is_give_change,is_overcharge,entryno_minimum_length 
+		from BAS_PAYMENTTYPE_SETTING 
+		where 1=1 
+		<if test="operation_organization!=null and operation_organization!=''">
+			and operation_organization=#{operation_organization}
+		</if>
+		<if test="operation_organization_name!=null and operation_organization_name!=''">
+			and operation_organization_NAME=#{operation_organization_name}
+		</if>
+		<if test="payment_type!=null and payment_type!=''">
+			and payment_type=#{payment_type}
+		</if>
+		<if test="payment_type_discription!=null and payment_type_discription!=''">
+			and payment_type_discription=#{payment_type_discription}
+		</if>
+		<if test="default_currency!=null and default_currency!=''">
+			and default_currency=#{default_currency}
+		</if>
+		<if test="default_currency_discription!=null and default_currency_discription!=''">
+			and default_currency_discription=#{default_currency_discription}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+		<if test="status_code != null and status_code != ''">
+			and STATUS_CODE = #{status_code}
+		</if>
+		ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 修改款别依据点设置 -->
+	<select id="modifySitePaymentType" parameterType="hashmap">
+		update BAS_PAYMENTTYPE_SETTING 
+		set
+			<trim suffixOverrides=",">
+				<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+				<if test="operation_organization_name !=null">operation_organization_NAME=#{operation_organization_name},</if>
+				<if test="payment_type_discription !=null">payment_type_discription=#{payment_type_discription},</if>
+				<if test="default_currency !=null">default_currency=#{default_currency},</if>
+				<if test="default_currency_discription !=null">default_currency_discription=#{default_currency_discription},</if>
+				<if test="standard_poundage_rate !=null">standard_poundage_rate=#{standard_poundage_rate},</if>
+				<if test="bank_account !=null">bank_account=#{bank_account},</if>
+				<if test="bank_account_discription !=null">bank_account_discription=#{bank_account_discription},</if>
+				<if test="is_account_currentorg !=null">is_account_currentorg=#{is_account_currentorg},</if>
+				<if test="is_payment_checkdetail !=null">is_payment_checkdetail=#{is_payment_checkdetail},</if>
+				<if test="card_ceilling_money !=null">card_ceilling_money=#{card_ceilling_money},</if>
+				<if test="coupon_consumption_mode !=null">coupon_consumption_mode=#{coupon_consumption_mode},</if>
+				<if test="ceilling_poundage_money !=null">ceilling_poundage_money=#{ceilling_poundage_money},</if>
+				<if test="tax_deduction_sequence !=null">tax_deduction_sequence=#{tax_deduction_sequence},</if>
+				<if test="is_thirdparty_collection !=null">IS_THIRDPARTY_COLLECTION=#{is_thirdparty_collection},</if>
+				<if test="is_collection !=null">IS_COLLECTION=#{is_collection},</if>
+				<if test="collection_agency !=null">COLLECTION_AGENCY=#{collection_agency},</if>
+				<if test="collection_agency_name !=null">COLLECTION_AGENCY_NAME=#{collection_agency_name},</if>
+				<if test="collecting_organization !=null">collecting_organization=#{collecting_organization},</if>
+				<if test="collecting_organization_name !=null">collecting_organization_NAME=#{collecting_organization_name},</if>
+				<if test="collection_poundage_rate !=null">collection_poundage_rate=#{collection_poundage_rate},</if>
+				<if test="poundage_department !=null">poundage_department=#{poundage_department},</if>
+				<if test="poundage_department_name !=null">poundage_department_name=#{poundage_department_name},</if>
+				<if test="collection_poundage_money !=null">collection_poundage_money=#{collection_poundage_money},</if>
+				<if test="is_collection_billing !=null">IS_COLLECTION_BILLING=#{is_collection_billing},</if>
+				<if test="is_default_paymenttype !=null">is_default_paymenttype=#{is_default_paymenttype},</if>
+				<if test="corresponding_payment_type !=null">corresponding_payment_type=#{corresponding_payment_type},</if>
+				<if test="corresponding_paymenttype_discription !=null">corresponding_paymenttype_discription=#{corresponding_paymenttype_discription},</if>
+				<if test="is_discount_received !=null">is_discount_received=#{is_discount_received},</if>
+				<if test="is_single_use !=null">IS_SINGLE_USE=#{is_single_use},</if>
+				<if test="is_refundable !=null">is_refundable=#{is_refundable},</if>
+				<if test="is_give_change !=null">is_give_change=#{is_give_change},</if>
+				<if test="is_overcharge !=null">is_overcharge=#{is_overcharge},</if>
+				<if test="entryno_minimum_length !=null">entryno_minimum_length=#{entryno_minimum_length} </if>
+			</trim>
+		where 1=1 
+		<if test="operation_organization!=null and operation_organization!=''">
+			and operation_organization=#{operation_organization}
+		</if>
+		<if test="payment_type!=null and payment_type!=''">
+			and payment_type=#{payment_type}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+	
+	<!-- 删除款别依据点设置 -->
+	<delete id="deleteSitePaymentType" parameterType="hashmap">
+		delete from BAS_PAYMENTTYPE_SETTING 
+		where 1=1 
+			and LANGUAGE=#{language} and operation_organization=#{operation_organization} 
+			and payment_type=#{payment_type}
+	</delete>
+	
+	<!-- 审核款别依据点设置 -->
+	<update id="auditSitePaymentType">
+		update BAS_PAYMENTTYPE_SETTING 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="status_code !=null">
+				status_code=#{status_code},
+			</if>
+			<if test="last_modified_date != null">
+				last_modified_date=#{last_modified_date}, 
+			</if>
+		</trim>	
+		where 1=1 
+			and LANGUAGE=#{language} and operation_organization=#{operation_organization} 
+			and payment_type=#{payment_type}
+	</update>
+	
+	<!-- 查询营运组织编号 -->
+	<select id="selectPaymentId" parameterType="hashmap" resultType="hashmap">
+		select count(distinct operation_organization,payment_type) 
+		from BAS_PAYMENTTYPE_SETTING 
+		where 1=1 
+		<if test="operation_organization!=null and operation_organization!=''">
+			and operation_organization=#{operation_organization}
+		</if>
+		<if test="payment_type!=null and payment_type!=''">
+			and payment_type=#{payment_type}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+	
+	<!-- 主键查询营运组织 -->
+	<select id="getPaymentOne" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			status_code,operation_organization,operation_organization_name,
+			payment_type,payment_type_discription,default_currency,
+			default_currency_discription,standard_poundage_rate,bank_account,
+			bank_account_discription,is_account_currentorg,is_payment_checkdetail,
+			card_ceilling_money,coupon_consumption_mode,ceilling_poundage_money,
+			tax_deduction_sequence,is_thirdparty_collection,
+			is_collection,collection_agency,collection_agency_name,
+			collecting_organization,collecting_organization_name,collection_poundage_rate,
+			poundage_department,poundage_department_name,collection_poundage_money,
+			is_collection_billing,is_default_paymenttype,corresponding_payment_type,
+			corresponding_paymenttype_discription,is_discount_received,is_single_use,
+			is_refundable,is_give_change,is_overcharge,entryno_minimum_length  
+		FROM 
+			BAS_PAYMENTTYPE_SETTING 
+		WHERE 1=1 
+		<if test="operation_organization!=null and operation_organization!=''">
+			and operation_organization=#{operation_organization}
+		</if>
+		<if test="payment_type!=null and payment_type!=''">
+			and payment_type=#{payment_type}
+		</if>
+		<if test="language!=null and language!=''">
+			and LANGUAGE=#{language}
+		</if>
+	</select>
+	
+	<!-- 新增款别依据点设置 -->
+	<insert id="addSitePaymentType" parameterType="hashmap">
+		insert into BAS_PAYMENTTYPE_SETTING 
+		<trim prefix=" (" suffix=") " suffixOverrides=",">
+			<include refid="sitePaymentTypeRows"/>
+		</trim>
+		values
+	 	<trim prefix=" (" suffix=") " suffixOverrides=",">
+	 		<if test="status_code !=null">#{status_code},</if>
+			<if test="operation_organization !=null">#{operation_organization},</if>
+			<if test="payment_type !=null">#{payment_type},</if>
+			<if test="default_currency !=null">#{default_currency},</if>
+			<if test="is_thirdparty_collection !=null">#{is_thirdparty_collection},</if>
+			<if test="collection_agency !=null">#{collection_agency},</if>
+			<if test="collection_poundage_rate !=null">#{collection_poundage_rate},</if>
+			<if test="collection_poundage_money !=null">#{collection_poundage_money},</if>
+			<if test="is_collection_billing !=null">#{is_collection_billing},</if>
+			<if test="is_default_paymenttype !=null">#{is_default_paymenttype},</if>
+			<if test="corresponding_payment_type !=null">#{corresponding_payment_type},</if>
+			<if test="is_discount_received !=null">#{is_discount_received},</if>
+			<if test="is_single_use !=null">#{is_single_use},</if>
+			<if test="entryno_minimum_length !=null">#{entryno_minimum_length},</if>
+			<if test="is_refundable !=null">#{is_refundable},</if>
+			<if test="is_give_change !=null">#{is_give_change},</if>
+			<if test="is_overcharge !=null">#{is_overcharge},</if>
+			<if test="data_owner !=null">#{data_owner},</if>
+			<if test="data_owner_dept !=null">#{data_owner_dept},</if>
+			<if test="data_created_by !=null">#{data_created_by},</if>
+			<if test="department !=null">#{department},</if>
+			<if test="data_created_date !=null">#{data_created_date},</if>
+			<if test="modified_by !=null">#{modified_by},</if>
+			<if test="last_modified_date !=null">#{last_modified_date},</if>
+			<if test="bank_account !=null">#{bank_account},</if>
+			<if test="standard_poundage_rate !=null">#{standard_poundage_rate},</if>
+			<if test="coupon_consumption_mode !=null">#{coupon_consumption_mode},</if>
+			<if test="tax_deduction_sequence !=null">#{tax_deduction_sequence},</if>
+			<if test="is_account_currentorg !=null">#{is_account_currentorg},</if>
+			<if test="is_collection !=null">#{is_collection},</if>
+			<if test="collecting_organization !=null">#{collecting_organization},</if>
+			<if test="card_ceilling_money !=null">#{card_ceilling_money},</if>
+			<if test="ceilling_poundage_money !=null">#{ceilling_poundage_money},</if>
+			<if test="is_payment_checkdetail !=null">#{is_payment_checkdetail},</if>
+			<if test="poundage_department !=null">#{poundage_department},</if>
+			<if test="language !=null">#{language},</if>
+			<if test="operation_organization_name !=null">#{operation_organization_name},</if>
+			<if test="payment_type_discription !=null">#{payment_type_discription},</if>
+			<if test="default_currency_discription !=null">#{default_currency_discription},</if>
+			<if test="collection_agency_name !=null">#{collection_agency_name},</if>
+			<if test="corresponding_paymenttype_discription !=null">#{corresponding_paymenttype_discription},</if>
+			<if test="bank_account_discription !=null">#{bank_account_discription},</if>
+			<if test="collecting_organization_name !=null">#{collecting_organization_name},</if>
+			<if test="poundage_department_name !=null">#{poundage_department_name},</if>
+	 	</trim>
+	</insert>
+</mapper>

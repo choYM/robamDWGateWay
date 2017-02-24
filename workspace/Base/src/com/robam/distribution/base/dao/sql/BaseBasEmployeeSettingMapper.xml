@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_m03 员工资料维护 -->
+<!-- @author gejc -->
+<!-- @since 2017-02-20 -->
+<mapper namespace="dao.BaseBasEmployeeSettingMapper">
+	<!-- 分页查询，查询数据量 -->
+	<select id="getEmployeeListCount" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			COUNT(*)  
+		FROM
+		 	BAS_EMPLOYEE 
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" role_type !=null and role_type !=''">
+			 	AND role_type=#{role_type}	
+			</if>
+			<if test=" employee_name !=null and employee_name !=''">
+			 	AND employee_name LIKE	'%' #{employee_name} '%'	
+			</if>
+			<if test=" belonged_department !=null and belonged_department !=''">
+			 	AND belonged_department=#{belonged_department}	
+			</if>
+			<if test=" belonged_department_name !=null and belonged_department_name !=''">
+			 	AND belonged_department_name LIKE '%' #{belonged_department_name} '%'	
+			</if>
+			<if test=" job_title !=null and job_title !=''">
+			 	AND job_title=#{job_title}	
+			</if>
+			<if test=" job_title_name !=null and job_title_name !=''">
+			 	AND job_title_name LIKE '%' #{job_title_name}	'%'
+			</if>
+			<if test=" belonged_organization !=null and belonged_organization !=''">
+			 	AND belonged_organization=#{belonged_organization}	
+			</if>
+			<if test=" belonged_organization_name !=null and belonged_organization_name !=''">
+			 	AND belonged_organization_name LIKE '%' #{belonged_organization_name} '%'	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</select>
+	
+	<!-- 分页查询员工数据 -->
+	<select id="getEmployeeList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			employee_no,employee_name,belonged_department,belonged_department_name,
+			status_code,job_title,job_title_name,nickname,
+			belonged_organization,belonged_organization_name,supervisor_employee_no,
+			supervisor_employee_name,contact_no,email,postcode,mobile_no,
+			country_region,country_region_name,
+			province,province_name,city,city_name,
+			county_district,county_district_name,
+			street,street_name,detailed_address
+		FROM
+		 	BAS_EMPLOYEE
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" role_type !=null and role_type !=''">
+			 	AND role_type=#{role_type}	
+			</if>
+			<if test=" employee_name !=null and employee_name !=''">
+			 	AND employee_name LIKE	'%' #{employee_name} '%'	
+			</if>
+			<if test=" belonged_department !=null and belonged_department !=''">
+			 	AND belonged_department=#{belonged_department}	
+			</if>
+			<if test=" belonged_department_name !=null and belonged_department_name !=''">
+			 	AND belonged_department_name LIKE '%' #{belonged_department_name} '%'	
+			</if>
+			<if test=" job_title !=null and job_title !=''">
+			 	AND job_title=#{job_title}	
+			</if>
+			<if test=" job_title_name !=null and job_title_name !=''">
+			 	AND job_title_name LIKE '%' #{job_title_name}	'%'
+			</if>
+			<if test=" belonged_organization !=null and belonged_organization !=''">
+			 	AND belonged_organization=#{belonged_organization}	
+			</if>
+			<if test=" belonged_organization_name !=null and belonged_organization_name !=''">
+			 	AND belonged_organization_name LIKE '%' #{belonged_organization_name} '%'	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+		  ORDER BY employee_no ASC  
+		  LIMIT #{startIndex}, #{pageSize}
+	</select>
+	
+	<!-- 查询指定员工信息 -->
+	<select  id="getEmployee" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			employee_no,employee_name,surname,given_name,bank_no,bank_name,
+			belonged_department,belonged_department_name,accounts,
+			status_code,job_title,job_title_name,nickname,
+			belonged_organization,belonged_organization_name,supervisor_employee_no,
+			supervisor_employee_name,contact_no,email,postcode,mobile_no,
+			country_region,country_region_name,
+			province,province_name,city,city_name,
+			county_district,county_district_name,
+			street,street_name,detailed_address   
+		FROM
+		 	BAS_EMPLOYEE
+		<where>	 
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" role_type !=null and role_type !=''">
+			 	AND role_type=#{role_type}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 查询指定员工的地址信息 -->
+	<select  id="getEmployeeAddressList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			address_no,address_type,primary_contact_address,postcode,
+			country_region,country_region_name,
+			province,province_name,city,city_name,
+			county_district,county_district_name,
+			street,street_name,detailed_address
+		FROM
+			BAS_EMPLOYEE_ADDRESS
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" address_no !=null and address_no !=''">
+			 	AND address_no=#{address_no}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>	
+	</select>
+	
+	<!-- 查询指定员工的通讯方式 -->
+	<select  id="getEmployeeCommunicationList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			communication_no,communication_type,brief_description,
+			communication_content,is_primary_communication
+		FROM
+			BAS_EMPLOYEE_COMMUNICATION
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test="status_code!=null and status_code!=''">
+			 	AND status_code=#{status_code}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+			<if test=" communication_no !=null and communication_no !=''">
+			 	AND communication_no=#{communication_no}	
+			</if>
+		</where>	
+	</select>
+	
+	<!-- 修改员工数据 -->
+	<update id="updateEmployee" parameterType="hashmap">
+		UPDATE 
+			BAS_EMPLOYEE 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			<if test="surname != null">surname=#{surname}, </if>
+			<if test="given_name != null">given_name=#{given_name}, </if>
+			<if test="employee_name != null">employee_name=#{employee_name}, </if>
+			<if test="job_title != null">job_title=#{job_title}, </if>
+			<if test="job_title_name != null">job_title_name=#{job_title_name}, </if>
+			<if test="bank_no != null">bank_no=#{bank_no}, </if>
+			<if test="bank_name != null">bank_name=#{bank_name}, </if>
+			<if test="accounts != null">accounts=#{accounts},</if>
+			<if test="belonged_organization != null">belonged_organization=#{belonged_organization}, </if>
+			<if test="belonged_organization_name != null">belonged_organization_name=#{belonged_organization_name}, </if>
+			<if test="nickname != null">nickname=#{nickname}, </if>
+			<if test="belonged_department != null">belonged_department=#{belonged_department}, </if>
+			<if test="belonged_department_name != null">belonged_department_name=#{belonged_department_name}, </if>
+			<if test="supervisor_employee_no != null">supervisor_employee_no=#{supervisor_employee_no}, </if>
+			<if test="supervisor_employee_name != null">supervisor_employee_name=#{supervisor_employee_name}, </if>
+			<if test="contact_no != null">contact_no=#{contact_no}, </if>
+			<if test="email != null">email=#{email}, </if>
+			<if test="postcode != null">postcode=#{postcode}, </if>
+			<if test="mobile_no != null">mobile_no=#{mobile_no}, </if>
+			<if test="country_region != null">country_region=#{country_region}, </if>
+			<if test="country_region_name != null">country_region_name=#{country_region_name}, </if>
+			<if test="province != null">province=#{province}, </if>
+			<if test="province_name != null">province_name=#{province_name}, </if>
+			<if test="city != null">city=#{city}, </if>
+			<if test="city_name != null">city_name=#{city_name}, </if>
+			<if test="county_district != null">county_district=#{county_district}, </if>
+			<if test="county_district_name != null">county_district_name=#{county_district_name}, </if>
+			<if test="street != null">street=#{street}, </if>
+			<if test="street_name != null">street_name=#{street_name}, </if>
+			<if test="detailed_address != null">detailed_address=#{detailed_address}, </if>
+ 		</trim> 
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	<!-- 修改员工数据时，对于主档的地址更新，同时更新副表相应数据 -->
+	<update  id="updateEmployeeAndAddress" parameterType="hashmap">
+		UPDATE 
+			BAS_EMPLOYEE_ADDRESS 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			<if test="employee_name != null">employee_name=#{employee_name}, </if>
+			<if test="address_type != null">address_type=#{address_type}, </if>
+			<if test="primary_contact_address != null">primary_contact_address=#{primary_contact_address}, </if>
+			<if test="postcode != null">postcode=#{postcode}, </if>
+			<if test="country_region != null">country_region=#{country_region}, </if>
+			<if test="country_region_name != null">country_region_name=#{country_region_name}, </if>
+			<if test="province != null">province=#{province}, </if>
+			<if test="province_name != null">province_name=#{province_name}, </if>
+			<if test="city != null">city=#{city}, </if>
+			<if test="city_name != null">city_name=#{city_name}, </if>
+			<if test="county_district != null">county_district=#{county_district}, </if>
+			<if test="county_district_name != null">county_district_name=#{county_district_name}, </if>
+			<if test="street != null">street=#{street}, </if>
+			<if test="street_name != null">street_name=#{street_name}, </if>
+			<if test="detailed_address != null">detailed_address=#{detailed_address}, </if>
+ 		</trim> 
+		<where>
+				AND address_type='2' AND primary_contact_address='Y' 
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	
+	<!-- 修改员工地址 -->
+	<update id="updateEmployeeAddress" parameterType="hashmap">
+		UPDATE 
+			BAS_EMPLOYEE_ADDRESS 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			<if test="employee_name != null">employee_name=#{employee_name}, </if>
+			<if test="address_type != null">address_type=#{address_type}, </if>
+			<if test="primary_contact_address != null">primary_contact_address=#{primary_contact_address}, </if>
+			<if test="postcode != null">postcode=#{postcode}, </if>
+			<if test="country_region != null">country_region=#{country_region}, </if>
+			<if test="country_region_name != null">country_region_name=#{country_region_name}, </if>
+			<if test="province != null">province=#{province}, </if>
+			<if test="province_name != null">province_name=#{province_name}, </if>
+			<if test="city != null">city=#{city}, </if>
+			<if test="city_name != null">city_name=#{city_name}, </if>
+			<if test="county_district != null">county_district=#{county_district}, </if>
+			<if test="county_district_name != null">county_district_name=#{county_district_name}, </if>
+			<if test="street != null">street=#{street}, </if>
+			<if test="street_name != null">street_name=#{street_name}, </if>
+			<if test="detailed_address != null">detailed_address=#{detailed_address}, </if>
+ 		</trim> 
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" address_no !=null and address_no !=''">
+			 	AND address_no=#{address_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+			<if test=" address_type2 !=null and address_type2 !=''">
+			 	AND address_type=#{address_type2}	
+			</if>
+			<if test=" primary_contact_address2 !=null and primary_contact_address2 !=''">
+			 	AND primary_contact_address=#{primary_contact_address2}	
+			</if>
+		</where>
+	</update>
+	<!-- 修改员工地址时，对于附表的地址更新，同时更新主表相应数据 -->
+	<update id="updateAddressToEmployee" parameterType="hashmap">
+		UPDATE 
+			BAS_EMPLOYEE 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			<if test="postcode != null">postcode=#{postcode}, </if>
+			<if test="country_region != null">country_region=#{country_region}, </if>
+			<if test="country_region_name != null">country_region_name=#{country_region_name}, </if>
+			<if test="province != null">province=#{province}, </if>
+			<if test="province_name != null">province_name=#{province_name}, </if>
+			<if test="city != null">city=#{city}, </if>
+			<if test="city_name != null">city_name=#{city_name}, </if>
+			<if test="county_district != null">county_district=#{county_district}, </if>
+			<if test="county_district_name != null">county_district_name=#{county_district_name}, </if>
+			<if test="street != null">street=#{street}, </if>
+			<if test="street_name != null">street_name=#{street_name}, </if>
+			<if test="detailed_address != null">detailed_address=#{detailed_address}, </if>
+ 		</trim> 
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	<!-- 修改员工地址时，若更改为默认地址，则原默认地址更新为非默认 -->
+	<update id="updateEmployeeAddressN" parameterType="hashmap">
+		UPDATE 
+			BAS_EMPLOYEE_ADDRESS 
+		SET
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			primary_contact_address='N'
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" address_type !=null and address_type !=''">
+			 	AND address_type=#{address_type}	
+			</if>
+			<if test=" address_no !=null and address_no !=''">
+			 	AND address_no!=#{address_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	
+	<!-- 修改员工通讯方式 -->
+	<update id="updateEmployeeCommunication" parameterType="hashmap">
+		UPDATE 
+			BAS_EMPLOYEE_COMMUNICATION 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			<if test="employee_name != null">employee_name=#{employee_name}, </if>
+			<if test="communication_type != null">communication_type=#{communication_type}, </if>
+			<if test="brief_description != null">brief_description=#{brief_description}, </if>
+			<if test="communication_content != null">communication_content=#{communication_content}, </if>
+			<if test="is_primary_communication != null">is_primary_communication=#{is_primary_communication},</if>
+ 		</trim> 
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" communication_no !=null and communication_no !=''">
+			 	AND communication_no=#{communication_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	
+	<!-- 删除员工 -->
+	<delete id="deleteEmployee" parameterType="hashmap">
+	        DELETE FROM 
+	        	BAS_EMPLOYEE
+	        <where>
+				<if test=" employee_no !=null and employee_no !=''">
+				 	AND employee_no=#{employee_no}	
+				</if>
+				<if test=" language !=null and language !=''">
+				 	AND language=#{language}	
+				</if>
+			</where>	 
+	</delete>
+	<!-- 删除员工地址 -->
+	<delete id="deleteEmployeeAddress" parameterType="hashmap">
+	        DELETE FROM 
+	        	BAS_EMPLOYEE_ADDRESS
+	        <where>
+				<if test=" employee_no !=null and employee_no !=''">
+				 	AND employee_no=#{employee_no}	
+				</if>
+				<if test=" language !=null and language !=''">
+				 	AND language=#{language}	
+				</if>
+				<if test=" address_no !=null and address_no !=''">
+			 		AND address_no=#{address_no}	
+				</if>
+			</where>	 
+	</delete>
+	<!-- 输出员工地址时，若删除默认的联络的地址，则抓第一个联络地址为默认地址，修改主档表 -->
+	<select  id="getMaxEmployeeAddress" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			address_no,address_type,primary_contact_address,postcode,
+			country_region,country_region_name,
+			province,province_name,city,city_name,
+			county_district,county_district_name,
+			street,street_name,detailed_address
+		FROM
+			BAS_EMPLOYEE_ADDRESS
+		<where>
+				AND  address_type='2'
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test="language!=null and language!=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+		ORDER BY address_no ASC	
+	</select>
+	<!-- 删除后，找不到其他联络地址时，则主表地址信息全部设空 -->
+	<update id="updateAddressNull" parameterType="hashmap">
+		UPDATE 
+			BAS_EMPLOYEE 
+		SET
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			postcode=NULL,
+			country_region=NULL,
+			country_region_name=NULL,
+			province=NULL,
+			province_name=NULL,
+			city=NULL,
+			city_name=NULL,
+			county_district=NULL,
+			county_district_name=NULL,
+			street=NULL,
+			street_name=NULL,
+			detailed_address=NULL
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+	
+	<!-- 删除员工通讯方式 -->
+	<delete id="deleteEmployeeCommunication" parameterType="hashmap">
+	        DELETE FROM 
+	        	BAS_EMPLOYEE_COMMUNICATION
+	        <where>
+				<if test=" employee_no !=null and employee_no !=''">
+				 	AND employee_no=#{employee_no}	
+				</if>
+				<if test=" language !=null and language !=''">
+				 	AND language=#{language}	
+				</if>
+				<if test=" communication_no !=null and communication_no !=''">
+			 		AND communication_no=#{communication_no}	
+				</if>
+			</where>	 
+	</delete>
+	
+	<!-- 新增员工 -->
+	<insert parameterType="hashmap" id="addEmployee">
+		INSERT INTO 
+			BAS_EMPLOYEE
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope1" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="last_modified_date != null">#{last_modified_date}, </if>
+			<if test="employee_no != null">#{employee_no}, </if>
+			<if test="role_type != null">#{role_type}, </if>
+			<if test="surname != null">#{surname}, </if>
+			<if test="given_name != null">#{given_name}, </if>
+			<if test="employee_name != null">#{employee_name}, </if>
+			<if test="job_title != null">#{job_title}, </if>
+			<if test="job_title_name != null">#{job_title_name}, </if>
+			<if test="bank_no != null">#{bank_no}, </if>
+			<if test="bank_name != null">#{bank_name}, </if>
+			<if test="accounts != null">#{accounts},</if>
+			<if test="belonged_organization != null">#{belonged_organization}, </if>
+			<if test="belonged_organization_name != null">#{belonged_organization_name}, </if>
+			<if test="nickname != null">#{nickname}, </if>
+			<if test="belonged_department != null">#{belonged_department}, </if>
+			<if test="belonged_department_name != null">#{belonged_department_name}, </if>
+			<if test="supervisor_employee_no != null">#{supervisor_employee_no}, </if>
+			<if test="supervisor_employee_name != null">#{supervisor_employee_name}, </if>
+			<if test="contact_no != null">#{contact_no}, </if>
+			<if test="email != null">#{email}, </if>
+			<if test="postcode != null">#{postcode}, </if>
+			<if test="mobile_no != null">#{mobile_no}, </if>
+			<if test="country_region != null">#{country_region}, </if>
+			<if test="country_region_name != null">#{country_region_name}, </if>
+			<if test="province != null">#{province}, </if>
+			<if test="province_name != null">#{province_name}, </if>
+			<if test="city != null">#{city}, </if>
+			<if test="city_name != null">#{city_name}, </if>
+			<if test="county_district != null">#{county_district}, </if>
+			<if test="county_district_name != null">#{county_district_name}, </if>
+			<if test="street != null">#{street}, </if>
+			<if test="street_name != null">#{street_name}, </if>
+			<if test="detailed_address != null">#{detailed_address}, </if>
+			<if test=" status_code !=null">#{status_code},</if>
+			<if test=" language !=null">#{language},</if>
+		</trim>		 
+	</insert>
+	<sql id="columnScope1">
+			<if test="data_created_date != null">data_created_date, </if>
+			<if test="last_modified_date != null">last_modified_date, </if>
+			<if test="employee_no != null">employee_no, </if>
+			<if test="role_type != null">role_type, </if>
+			<if test="surname != null">surname, </if>
+			<if test="given_name != null">given_name, </if>
+			<if test="employee_name != null">employee_name, </if>
+			<if test="job_title != null">job_title, </if>
+			<if test="job_title_name != null">job_title_name, </if>
+			<if test="bank_no != null">bank_no, </if>
+			<if test="bank_name != null">bank_name, </if>
+			<if test="accounts != null">accounts,</if>
+			<if test="belonged_organization != null">belonged_organization, </if>
+			<if test="belonged_organization_name != null">belonged_organization_name, </if>
+			<if test="nickname != null">nickname, </if>
+			<if test="belonged_department != null">belonged_department, </if>
+			<if test="belonged_department_name != null">belonged_department_name, </if>
+			<if test="supervisor_employee_no != null">supervisor_employee_no, </if>
+			<if test="supervisor_employee_name != null">supervisor_employee_name, </if>
+			<if test="contact_no != null">contact_no, </if>
+			<if test="email != null">email, </if>
+			<if test="postcode != null">postcode, </if>
+			<if test="mobile_no != null">mobile_no, </if>
+			<if test="country_region != null">country_region, </if>
+			<if test="country_region_name != null">country_region_name, </if>
+			<if test="province != null">province, </if>
+			<if test="province_name != null">province_name, </if>
+			<if test="city != null">city, </if>
+			<if test="city_name != null">city_name, </if>
+			<if test="county_district != null">county_district, </if>
+			<if test="county_district_name != null">county_district_name, </if>
+			<if test="street != null">street, </if>
+			<if test="street_name != null">street_name, </if>
+			<if test="detailed_address != null">detailed_address, </if>
+			<if test=" status_code !=null">status_code,</if>
+			<if test=" language !=null">language,</if>
+	</sql>
+	
+	<!-- 新增员工地址 -->
+	<insert parameterType="hashmap" id="addEmployeeAddress">
+		INSERT INTO 
+			BAS_EMPLOYEE_ADDRESS
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope2" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="last_modified_date != null">#{last_modified_date}, </if>
+			<if test="address_no != null">#{address_no}, </if>
+			<if test="employee_no != null">#{employee_no}, </if>
+			<if test="employee_name != null">#{employee_name}, </if>
+			<if test="address_type != null">#{address_type}, </if>
+			<if test="primary_contact_address != null">#{primary_contact_address}, </if>
+			<if test="postcode != null">#{postcode}, </if>
+			<if test="country_region != null">#{country_region}, </if>
+			<if test="country_region_name != null">#{country_region_name}, </if>
+			<if test="province != null">#{province}, </if>
+			<if test="province_name != null">#{province_name}, </if>
+			<if test="city != null">#{city}, </if>
+			<if test="city_name != null">#{city_name}, </if>
+			<if test="county_district != null">#{county_district}, </if>
+			<if test="county_district_name != null">#{county_district_name}, </if>
+			<if test="street != null">#{street}, </if>
+			<if test="street_name != null">#{street_name}, </if>
+			<if test="detailed_address != null">#{detailed_address}, </if>
+			<if test=" status_code !=null">#{status_code},</if>
+			<if test=" language !=null">#{language},</if>
+		</trim>		 
+	</insert>
+	<sql id="columnScope2">
+			<if test="data_created_date != null">data_created_date, </if>
+			<if test="last_modified_date != null">last_modified_date, </if>
+			<if test="address_no != null">address_no, </if>
+			<if test="employee_no != null">employee_no, </if>
+			<if test="employee_name != null">employee_name, </if>
+			<if test="address_type != null">address_type, </if>
+			<if test="primary_contact_address != null">primary_contact_address, </if>
+			<if test="postcode != null">postcode, </if>
+			<if test="country_region != null">country_region, </if>
+			<if test="country_region_name != null">country_region_name, </if>
+			<if test="province != null">province, </if>
+			<if test="province_name != null">province_name, </if>
+			<if test="city != null">city, </if>
+			<if test="city_name != null">city_name, </if>
+			<if test="county_district != null">county_district, </if>
+			<if test="county_district_name != null">county_district_name, </if>
+			<if test="street != null">street, </if>
+			<if test="street_name != null">street_name, </if>
+			<if test="detailed_address != null">detailed_address, </if>
+			<if test=" status_code !=null">status_code,</if>
+			<if test=" language !=null">language,</if>
+	</sql>
+	
+	<!-- 新增员工通讯方式 -->
+	<insert parameterType="hashmap" id="addEmployeeCommunication">
+		INSERT INTO 
+			BAS_EMPLOYEE_COMMUNICATION
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope3" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="last_modified_date != null">#{last_modified_date}, </if>
+			<if test=" communication_no !=null">#{communication_no},</if>
+			<if test=" employee_no !=null">#{employee_no},</if>
+			<if test=" employee_name !=null">#{employee_name},</if>
+			<if test=" communication_type !=null">#{communication_type},</if>
+			<if test=" brief_description !=null">#{brief_description},</if>
+			<if test=" communication_content !=null">#{communication_content},</if>
+			<if test=" is_primary_communication !=null">#{is_primary_communication},</if>
+			<if test=" status_code !=null">#{status_code},	</if>
+			<if test=" language !=null">#{language},</if>
+		</trim>		 
+	</insert>
+	<sql id="columnScope3">
+			<if test="data_created_date != null">data_created_date, </if>
+			<if test="last_modified_date != null">last_modified_date, </if>
+			<if test=" communication_no !=null">communication_no,</if>
+			<if test=" employee_no !=null">employee_no,</if>
+			<if test=" employee_name !=null">employee_name,</if>
+			<if test=" communication_type !=null">communication_type,</if>
+			<if test=" brief_description !=null">brief_description,</if>
+			<if test=" communication_content !=null">communication_content,</if>
+			<if test=" is_primary_communication !=null">is_primary_communication,</if>
+			<if test=" status_code !=null">status_code,	</if>
+			<if test=" language !=null">language,</if>
+	</sql>
+	
+	<!-- 查询最大地址ID -->
+	<select id="getMaxAddressId" resultType="int" parameterType="hashmap">
+		SELECT
+			CAST(MAX(address_no+0) AS SIGNED) 
+		FROM 
+			BAS_EMPLOYEE_ADDRESS 
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+				 AND language=#{language}	
+			</if>
+		</where>
+	</select>
+	<!-- 查询最大通讯方式ID -->
+	<select id="getCommunicationMaxId" resultType="int" parameterType="hashmap">
+		SELECT
+			CAST(MAX(communication_no+0) AS SIGNED) 
+		FROM 
+			BAS_EMPLOYEE_COMMUNICATION 
+		<where>
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+				 AND language=#{language}	
+			</if>
+		</where>
+	</select>
+	
+	<!-- 插入主要通讯方式时，将原先主要通讯方式设为N -->
+	<update id="updateCommunicationToN" parameterType="hashmap">
+		UPDATE 
+			BAS_EMPLOYEE_COMMUNICATION 
+		SET
+			<if test="last_modified_date != null">last_modified_date=#{last_modified_date}, </if>
+			is_primary_communication='N'
+		<where>
+				AND is_primary_communication='Y'
+			<if test=" employee_no !=null and employee_no !=''">
+			 	AND employee_no=#{employee_no}	
+			</if>
+			<if test=" communication_no !=null and communication_no !=''">
+			 	AND communication_no!=#{communication_no}	
+			</if>
+			<if test=" language !=null and language !=''">
+			 	AND language=#{language}	
+			</if>
+		</where>
+	</update>
+</mapper>

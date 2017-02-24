@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 门店其他地址维护作业 -->
+<!-- @author gejc --> 
+<mapper namespace="dao.BaseStoresAddressSettingMapper">
+	<!-- 1.查询门店其他地址详情 -->
+	<select id="getAddress" parameterType="hashmap" resultType="com.robam.distribution.base.model.Address">
+		SELECT 
+			address_no,address_type,country_region,province,city,
+			county_district,street,detailed_address,postcode,
+			country_region_name,province_name,city_name,county_district_name,street_name 
+		FROM 
+			BAS_ORGREQUISITION_ADDRESS 
+		WHERE 1=1 
+		<if test="address_no!=null and address_no!=''">
+		 AND address_no=#{address_no}		
+		</if>
+		<if test="requisition_no!=null and requisition_no!=''">
+		 AND requisition_no=#{requisition_no}		
+		</if>
+	</select>
+	
+	<!-- 新增时，地址ID自动生成，查询当前最大ID+1 -->
+	<select id="getMaxId" resultType="string" parameterType="hashmap">
+		SELECT 
+			MAX(address_no+1) 
+		FROM 
+			BAS_ORGREQUISITION_ADDRESS 
+		WHERE 1=1
+		<if test="requisition_no!=null and requisition_no!=''">
+		 AND requisition_no=#{requisition_no}	
+		</if>
+	</select>
+	
+	<!-- 2.新增门店其他地址 -->
+	<insert id="addAddress" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO 
+				BAS_ORGREQUISITION_ADDRESS(address_no,address_type,country_region,
+				province,city,county_district,street,detailed_address,requisition_no,postcode,
+				country_region_name,province_name,city_name,county_district_name,street_name) 
+			VALUES(
+				#{address_no},#{address_type},#{country_region},#{province},#{city},#{county_district},#{street},#{detailed_address},#{requisition_no},#{postcode}
+				,#{country_region_name},#{province_name},#{city_name},#{county_district_name},#{street_name}
+			)
+		]]>
+	</insert>
+	
+	<!-- 3.更新门店其他地址信息 -->
+	<update id="updateAddress" parameterType="hashmap">
+		UPDATE 
+			BAS_ORGREQUISITION_ADDRESS
+		<trim prefix="set" suffixOverrides=",">
+  			<if test="address_type!=null">address_type=#{address_type},</if>
+  			<if test="country_region!=null">country_region=#{country_region},</if>
+  			<if test="province!=null">province=#{province},</if>
+  			<if test="city!=null">city_name=#{city_name},</if>
+  			<if test="county_district!=null">county_district=#{county_district},</if>
+  			<if test="street!=null">street=#{street},</if>
+  			<if test="detailed_address!=null">detailed_address=#{detailed_address},</if>
+  			<if test="postcode!=null">postcode=#{postcode},</if>
+  			<if test="country_region_name!=null">country_region_name=#{country_region_name},</if>
+  			<if test="province_name!=null">province_name=#{province_name},</if>
+  			<if test="city_name!=null">city_name=#{city_name},</if>
+  			<if test="county_district_name!=null">county_district_name=#{county_district_name},</if>
+  			<if test="street_name!=null">street_name=#{street_name},</if>
+ 		</trim> 			
+		 WHERE 1=1 
+		<if test="address_no!=null and address_no!=''">
+		 AND address_no=#{address_no}		
+		</if>	
+		<if test="requisition_no!=null and requisition_no!=''">
+		 AND requisition_no=#{requisition_no}		
+		</if>
+	</update>
+	
+	<!-- 4.删除门店其他地址 -->
+	<delete  id="deleteAddress" parameterType="hashmap">
+		DELETE 
+			FROM BAS_ORGREQUISITION_ADDRESS 
+		WHERE 1=1
+		<if test="address_no!=null and address_no!=''">
+		  AND address_no=#{address_no}		
+		</if>
+		<if test="requisition_no!=null and requisition_no!=''">
+		  AND requisition_no=#{requisition_no}		
+		</if>
+	</delete>
+	
+	<!-- 官忠端服务所需SQL -->
+	<select id="selectidfromaddress" resultType="com.robam.distribution.base.model.Address" parameterType="hashmap">
+		SELECT 
+			DISTINCT requisition_no  
+		FROM 
+			BAS_ORGREQUISITION_ADDRESS
+		WHERE requisition_no=#{requisition_no}
+	</select>
+	<select id="selectmaxaddressid" resultType="java.lang.String" parameterType="hashmap">
+			SELECT 
+				MAX(address_no)
+			FROM 
+				BAS_ORGREQUISITION_ADDRESS
+			WHERE requisition_no=#{requisition_no}
+	</select>
+</mapper>

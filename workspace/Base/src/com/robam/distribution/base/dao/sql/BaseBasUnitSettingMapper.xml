@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.BaseBasUnitSettingMapper">
+	<sql id="columnScope">
+		<if test="unit != null">UNIT, </if>
+		<if test="unit_description != null">UNIT_DESCRIPTION, </if>
+		<if test="decimal_number != null">DECIMAL_NUMBER, </if>
+		<if test="unit_type != null">UNIT_TYPE, </if>
+		<if test="rounding_type != null">ROUNDING_TYPE, </if>
+		<if test="area_unit != null">AREA_UNIT, </if>
+		<if test="volume_unit != null">VOLUME_UNIT, </if>
+		<if test="status_code != null">STATUS_CODE, </if>
+		<if test="data_created_date != null">DATA_CREATED_DATE, </if>
+		<if test="language != null">LANGUAGE, </if>
+	</sql>
+
+	<!-- INSERT -->
+	<insert id="addBasUnit" parameterType="java.util.Map">
+		INSERT INTO BAS_UNIT
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<if test="unit != null">#{unit},</if>
+			<if test="unit_description != null">#{unit_description}, </if>
+			<if test="decimal_number != null">#{decimal_number}, </if>
+			<if test="unit_type != null">#{unit_type}, </if>
+			<if test="rounding_type != null">#{rounding_type}, </if>
+			<if test="area_unit != null">#{area_unit}, </if>
+			<if test="volume_unit != null">#{volume_unit}, </if>
+			<if test="status_code != null">'Y', </if>
+			<if test="data_created_date != null">#{data_created_date}, </if>
+			<if test="language != null">'zh_CN', </if>
+		</trim>
+	</insert>
+	
+	<!-- UPDATE -->
+	<update id="modifyBasUnit" parameterType="java.util.Map">
+		UPDATE BAS_UNIT SET
+		<trim prefix=" " suffix=" " suffixOverrides=", ">
+			<if test="unit_description != null">UNIT_DESCRIPTION=#{unit_description}, </if>
+			<if test="decimal_number != null">DECIMAL_NUMBER=#{decimal_number}, </if>
+			<if test="unit_type != null">UNIT_TYPE=#{unit_type}, </if>
+			<if test="rounding_type != null">ROUNDING_TYPE=#{rounding_type}, </if>
+			<if test="area_unit != null">AREA_UNIT=#{area_unit}, </if>
+			<if test="volume_unit != null">VOLUME_UNIT=#{volume_unit}, </if>
+			<if test="status_code != null">STATUS_CODE=#{STATUS_CODE}, </if>
+		</trim>
+		WHERE UNIT = #{unit}  AND LANGUAGE=#{language}
+	</update>
+	
+	<!-- DELETE -->
+	<delete id="deleteBasUnit" parameterType="java.util.Map">
+		DELETE FROM	BAS_UNIT WHERE UNIT = #{unit}  AND LANGUAGE=#{language}
+	</delete>
+
+	<!-- SEARCH -->
+	<select id="searchBasUnitList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, unit, unit_description, decimal_number, unit_type, rounding_type, language  
+		FROM BAS_UNIT 
+		<where>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="unit != null and unit != ''">AND unit = #{unit} </if>
+			<if test="unit_description != null and unit_description != ''">AND unit_description = #{unit_description} </if>
+			<if test="decimal_number != null and decimal_number != ''">AND decimal_number = #{decimal_number} </if>
+			<if test="unit_type != null and unit_type != ''">AND unit_type = #{unit_type} </if>
+			<if test="rounding_type != null and rounding_type != ''">AND rounding_type = #{rounding_type} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+		LIMIT #{start}, #{pageRows}
+	</select>
+
+	<select id="searchBasUnitDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT status_code, unit, unit_description, decimal_number, unit_type, rounding_type, area_unit, volume_unit, language  
+		FROM BAS_UNIT WHERE unit = #{unit} AND language = #{language}
+	</select>
+	
+	<select id="getBasUnitTotalRows" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT COUNT(*) AS totalRows FROM BAS_UNIT 
+		<where>
+			<if test="status_code != null and status_code != ''">AND status_code = #{status_code} </if>
+			<if test="unit != null and unit != ''">AND unit = #{unit} </if>
+			<if test="unit_description != null and unit_description != ''">AND unit_description = #{unit_description} </if>
+			<if test="decimal_number != null and decimal_number != ''">AND decimal_number = #{decimal_number} </if>
+			<if test="unit_type != null and unit_type != ''">AND unit_type = #{unit_type} </if>
+			<if test="rounding_type != null and rounding_type != ''">AND rounding_type = #{rounding_type} </if>
+			<if test="language != null and language != ''">AND language = #{language} </if>
+		</where>
+	</select>
+</mapper>

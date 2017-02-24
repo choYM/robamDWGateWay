@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_m12 组织基础资料维护作业 -->
+<!-- Author YangJian -->
+<mapper namespace="dao.BaseBasOrganizationSettingMapper">
+	<!-- 获取组织基础详细资料作业  -->
+	<!-- Author YangJian -->
+	<select id="getOrganizationBasedDetail" parameterType="com.robam.distribution.base.model.BasOrganization" resultType="com.robam.distribution.base.model.BasOrganization">
+		SELECT 
+			DISTINCT(organization),
+			status_code,organization,is_legal_person,legal_person,
+			legal_person_name,organization_name,organization_full_name,customer_vendor_no,
+			customer_vendor_name,organization_function,organization_simple_code,
+			contact,contact_no,mobile_no,email,country_region,
+			country_region_name,province,city,county_district,street,province_name,
+			city_name,county_district_name,street_name,detailed_address,postcode,
+			tax_code,listed_company_no,register_capital,business_registration_no,
+			legal_representative,exclusive_national_functions,time_zone_no,
+			time_zone_description,main_currency_no,main_currency_description,date_display_format,
+			number_amount_format,reference_table_no,reference_table_description,
+			other_attribute1,other_attribute1_description,other_attribute2,other_attribute2_description,
+			other_attribute3,other_attribute3_description,other_attribute4,other_attribute4_description,
+			other_attribute5,other_attribute5_description,other_attribute6,other_attribute6_description,
+			other_attribute7,other_attribute7_description,other_attribute8,other_attribute8_description,
+			other_attribute9,other_attribute9_description,other_attribute10,other_attribute10_description
+		FROM 
+			BAS_ORGANIZATION 
+		WHERE 1=1 
+		<if test="organization!=null and organization!=''">
+			AND organization=#{organization}
+		</if>
+		<if test="language!=null and language!=''">
+			AND language=#{language}
+		</if>
+	</select>
+	
+	<!-- 获取所有通讯方式 -->
+	<select id="selectAllContact" parameterType="com.robam.distribution.base.model.BasOrganization" resultType="com.robam.distribution.base.model.BasOrganization">
+		SELECT 
+			communication_no,communication_type,
+			brief_description,communication_content
+		FROM 
+			BAS_ORGANIZATION
+		WHERE 1=1 
+		<if test="organization!=null and organization!=''">
+			AND organization=#{organization}
+		</if>
+		<if test="language!=null and language!=''">
+			AND language=#{language}
+		</if>
+	</select>
+	
+	<!-- 修改组织基础资料 -->
+	<!-- Author YangJian -->
+	<update id="modifyOrganizationBasedDetail" parameterType="hashmap">
+		UPDATE 
+			BAS_ORGANIZATION 
+		<set>
+			<if test="is_legal_person!=null">
+				is_legal_person=#{is_legal_person},
+			</if>
+			<if test="legal_person!=null">
+				legal_person=#{legal_person},
+			</if>
+			<if test="legal_person_name!=null">
+				legal_person_name=#{legal_person_name},
+			</if>
+			<if test="organization_name!=null">
+				organization_name=#{organization_name},
+			</if>
+			<if test="organization_full_name!=null">
+				organization_full_name=#{organization_full_name},
+			</if>
+			<if test="customer_vendor_no!=null">
+				customer_vendor_no=#{customer_vendor_no},
+			</if>
+			<if test="customer_vendor_name!=null">
+				customer_vendor_name=#{customer_vendor_name},
+			</if>
+			<if test="organization_function!=null">
+				organization_function=#{organization_function},
+			</if>
+			<if test="organization_simple_code!=null">
+				organization_simple_code=#{organization_simple_code},
+			</if>
+			<if test="contact!=null">
+				contact=#{contact},
+			</if>
+			<if test="contact_no!=null">
+				contact_no=#{contact_no},
+			</if>
+			<if test="mobile_no!=null">
+				mobile_no=#{mobile_no},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="country_region!=null">
+				country_region=#{country_region},
+			</if>
+			<if test="country_region_name!=null">
+				country_region_name=#{country_region_name},
+			</if>
+			<if test="province!=null">
+				province=#{province},
+			</if>
+			<if test="city!=null">
+				city=#{city},
+			</if>
+			<if test="county_district!=null">
+				county_district=#{county_district},
+			</if>
+			<if test="street!=null">
+				street=#{street},
+			</if>
+			<if test="province_name!=null">
+				province_name=#{province_name},
+			</if>
+			<if test="city_name!=null">
+				city_name=#{city_name},
+			</if>
+			<if test="county_district_name!=null">
+				county_district_name=#{county_district_name},
+			</if>
+			<if test="street_name!=null">
+				street_name=#{street_name},
+			</if>
+			<if test="detailed_address!=null">
+				detailed_address=#{detailed_address},
+			</if>
+			<if test="postcode!=null">
+				postcode=#{postcode},
+			</if>
+			<if test="tax_code!=null">
+				tax_code=#{tax_code},
+			</if>
+			<if test="listed_company_no!=null">
+				listed_company_no=#{listed_company_no},
+			</if>
+			<if test="register_capital!=null">
+				register_capital=#{register_capital},
+			</if>
+			<if test="business_registration_no!=null">
+				business_registration_no=#{business_registration_no},
+			</if>
+			<if test="legal_representative!=null">
+				legal_representative=#{legal_representative},
+			</if>
+			<if test="exclusive_national_functions!=null">
+				exclusive_national_functions=#{exclusive_national_functions},
+			</if>
+			<if test="time_zone_no!=null">
+				time_zone_no=#{time_zone_no},
+			</if>
+			<if test="time_zone_description!=null">
+				time_zone_description=#{time_zone_description},
+			</if>
+			<if test="main_currency_no!=null">
+				main_currency_no=#{main_currency_no},
+			</if>
+			<if test="main_currency_description!=null">
+				main_currency_description=#{main_currency_description},
+			</if>
+			<if test="date_display_format!=null">
+				date_display_format=#{date_display_format},
+			</if>
+			<if test="number_amount_format!=null">
+				number_amount_format=#{number_amount_format},
+			</if>
+			<if test="reference_table_no!=null">
+				reference_table_no=#{reference_table_no},
+			</if>
+			<if test="reference_table_description!=null">
+				reference_table_description=#{reference_table_description},
+			</if>
+			<if test="other_attribute1!=null">
+				other_attribute1=#{other_attribute1},
+			</if>
+			<if test="other_attribute1_description!=null">
+				other_attribute1_description=#{other_attribute1_description},
+			</if>
+			<if test="other_attribute2!=null">
+				other_attribute2=#{other_attribute2},
+			</if>
+			<if test="other_attribute2_description!=null">
+				other_attribute2_description=#{other_attribute2_description},
+			</if>
+			<if test="other_attribute3!=null">
+				other_attribute3=#{other_attribute3},
+			</if>
+			<if test="other_attribute3_description!=null">
+				other_attribute3_description=#{other_attribute3_description},
+			</if>
+			<if test="other_attribute4!=null">
+				other_attribute4=#{other_attribute4},
+			</if>
+			<if test="other_attribute4_description!=null">
+				other_attribute4_description=#{other_attribute4_description},
+			</if>
+			<if test="other_attribute5!=null">
+				other_attribute5=#{other_attribute5},
+			</if>
+			<if test="other_attribute5_description!=null">
+				other_attribute5_description=#{other_attribute5_description},
+			</if>
+			<if test="other_attribute6!=null">
+				other_attribute6=#{other_attribute6},
+			</if>
+			<if test="other_attribute6_description!=null">
+				other_attribute6_description=#{other_attribute6_description},
+			</if>
+			<if test="other_attribute7!=null">
+				other_attribute7=#{other_attribute7},
+			</if>
+			<if test="other_attribute7_description!=null">
+				other_attribute7_description=#{other_attribute7_description},
+			</if>
+			<if test="other_attribute8!=null">
+				other_attribute8=#{other_attribute8},
+			</if>
+			<if test="other_attribute8_description!=null">
+				other_attribute8_description=#{other_attribute8_description},
+			</if>
+			<if test="other_attribute9!=null">
+				other_attribute9=#{other_attribute9},
+			</if>
+			<if test="other_attribute9_description!=null">
+				other_attribute9_description=#{other_attribute9_description},
+			</if>
+			<if test="other_attribute10!=null">
+				other_attribute10=#{other_attribute10},
+			</if>
+			<if test="other_attribute10_description!=null">
+				other_attribute10_description=#{other_attribute10_description},
+			</if>
+			<if test="communication_type!=null">
+				communication_type=#{communication_type},
+			</if>
+			<if test="brief_description!=null">
+				brief_description=#{brief_description},
+			</if>
+			<if test="communication_content!=null">
+				communication_content=#{communication_content}
+			</if>
+		</set>
+		WHERE 1=1 
+		<if test="organization!=null and organization!=''">
+			AND organization=#{organization}
+		</if>	
+		<if test="language!=null and language!=''">
+			AND language=#{language}
+		</if>
+		<if test="communication_no!=null and communication_no!=''">
+			AND	communication_no=#{communication_no}
+		</if>
+	</update>
+	
+	<!-- 查询最大通讯方式编号 -->
+	<!-- Author YangJian -->
+	<select id="queryMaxContactId" parameterType="hashmap" resultType="java.lang.String">
+		SELECT 
+			MAX(communication_no+1) 
+		FROM 
+			BAS_ORGANIZATION 
+		WHERE 1=1 
+		<if test="organization!=null and organization!=''">
+			AND organization=#{organization}
+		</if>
+		<if test="language!=null and language!=''">
+			AND language=#{language}
+		</if>
+	</select>
+	
+	<!-- 新增通讯方式 -->
+	<!-- Author YangJian -->
+	<insert id="addOrganizationBasedContact" parameterType="hashmap">
+		INSERT INTO 
+			BAS_ORGANIZATION(
+			organization,is_legal_person,legal_person,legal_person_name,organization_name,
+			organization_full_name,customer_vendor_no,customer_vendor_name,organization_function,
+			organization_simple_code,contact,contact_no,mobile_no,email,country_region,
+			country_region_name,province,city,county_district,street,province_name,
+			city_name,county_district_name,street_name,detailed_address,postcode,tax_code,
+			listed_company_no,register_capital,business_registration_no,
+			legal_representative,exclusive_national_functions,time_zone_no,
+			time_zone_description,main_currency_no,main_currency_description,date_display_format,
+			number_amount_format,reference_table_no,reference_table_description,
+			other_attribute1,other_attribute1_description,other_attribute2,other_attribute2_description,other_attribute3,
+			other_attribute3_description,other_attribute4,other_attribute4_description,other_attribute5,
+			other_attribute5_description,other_attribute6,other_attribute6_description,other_attribute7,
+			other_attribute7_description,other_attribute8,other_attribute8_description,other_attribute9,
+			other_attribute9_description,other_attribute10,other_attribute10_description,communication_no,
+			communication_type,brief_description,communication_content,language,status_code) 
+		VALUES(
+			#{organization},#{is_legal_person},#{legal_person},#{legal_person_name},
+			#{organization_name},#{organization_full_name},#{customer_vendor_no},#{customer_vendor_name},
+			#{organization_function},#{organization_simple_code},#{contact},#{contact_no},
+			#{mobile_no},#{email},#{country_region},#{country_region_name},
+			#{province},#{city},#{county_district},#{street},#{province_name},#{city_name},
+			#{county_district_name},#{street_name},#{detailed_address},#{postcode},#{tax_code},
+			#{listed_company_no},#{register_capital},#{business_registration_no},
+			#{legal_representative},#{exclusive_national_functions},#{time_zone_no},
+			#{time_zone_description},#{main_currency_no},#{main_currency_description},#{date_display_format},
+			#{number_amount_format},#{reference_table_no},#{reference_table_description},
+			#{other_attribute1},#{other_attribute1_description},#{other_attribute2},#{other_attribute2_description},
+			#{other_attribute3},#{other_attribute3_description},#{other_attribute4},#{other_attribute4_description},
+			#{other_attribute5},#{other_attribute5_description},#{other_attribute6},#{other_attribute6_description},
+			#{other_attribute7},#{other_attribute7_description},#{other_attribute8},#{other_attribute8_description},
+			#{other_attribute9},#{other_attribute9_description},#{other_attribute10},#{other_attribute10_description},
+			#{communication_no},#{communication_type},#{brief_description},#{communication_content},#{language},#{status_code})
+	</insert>
+	
+	<!-- 修改通讯方式 -->
+	<!-- Author YangJian -->
+	<update id="modifyOrganizationBasedContact" parameterType="hashmap">
+		UPDATE 
+			BAS_ORGANIZATION
+		SET 
+			communication_type=#{communication_type},
+			communication_content=#{communication_content},
+			brief_description=#{brief_description}
+		WHERE 1=1 
+		<if test="organization!=null and organization!=''">
+			AND organization=#{organization}
+		</if>
+		<if test="language!=null and language!=''">
+			AND language=#{language}
+		</if>
+		<if test="communication_no!=null and communication_no!=''">
+			AND communication_no=#{communication_no}
+		</if>
+	</update>
+	
+	<!-- 删除通讯方式 -->
+	<!-- Author YangJian -->
+	<delete id="deleteOrganizationBasedContact" parameterType="hashmap">
+		DELETE FROM 
+			BAS_ORGANIZATION 
+		WHERE 1=1 
+		<if test="organization!=null and organization!=''">
+			AND organization=#{organization}
+		</if>
+		<if test="language!=null and language!=''">
+			AND language=#{language}
+		</if>
+		<if test="communication_no!=null and communication_no!=''">
+			AND communication_no=#{communication_no}
+		</if>
+	</delete>
+	
+	<!-- guanzhong -->
+	<!-- 查询总笔数 -->
+	<select id="selectOrganizationCount" resultType="hashmap" parameterType="hashmap">
+			SELECT 
+				COUNT(DISTINCT organization) 
+			FROM 
+				BAS_ORGANIZATION 
+			WHERE 1=1
+			<if test="organization!=null and organization!=''">
+				AND organization=#{organization}
+			</if>
+			<if test="organization_name!=null and organization_name!=''">
+				AND organization_name=#{organization_name}
+			</if>
+			<if test="organization_full_name!=null and organization_full_name!=''">
+				AND organization_full_name=#{organization_full_name}
+			</if>
+			<if test="legal_person!=null and legal_person!=''">
+				AND legal_person=#{legal_person}
+			</if>
+			<if test="legal_person_name!=null and legal_person_name!=''">
+				AND legal_person_name=#{legal_person_name}
+			</if>
+			<if test="is_legal_person!=null and is_legal_person!=''">
+				AND is_legal_person=#{is_legal_person}
+			</if>
+			<if test="organization_function!=null and organization_function!=''">
+				AND organization_function=#{organization_function}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	</select>
+	
+	<!-- 查询当页的数据 -->
+	<select id="selectOrganizationLimit" resultType="hashmap" parameterType="hashmap">
+			SELECT DISTINCT 
+				status_code,organization,organization_name,organization_full_name,legal_person,
+				legal_person_name,organization_function,contact,contact_no
+			FROM 
+				BAS_ORGANIZATION 
+			WHERE 1=1 
+			<if test="organization!=null and organization!=''">
+				AND organization=#{organization}
+			</if>
+			<if test="organization_name!=null and organization_name!=''">
+				AND organization_name=#{organization_name}
+			</if>
+			<if test="organization_full_name!=null and organization_full_name!=''">
+				AND organization_full_name=#{organization_full_name}
+			</if>
+			<if test="legal_person!=null and legal_person!=''">
+				AND legal_person=#{legal_person}
+			</if>
+			<if test="legal_person_name!=null and legal_person_name!=''">
+				AND legal_person_name=#{legal_person_name}
+			</if>
+			<if test="is_legal_person!=null and is_legal_person!=''">
+				AND is_legal_person=#{is_legal_person}
+			</if>
+			<if test="organization_function!=null and organization_function!=''">
+				AND organization_function=#{organization_function}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			ORDER BY LAST_MODIFIED_DATE DESC  
+			LIMIT #{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 删除资料 -->
+	<delete id="deleteOrganization" parameterType="hashmap">
+	   DELETE FROM 
+	   		BAS_ORGANIZATION
+	   <where>
+	   <if test="list != null and list.size>0">
+	      organization IN
+	      <foreach item="item" index="index" collection="list" open="(" separator=", " close=") ">
+	       #{item.organization}
+	      </foreach>
+	   </if>
+	   <if test="language != null and language != ''">
+	   AND language =#{language}
+	   </if>
+	   </where>
+	</delete>
+	
+	<!-- 删除资料同时删除地址 -->
+	<delete id="deleteAddress" parameterType="hashmap">
+	   DELETE FROM 
+	   		BAS_ORGANIZATION_ADDRESS 
+	   <where>
+	   <if test="list != null and list.size>0">
+	      organization IN
+	      <foreach item="item" index="index" collection="list" open="(" separator=", " close=") ">
+	       #{item.organization}
+	      </foreach>
+	   </if>
+	   <if test="language != null and language != ''">
+	   AND language =#{language}
+	   </if>
+	   </where>
+	</delete>
+	
+	<!-- 审核资料 -->
+	<update id="auditOrganization" parameterType="hashmap">
+	        UPDATE 
+	        	BAS_ORGANIZATION
+	        SET 
+	        	status_code=#{status_code}
+	        WHERE
+	        	language =#{language}
+	      <if test="organization != null">  
+	      	AND organization IN 
+		      <foreach item="item" index="index" collection="organization" open="(" separator=", " close=") ">
+		       #{item.organization}
+		      </foreach>
+	   	  </if>
+	</update>
+	
+	<!-- 插入数据 -->
+	<sql id="columnScope">
+	    <if test="status_code!= null">STATUS_CODE, </if>
+	    <if test="organization!= null">ORGANIZATION, </if>
+	    <if test="organization_function!= null">ORGANIZATION_FUNCTION, </if>
+	    <if test="organization_simple_code!= null">ORGANIZATION_SIMPLE_CODE, </if>
+	    <if test="is_legal_person!= null">IS_LEGAL_PERSON, </if>
+	    <if test="legal_person!= null">LEGAL_PERSON, </if>
+	    <if test="country_region!= null">COUNTRY_REGION, </if>
+	    <if test="tax_code!= null">TAX_CODE, </if>
+	    <if test="listed_company_no!= null">LISTED_COMPANY_NO, </if>
+	    <if test="business_registration_no!= null">BUSINESS_REGISTRATION_NO, </if>
+	    <if test="legal_representative!= null">LEGAL_REPRESENTATIVE, </if>
+	    <if test="register_capital!= null">REGISTER_CAPITAL, </if>
+	    <if test="exclusive_national_functions!= null">EXCLUSIVE_NATIONAL_FUNCTIONS, </if>
+	    <if test="main_currency_no!= null">MAIN_CURRENCY_NO, </if>
+	    <if test="time_zone_no!= null">TIME_ZONE_NO, </if>
+	    <if test="date_display_format!= null">DATE_DISPLAY_FORMAT, </if>
+	    <if test="number_amount_format!= null">NUMBER_AMOUNT_FORMAT, </if>
+	    <if test="reference_table_no!= null">REFERENCE_TABLE_NO, </if>
+	    <if test="customer_vendor_no!= null">CUSTOMER_VENDOR_NO, </if>
+	    <if test="store_state!= null">STORE_STATE, </if>
+	    <if test="industry_type!= null">INDUSTRY_TYPE, </if>
+	    <if test="opening_date!= null">OPENING_DATE, </if>
+	    <if test="closing_date!= null">CLOSING_DATE, </if>
+	    <if test="store_area!= null">STORE_AREA, </if>
+	    <if test="counter_quantity!= null">COUNTER_QUANTITY, </if>
+	    <if test="sales_area!= null">SALES_AREA, </if>
+	    <if test="belonged_channel_no!= null">BELONGED_CHANNEL_NO, </if>
+	    <if test="belonged_organization!= null">BELONGED_ORGANIZATION, </if>
+	    <if test="province!= null">PROVINCE, </if>
+	    <if test="city!= null">CITY, </if>
+	    <if test="county_district!= null">COUNTY_DISTRICT, </if>
+	    <if test="street!= null">STREET, </if>
+	    <if test="detailed_address!= null">DETAILED_ADDRESS, </if>
+	    <if test="postcode!= null">POSTCODE, </if>
+	    <if test="contact!= null">CONTACT, </if>
+	    <if test="contact_no!= null">CONTACT_NO, </if>
+	    <if test="mobile_no!= null">MOBILE_NO, </if>
+	    <if test="email!= null">EMAIL, </if>
+	    <if test="pladform_no!= null">PLADFORM_NO, </if>
+	    <if test="pladform_name!= null">PLADFORM_NAME, </if>
+	    <if test="is_opened_invoice!= null">IS_OPENED_INVOICE, </if>
+	    <if test="income_organization!= null">INCOME_ORGANIZATION, </if>
+	    <if test="is_auto_confirm!= null">IS_AUTO_CONFIRM, </if>
+	    <if test="other_attribute1!= null">OTHER_ATTRIBUTE1, </if>
+	    <if test="other_attribute2!= null">OTHER_ATTRIBUTE2, </if>
+	    <if test="other_attribute3!= null">OTHER_ATTRIBUTE3, </if>
+	    <if test="other_attribute4!= null">OTHER_ATTRIBUTE4, </if>
+	    <if test="other_attribute5!= null">OTHER_ATTRIBUTE5, </if>
+	    <if test="other_attribute6!= null">OTHER_ATTRIBUTE6, </if>
+	    <if test="other_attribute7!= null">OTHER_ATTRIBUTE7, </if>
+	    <if test="other_attribute8!= null">OTHER_ATTRIBUTE8, </if>
+	    <if test="other_attribute9!= null">OTHER_ATTRIBUTE9, </if>
+	    <if test="other_attribute10!= null">OTHER_ATTRIBUTE10, </if>
+	    <if test="application_organization!= null">APPLICATION_ORGANIZATION, </if>
+	    <if test="data_owner!= null">DATA_OWNER, </if>
+	    <if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT, </if>
+	    <if test="data_created_by!= null">DATA_CREATED_BY, </if>
+	    <if test="data_created_department!= null">DATA_CREATED_DEPARTMENT, </if>
+	    <if test="data_created_date!= null">DATA_CREATED_DATE, </if>
+	    <if test="data_modified_by!= null">DATA_MODIFIED_BY, </if>
+	    <if test="last_modified_date!= null">LAST_MODIFIED_DATE, </if>
+	    <if test="language!= null">LANGUAGE, </if>
+	    <if test="organization_name!= null">ORGANIZATION_NAME, </if>
+	    <if test="organization_full_name!= null">ORGANIZATION_FULL_NAME, </if>
+	    <if test="belonged_organization_name!= null">BELONGED_ORGANIZATION_NAME, </if>
+	    <if test="income_organization_name!= null">INCOME_ORGANIZATION_NAME, </if>
+	    <if test="application_organization_name!= null">APPLICATION_ORGANIZATION_NAME, </if>
+	    <if test="belonged_channel_name!= null">BELONGED_CHANNEL_NAME, </if>
+	    <if test="sales_area_name!= null">SALES_AREA_NAME, </if>
+	    <if test="country_region_name!= null">COUNTRY_REGION_NAME, </if>
+	    <if test="province_name!= null">PROVINCE_NAME, </if>
+	    <if test="city_name!= null">CITY_NAME, </if>
+	    <if test="county_district_name!= null">COUNTY_DISTRICT_NAME, </if>
+	    <if test="street_name!= null">STREET_NAME, </if>
+	    <if test="legal_person_name!= null">LEGAL_PERSON_NAME, </if>
+	    <if test="time_zone_description!= null">TIME_ZONE_DESCRIPTION, </if>
+	    <if test="reference_table_description!= null">REFERENCE_TABLE_DESCRIPTION, </if>
+	    <if test="main_currency_description!= null">MAIN_CURRENCY_DESCRIPTION, </if>
+	    <if test="customer_vendor_name!= null">CUSTOMER_VENDOR_NAME, </if>
+	    <if test="other_attribute1_description!= null">OTHER_ATTRIBUTE1_DESCRIPTION, </if>
+	    <if test="other_attribute2_description!= null">OTHER_ATTRIBUTE2_DESCRIPTION, </if>
+	    <if test="other_attribute3_description!= null">OTHER_ATTRIBUTE3_DESCRIPTION, </if>
+	    <if test="other_attribute4_description!= null">OTHER_ATTRIBUTE4_DESCRIPTION, </if>
+	    <if test="other_attribute5_description!= null">OTHER_ATTRIBUTE5_DESCRIPTION, </if>
+	    <if test="other_attribute6_description!= null">OTHER_ATTRIBUTE6_DESCRIPTION, </if>
+	    <if test="other_attribute7_description!= null">OTHER_ATTRIBUTE7_DESCRIPTION, </if>
+	    <if test="other_attribute8_description!= null">OTHER_ATTRIBUTE8_DESCRIPTION, </if>
+	    <if test="other_attribute9_description!= null">OTHER_ATTRIBUTE9_DESCRIPTION, </if>
+	    <if test="other_attribute10_description!= null">OTHER_ATTRIBUTE10_DESCRIPTION, </if>
+	    <if test="communication_no!= null">COMMUNICATION_NO, </if>
+	    <if test="is_main_communication!= null">IS_MAIN_COMMUNICATION, </if>
+	    <if test="communication_type!= null">COMMUNICATION_TYPE, </if>
+	    <if test="brief_description!= null">BRIEF_DESCRIPTION, </if>
+	    <if test="communication_content!= null">COMMUNICATION_CONTENT, </if>
+	</sql>
+	<insert id="addOrganization" parameterType="java.util.Map">
+	    INSERT INTO BAS_ORGANIZATION
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+	  <trim prefix=" (" suffix=") " suffixOverrides=", ">
+		<if test="status_code!= null">#{status_code}, </if>
+	    <if test="organization!= null">#{organization}, </if>
+	    <if test="organization_function!= null">#{organization_function}, </if>
+	    <if test="organization_simple_code!= null">#{organization_simple_code}, </if>
+	    <if test="is_legal_person!= null">#{is_legal_person}, </if>
+	    <if test="legal_person!= null">#{legal_person}, </if>
+	    <if test="country_region!= null">#{country_region}, </if>
+	    <if test="tax_code!= null">#{tax_code}, </if>
+	    <if test="listed_company_no!= null">#{listed_company_no}, </if>
+	    <if test="business_registration_no!= null">#{business_registration_no}, </if>
+	    <if test="legal_representative!= null">#{legal_representative}, </if>
+	    <if test="register_capital!= null">#{register_capital}, </if>
+	    <if test="exclusive_national_functions!= null">#{exclusive_national_functions}, </if>
+	    <if test="main_currency_no!= null">#{main_currency_no}, </if>
+	    <if test="time_zone_no!= null">#{time_zone_no}, </if>
+	    <if test="date_display_format!= null">#{date_display_format}, </if>
+	    <if test="number_amount_format!= null">#{number_amount_format}, </if>
+	    <if test="reference_table_no!= null">#{reference_table_no}, </if>
+	    <if test="customer_vendor_no!= null">#{customer_vendor_no}, </if>
+	    <if test="store_state!= null">#{store_state}, </if>
+	    <if test="industry_type!= null">#{industry_type}, </if>
+	    <if test="opening_date!= null">#{opening_date}, </if>
+	    <if test="closing_date!= null">#{closing_date}, </if>
+	    <if test="store_area!= null">#{store_area}, </if>
+	    <if test="counter_quantity!= null">#{counter_quantity}, </if>
+	    <if test="sales_area!= null">#{sales_area}, </if>
+	    <if test="belonged_channel_no!= null">#{belonged_channel_no}, </if>
+	    <if test="belonged_organization!= null">#{belonged_organization}, </if>
+	    <if test="province!= null">#{province}, </if>
+	    <if test="city!= null">#{city}, </if>
+	    <if test="county_district!= null">#{county_district}, </if>
+	    <if test="street!= null">#{street}, </if>
+	    <if test="detailed_address!= null">#{detailed_address}, </if>
+	    <if test="postcode!= null">#{postcode}, </if>
+	    <if test="contact!= null">#{contact}, </if>
+	    <if test="contact_no!= null">#{contact_no}, </if>
+	    <if test="mobile_no!= null">#{mobile_no}, </if>
+	    <if test="email!= null">#{email}, </if>
+	    <if test="pladform_no!= null">#{pladform_no}, </if>
+	    <if test="pladform_name!= null">#{pladform_name}, </if>
+	    <if test="is_opened_invoice!= null">#{is_opened_invoice}, </if>
+	    <if test="income_organization!= null">#{income_organization}, </if>
+	    <if test="is_auto_confirm!= null">#{is_auto_confirm}, </if>
+	    <if test="other_attribute1!= null">#{other_attribute1}, </if>
+	    <if test="other_attribute2!= null">#{other_attribute2}, </if>
+	    <if test="other_attribute3!= null">#{other_attribute3}, </if>
+	    <if test="other_attribute4!= null">#{other_attribute4}, </if>
+	    <if test="other_attribute5!= null">#{other_attribute5}, </if>
+	    <if test="other_attribute6!= null">#{other_attribute6}, </if>
+	    <if test="other_attribute7!= null">#{other_attribute7}, </if>
+	    <if test="other_attribute8!= null">#{other_attribute8}, </if>
+	    <if test="other_attribute9!= null">#{other_attribute9}, </if>
+	    <if test="other_attribute10!= null">#{other_attribute10}, </if>
+	    <if test="application_organization!= null">#{application_organization}, </if>
+	    <if test="data_owner!= null">#{data_owner}, </if>
+	    <if test="data_owned_department!= null">#{data_owned_department}, </if>
+	    <if test="data_created_by!= null">#{data_created_by}, </if>
+	    <if test="data_created_department!= null">#{data_created_department}, </if>
+	    <if test="data_created_date!= null">#{data_created_date}, </if>
+	    <if test="data_modified_by!= null">#{ata_modified_by}, </if>
+	    <if test="last_modified_date!= null">#{last_modified_date}, </if>
+	    <if test="language!= null">#{language}, </if>
+	    <if test="organization_name!= null">#{organization_name}, </if>
+	    <if test="organization_full_name!= null">#{organization_full_name}, </if>
+	    <if test="belonged_organization_name!= null">#{belonged_organization_name}, </if>
+	    <if test="income_organization_name!= null">#{income_organization_name}, </if>
+	    <if test="application_organization_name!= null">#{application_organization_name}, </if>
+	    <if test="belonged_channel_name!= null">#{belonged_channel_name}, </if>
+	    <if test="sales_area_name!= null">#{sales_area_name}, </if>
+	    <if test="country_region_name!= null">#{country_region_name}, </if>
+	    <if test="province_name!= null">#{province_name}, </if>
+	    <if test="city_name!= null">#{city_name}, </if>
+	    <if test="county_district_name!= null">#{county_district_name}, </if>
+	    <if test="street_name!= null">#{street_name}, </if>
+	    <if test="legal_person_name!= null">#{legal_person_name}, </if>
+	    <if test="time_zone_description!= null">#{time_zone_description}, </if>
+	    <if test="reference_table_description!= null">#{reference_table_description}, </if>
+	    <if test="main_currency_description!= null">#{main_currency_description}, </if>
+	    <if test="customer_vendor_name!= null">#{customer_vendor_name}, </if>
+	    <if test="other_attribute1_description!= null">#{other_attribute1_description}, </if>
+	    <if test="other_attribute2_description!= null">#{other_attribute2_description}, </if>
+	    <if test="other_attribute3_description!= null">#{other_attribute3_description}, </if>
+	    <if test="other_attribute4_description!= null">#{other_attribute4_description}, </if>
+	    <if test="other_attribute5_description!= null">#{other_attribute5_description}, </if>
+	    <if test="other_attribute6_description!= null">#{other_attribute6_description}, </if>
+	    <if test="other_attribute7_description!= null">#{other_attribute7_description}, </if>
+	    <if test="other_attribute8_description!= null">#{other_attribute8_description}, </if>
+	    <if test="other_attribute9_description!= null">#{other_attribute9_description}, </if>
+	    <if test="other_attribute10_description!= null">#{other_attribute10_description}, </if>
+	    <if test="communication_no!= null">#{communication_no}, </if>
+	    <if test="is_main_communication!= null">#{is_main_communication}, </if>
+	    <if test="communication_type!= null">#{communication_type}, </if>
+	    <if test="brief_description!= null">#{brief_description}, </if>
+	    <if test="communication_content!= null">#{communication_content}, </if>
+	  </trim>
+	</insert>
+	
+	<!-- 查询是否有数据，用以设定通讯单号 -->
+	<select id="selectId" resultType="hashmap" parameterType="com.robam.distribution.base.model.BasOrganization">
+	    SELECT 
+	    	COUNT(DISTINCT organization) 
+		FROM 
+			BAS_ORGANIZATION 
+		WHERE 1=1
+			<if test="organization!=null and organization!=''">
+				AND organization=#{organization}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	</select>
+	
+	<!-- 查询最大通讯单号 -->
+	<select id="selectinformationid" resultType="java.lang.String" parameterType="com.robam.distribution.base.model.BasOrganization">
+			SELECT 
+				MAX(communication_no)
+			FROM 
+				BAS_ORGANIZATION
+			WHERE 
+			<if test="organization!=null and organization!=''">
+				AND organization=#{organization}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	</select>
+</mapper>

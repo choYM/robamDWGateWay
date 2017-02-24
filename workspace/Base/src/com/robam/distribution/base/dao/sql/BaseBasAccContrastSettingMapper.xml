@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- drp_bas_m36-应用分类对照表维护作业 -->
+<!-- @author liaogz -->
+<!-- @since 2017-02-20 -->
+<mapper namespace="dao.BaseBasAccContrastSettingMapper">
+    <!-- 分页查询数据量 -->
+	<select id="selectAccContrastCount" resultType="hashmap" parameterType="hashmap">
+			SELECT COUNT(DISTINCT acc,language) 
+			FROM BAS_ACC_CONTRAST WHERE 1=1
+			<if test="acc!=null and acc!=''">
+				AND acc=#{acc}
+			</if>
+			<if test="job_code!=null and job_code!=''">
+				AND job_code=#{job_code}
+			</if>
+			<if test="job_name!=null and job_name!=''">
+				AND job_name=#{job_name}
+			</if>
+			<if test="module!=null and module!=''">
+				AND module=#{module}
+			</if>
+			<if test="status_code!=null and status_code!=''">
+				AND status_code=#{status_code}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	</select>
+	<!--  -->
+	<select id="selectAccContrastLimit" resultType="hashmap" parameterType="hashmap">
+			SELECT DISTINCT acc,job_code,job_name,module,status_code,system_standard
+			FROM BAS_ACC_CONTRAST WHERE 1=1 
+			<if test="acc!=null and acc!=''">
+				AND acc=#{acc}
+			</if>
+			<if test="job_code!=null and job_code!=''">
+				AND job_code=#{job_code}
+			</if>
+			<if test="job_name!=null and job_name!=''">
+				AND job_name=#{job_name}
+			</if>
+			<if test="module!=null and module!=''">
+				AND module=#{module}
+			</if>
+			<if test="status_code!=null and status_code!=''">
+				AND status_code=#{status_code}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+			ORDER BY LAST_MODIFIED_DATE DESC LIMIT #{startIndex},#{pageSize}
+	</select>
+	<!-- 修改应用分类对照表(包含审核应用分类对照表) -->
+	<update id="modifyAccContrast" parameterType="java.util.Map">
+	  UPDATE BAS_ACC_CONTRAST SET
+	   <trim prefix=" " suffix=" " suffixOverrides=", ">
+		<if test="status_code!= null">STATUS_CODE=#{status_code}, </if>
+		<if test="system_standard!= null">SYSTEM_STANDARD=#{system_standard}, </if>
+		<if test="job_code!= null">JOB_CODE=#{job_code}, </if>
+		<if test="module!= null">MODULE=#{module}, </if>
+		<if test="data_owner!= null">DATA_OWNER=#{data_owner}, </if>
+		<if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT=#{data_owned_department}, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY=#{data_created_by}, </if>
+		<if test="data_created_department!= null">DATA_CREATED_DEPARTMENT=#{data_created_department}, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE=#{data_created_date}, </if>
+		<if test="data_modified_by!= null">DATA_MODIFIED_BY=#{data_modified_by}, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE=#{last_modified_date}, </if>
+		<if test="job_name!= null">JOB_NAME=#{job_name}, </if>
+	   </trim>
+	        WHERE acc=#{acc} AND language=#{language}
+	</update>
+	<!-- 删除应用分类对照表 -->
+	<delete id="deleteAccContrast" parameterType="java.util.Map">
+	        DELETE FROM BAS_ACC_CONTRAST WHERE language=#{language} AND acc=#{acc}
+	</delete>
+	<sql id="columnScope">
+	    <if test="status_code!= null">STATUS_CODE, </if>
+		<if test="acc!= null">ACC, </if>
+		<if test="system_standard!= null">SYSTEM_STANDARD, </if>
+		<if test="job_code!= null">JOB_CODE, </if>
+		<if test="module!= null">MODULE, </if>
+		<if test="data_owner!= null">DATA_OWNER, </if>
+		<if test="data_owned_department!= null">DATA_OWNED_DEPARTMENT, </if>
+		<if test="data_created_by!= null">DATA_CREATED_BY, </if>
+		<if test="data_created_department!= null">DATA_CREATED_DEPARTMENT, </if>
+		<if test="data_created_date!= null">DATA_CREATED_DATE, </if>
+		<if test="data_modified_by!= null">DATA_MODIFIED_BY, </if>
+		<if test="last_modified_date!= null">LAST_MODIFIED_DATE, </if>
+		<if test="language!= null">LANGUAGE, </if>
+		<if test="job_name!= null">JOB_NAME, </if>
+	</sql>
+	<!-- 新增应用分类对照表 -->
+	<insert id="addAccContrast" parameterType="java.util.Map">
+	    INSERT INTO BAS_ACC_CONTRAST
+		<trim prefix=" (" suffix=") " suffixOverrides=", ">
+			<include refid="columnScope" />
+		</trim>
+		VALUES
+	  <trim prefix=" (" suffix=") " suffixOverrides=", ">
+		<if test="status_code!= null">#{status_code}, </if>
+		<if test="acc!= null">#{acc}, </if>
+		<if test="system_standard!= null">#{system_standard}, </if>
+		<if test="job_code!= null">#{job_code}, </if>
+		<if test="module!= null">#{module}, </if>
+		<if test="data_owner!= null">#{data_owner}, </if>
+		<if test="data_owned_department!= null">#{data_owned_department}, </if>
+		<if test="data_created_by!= null">#{data_created_by}, </if>
+		<if test="data_created_department!= null">#{data_created_department}, </if>
+		<if test="data_created_date!= null">#{data_created_date}, </if>
+		<if test="data_modified_by!= null">#{data_modified_by}, </if>
+		<if test="last_modified_date!= null">#{last_modified_date}, </if>
+		<if test="language!= null">#{language}, </if>
+		<if test="job_name!= null">#{job_name}, </if>
+	  </trim>
+	</insert>
+	<!-- 根据应用分类对照表获取相关记录(判断应用分类对照表是否存在) -->
+	<select id="getAccContrast" parameterType="hashmap" resultType="hashmap">
+	   SELECT COUNT(DISTINCT acc) AS count, acc,job_code,job_name,module,status_code,system_standard
+	   FROM BAS_ACC_CONTRAST
+	   <where>
+			<if test="acc!=null and acc!=''">
+				AND acc=#{acc}
+			</if>
+			<if test="language!=null and language!=''">
+				AND language=#{language}
+			</if>
+	    </where>
+	</select>
+</mapper>
